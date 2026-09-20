@@ -1530,8 +1530,12 @@ body.kiosk-on{overflow:hidden}
    ══════════════════════════════════════════════════════════════ */
 .ss{
   --ss-ink:var(--m-text);
-  --ss-dim:var(--m-text-secondary);
-  --ss-faint:var(--m-text-muted);
+  /* DİQQƏT: --m-text-secondary/--m-text-muted 205-in köhnə səhifələrində qısa
+     başlıqlar üçün nəzərdə tutulub. Ekosistemdə onlar əsas oxunan mətndir,
+     ona görə burada daha tünd pillələrə bağlanır (ölçülüb: 7.58:1 və 4.76:1
+     ağ fonda; köhnə #94A3B8 cəmi 2.56:1 verirdi və oxunmurdu). */
+  --ss-dim:#475569;
+  --ss-faint:#64748B;
   --ss-line:var(--m-border);
   --ss-line-2:#CBD5E1;
   --ss-surface:var(--m-surface);
@@ -1539,8 +1543,13 @@ body.kiosk-on{overflow:hidden}
   --ss-sunken:#F8FAFC;
   --ss-shadow:0 1px 2px rgba(15,23,42,.04),0 8px 24px rgba(15,23,42,.06);
   --ss-shadow-lg:0 18px 44px rgba(15,23,42,.13);
+  /* Parlaq variantlar — YALNIZ dolğu, sərhəd və işıqlanma üçün */
   --ss-world:var(--m-blue); --ss-bank:var(--m-yellow); --ss-startup:var(--m-orange);
   --ss-problem:var(--m-cyan); --ss-humanity:var(--m-green); --ss-olympics:var(--m-purple);
+  /* Mürəkkəb variantlar — MƏTN üçün (ağ fonda 5.0–7.1:1) */
+  --ss-world-ink:#1D4ED8; --ss-bank-ink:#B45309; --ss-startup-ink:#C2410C;
+  --ss-problem-ink:#0E7490; --ss-humanity-ink:#047857; --ss-olympics-ink:#6D28D9;
+  --ss-ok:#047857; --ss-warn:#B45309; --ss-bad:#B91C1C;
   --ss-r:16px; --ss-r-sm:11px;
   color:var(--ss-ink);
 }
@@ -1605,7 +1614,7 @@ body.kiosk-on{overflow:hidden}
 .ss-btn.ghost{background:transparent}
 .ss-btn.sm{padding:7px 13px;font-size:.75rem;border-radius:9px}
 .ss-btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
-.ss :focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:8px}
+.ss :focus-visible{outline:2px solid var(--m-primary);outline-offset:3px;border-radius:8px}
 
 /* ── Kartlar ─────────────────────────────────────────────── */
 .ss-card{background:var(--ss-raised);border:1px solid var(--ss-line);box-shadow:var(--ss-shadow);
@@ -1621,7 +1630,7 @@ body.kiosk-on{overflow:hidden}
   .ss-grid.c4{grid-template-columns:repeat(4,minmax(0,1fr))}}
 
 /* Modul kartı — ana səhifənin mərkəzi elementi */
-.ss-mod{--c:var(--purple);text-align:left;width:100%;font-family:inherit;cursor:pointer;
+.ss-mod{--c:var(--m-primary);--ci:var(--m-primary);text-align:left;width:100%;font-family:inherit;cursor:pointer;
   background:var(--ss-raised);border:1px solid var(--ss-line);border-radius:var(--ss-r);
   box-shadow:var(--ss-shadow);padding:22px 20px 18px;position:relative;overflow:hidden;color:var(--ss-ink);
   transition:transform .28s cubic-bezier(.22,.9,.3,1),border-color .28s,background .28s;
@@ -1639,10 +1648,10 @@ body.kiosk-on{overflow:hidden}
 .ss-mod-name{font-family:var(--font-head);font-weight:800;font-size:1.06rem;letter-spacing:-.01em}
 .ss-mod-desc{font-size:.79rem;line-height:1.6;color:var(--ss-dim);flex:1}
 .ss-mod-stats{display:flex;gap:14px;flex-wrap:wrap;font-size:.72rem;color:var(--ss-faint)}
-.ss-mod-stats b{color:var(--c);font-size:.86rem;font-family:var(--font-head)}
+.ss-mod-stats b{color:var(--ci,var(--c));font-size:.86rem;font-family:var(--font-head)}
 .ss-mod-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding-top:11px;border-top:1px solid var(--ss-line)}
-.ss-mod-cta{font-size:.76rem;font-weight:700;color:var(--c);display:inline-flex;align-items:center;gap:6px}
+.ss-mod-cta{font-size:.76rem;font-weight:700;color:var(--ci,var(--c));display:inline-flex;align-items:center;gap:6px}
 .ss-mod:hover .ss-mod-cta span{transform:translateX(3px)}
 .ss-mod-cta span{transition:transform .25s}
 @media(prefers-reduced-motion:reduce){.ss-mod,.ss-mod:after,.ss-mod-cta span{transition:none}
@@ -1652,12 +1661,12 @@ body.kiosk-on{overflow:hidden}
 .ss-chip{display:inline-flex;align-items:center;gap:5px;border-radius:99px;
   padding:3px 10px;font-size:.67rem;font-weight:700;letter-spacing:.02em;
   background:var(--ss-sunken);border:1px solid var(--ss-line);color:var(--ss-dim);white-space:nowrap}
-.ss-chip.live{color:var(--red);border-color:color-mix(in srgb,var(--red) 45%,transparent)}
-.ss-chip.live:before{content:'';width:6px;height:6px;border-radius:50%;background:var(--red);
+.ss-chip.live{color:var(--ss-bad);border-color:color-mix(in srgb,var(--ss-bad) 45%,transparent)}
+.ss-chip.live:before{content:'';width:6px;height:6px;border-radius:50%;background:var(--ss-bad);
   animation:ssPulse 1.7s infinite}
-.ss-chip.open{color:var(--teal);border-color:color-mix(in srgb,var(--teal) 42%,transparent)}
-.ss-chip.done{color:var(--green);border-color:color-mix(in srgb,var(--green) 42%,transparent)}
-.ss-chip.warn{color:var(--gold);border-color:color-mix(in srgb,var(--gold) 42%,transparent)}
+.ss-chip.open{color:var(--ss-problem-ink);border-color:color-mix(in srgb,var(--ss-problem-ink) 42%,transparent)}
+.ss-chip.done{color:var(--ss-ok);border-color:color-mix(in srgb,var(--ss-ok) 42%,transparent)}
+.ss-chip.warn{color:var(--ss-warn);border-color:color-mix(in srgb,var(--ss-warn) 42%,transparent)}
 .ss-chip.soon{color:var(--ss-faint)}
 @keyframes ssPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.72)}}
 @media(prefers-reduced-motion:reduce){.ss-chip.live:before{animation:none}}
@@ -1672,7 +1681,7 @@ body.kiosk-on{overflow:hidden}
 
 /* ── Proqres ─────────────────────────────────────────────── */
 .ss-bar{height:8px;border-radius:99px;background:var(--ss-sunken);overflow:hidden;border:1px solid var(--ss-line)}
-.ss-bar>i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teal),var(--purple));
+.ss-bar>i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--m-cyan),var(--m-primary));
   transition:width .9s cubic-bezier(.22,.9,.3,1)}
 .ss-journey{display:flex;flex-direction:column;gap:13px}
 .ss-jrow{display:grid;grid-template-columns:104px 1fr 46px;gap:11px;align-items:center}
@@ -1688,13 +1697,13 @@ body.kiosk-on{overflow:hidden}
 .ss-pipe-step:not(:last-child):after{content:'';position:absolute;top:15px;left:calc(50% + 18px);
   right:calc(-50% + 18px);height:2px;background:var(--ss-line-2)}
 .ss-pipe-step.done:not(:last-child):after,.ss-pipe-step.now:not(:last-child):after{
-  background:linear-gradient(90deg,var(--teal),var(--ss-line-2))}
+  background:linear-gradient(90deg,var(--ss-ok),var(--ss-line-2))}
 .ss-pipe-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;
   justify-content:center;font-size:.78rem;font-weight:800;background:var(--ss-raised);
   border:1.5px solid var(--ss-line-2);position:relative;z-index:1;flex-shrink:0}
-.ss-pipe-step.done .ss-pipe-dot{background:var(--teal);border-color:var(--teal);color:#06231d}
-.ss-pipe-step.now .ss-pipe-dot{background:var(--purple);border-color:var(--purple);color:#fff;
-  box-shadow:0 0 0 5px color-mix(in srgb,var(--purple) 24%,transparent)}
+.ss-pipe-step.done .ss-pipe-dot{background:var(--ss-ok);border-color:var(--ss-ok);color:#fff}
+.ss-pipe-step.now .ss-pipe-dot{background:var(--m-primary);border-color:var(--m-primary);color:#fff;
+  box-shadow:0 0 0 5px color-mix(in srgb,var(--m-primary) 24%,transparent)}
 .ss-pipe-lbl{font-size:.68rem;line-height:1.35;color:var(--ss-faint);max-width:11ch}
 .ss-pipe-step.now .ss-pipe-lbl,.ss-pipe-step.done .ss-pipe-lbl{color:var(--ss-dim);font-weight:700}
 
@@ -1747,7 +1756,7 @@ body.kiosk-on{overflow:hidden}
 .ss-wallet-bal{font-family:var(--font-head);font-weight:800;line-height:1;
   font-size:clamp(2.1rem,6vw,3.4rem);font-variant-numeric:tabular-nums;
   display:flex;align-items:baseline;gap:10px}
-.ss-wallet-bal small{font-size:.32em;font-weight:700;color:var(--m-yellow);letter-spacing:.14em}
+.ss-wallet-bal small{font-size:.32em;font-weight:700;color:#FCD34D;letter-spacing:.14em}
 .ss-tx{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid var(--ss-line)}
 .ss-tx:last-child{border-bottom:none}
 .ss-tx-ic{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;
@@ -1757,14 +1766,14 @@ body.kiosk-on{overflow:hidden}
   text-overflow:ellipsis;white-space:nowrap}
 .ss-tx-txt span{font-size:.68rem;color:var(--ss-faint)}
 .ss-tx-amt{font-weight:800;font-size:.86rem;font-variant-numeric:tabular-nums;flex-shrink:0}
-.ss-tx-amt.plus{color:var(--green)}.ss-tx-amt.minus{color:var(--red)}
+.ss-tx-amt.plus{color:var(--ss-ok)}.ss-tx-amt.minus{color:var(--ss-bad)}
 
 /* ── Liderbord / sıra ────────────────────────────────────── */
 .ss-rank{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:var(--ss-r-sm);
   border:1px solid transparent;transition:background .2s}
 .ss-rank:hover{background:var(--ss-sunken)}
-.ss-rank.me{background:color-mix(in srgb,var(--purple) 13%,transparent);
-  border-color:color-mix(in srgb,var(--purple) 34%,transparent)}
+.ss-rank.me{background:color-mix(in srgb,var(--m-primary) 11%,transparent);
+  border-color:color-mix(in srgb,var(--m-primary) 34%,transparent)}
 .ss-rank-n{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;
   justify-content:center;font-size:.76rem;font-weight:800;background:var(--ss-sunken);
   border:1px solid var(--ss-line);flex-shrink:0}
@@ -1806,9 +1815,9 @@ body.kiosk-on{overflow:hidden}
 .ss-badge{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:var(--ss-r-sm);
   background:var(--ss-raised);border:1px solid var(--ss-line);box-shadow:var(--ss-shadow)}
 .ss-badge-ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;
-  justify-content:center;font-size:1.1rem;flex-shrink:0;
-  background:linear-gradient(135deg,color-mix(in srgb,var(--gold) 26%,transparent),transparent);
-  border:1px solid color-mix(in srgb,var(--gold) 34%,transparent)}
+  justify-content:center;font-size:1.1rem;flex-shrink:0;color:var(--ss-ink);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--m-yellow) 22%,transparent),transparent);
+  border:1px solid color-mix(in srgb,var(--m-yellow) 40%,transparent)}
 .ss-badge b{display:block;font-size:.83rem;font-weight:700}
 .ss-badge span{font-size:.7rem;color:var(--ss-faint)}
 
@@ -1849,7 +1858,7 @@ body.kiosk-on{overflow:hidden}
 .ss-def dd{margin:0;font-size:.85rem;line-height:1.72;color:var(--ss-dim)}
 
 /* ── Medal ───────────────────────────────────────────────── */
-.ss-medal{display:inline-flex;align-items:center;justify-content:center;
+.ss-medal{display:inline-flex;align-items:center;justify-content:center;color:#14142a;
   width:34px;height:34px;border-radius:50%;font-size:1rem}
 .ss-medal.gold{background:linear-gradient(135deg,#f0c040,#c89820)}
 .ss-medal.silver{background:linear-gradient(135deg,#dcdce8,#9a9ab0)}
@@ -1857,7 +1866,7 @@ body.kiosk-on{overflow:hidden}
 
 /* ── Mikro-animasiyalar ──────────────────────────────────── */
 .ss-fx-points{position:fixed;z-index:700;pointer-events:none;font-family:var(--font-head);
-  font-weight:800;font-size:1.3rem;color:var(--gold);text-shadow:0 2px 18px rgba(240,192,64,.55);
+  font-weight:800;font-size:1.3rem;color:#B45309;text-shadow:0 2px 14px rgba(255,255,255,.9);
   animation:ssFloatUp 1.25s cubic-bezier(.22,.9,.3,1) forwards}
 @keyframes ssFloatUp{0%{opacity:0;transform:translateY(8px) scale(.85)}
   22%{opacity:1;transform:translateY(-6px) scale(1.06)}
@@ -12155,32 +12164,32 @@ let ssRouting = false;                                   // hash döngəsinin qa
 const SS_MODULES = [
   { key:'world',    slug:'world',           page:'ss-world',    icon:'🌍',
     name:'205 World',           short:'World',
-    color:'var(--ss-world)',
+    color:'var(--ss-world)', ink:'var(--ss-world-ink)',
     desc:'Digər ölkələrin məktəbləri ilə birgə layihələr, beynəlxalq çağırışlar və qlobal komandalar.',
     tagline:'From 205 to the World.' },
   { key:'bank',     slug:'student-bank',    page:'ss-bank',     icon:'🏦',
     name:'205 Student Bank',    short:'Student Bank',
-    color:'var(--ss-bank)',
+    color:'var(--ss-bank)', ink:'var(--ss-bank-ink)',
     desc:'Təhsil və fəaliyyətlə qazanılan 205 Points — cüzdan, liderbordlar və mükafat mağazası.',
     tagline:'Zəhmətin ölçülən qarşılığı.' },
   { key:'startup',  slug:'startup-factory', page:'ss-startup',  icon:'🚀',
     name:'205 Startup Factory', short:'Startup Factory',
-    color:'var(--ss-startup)',
+    color:'var(--ss-startup)', ink:'var(--ss-startup-ink)',
     desc:'İdeyadan Demo Day-ə səkkiz mərhələli inkubasiya: komanda, MVP, mentor, pitç.',
     tagline:'One idea. One team. One product.' },
   { key:'problem',  slug:'problem-market',  page:'ss-problem',  icon:'🧩',
     name:'205 Problem Market',  short:'Problem Market',
-    color:'var(--ss-problem)',
+    color:'var(--ss-problem)', ink:'var(--ss-problem-ink)',
     desc:'Məktəbin real problemləri elan olunur, şagirdlər onları həll etməyi öhdəsinə götürür.',
     tagline:'Tapşırıq yox — əsl problem.' },
   { key:'humanity', slug:'humanity-lab',    page:'ss-humanity', icon:'🌱',
     name:'205 Humanity Lab',    short:'Humanity Lab',
-    color:'var(--ss-humanity)',
+    color:'var(--ss-humanity)', ink:'var(--ss-humanity-ink)',
     desc:'İqlim, su, təhsil, əlçatanlıq — sinif divarlarından kənardakı qlobal problemlər.',
     tagline:'Think beyond the classroom.' },
   { key:'olympics', slug:'olympics',        page:'ss-olympics', icon:'🏅',
     name:'205 Olympics',        short:'Olympics',
-    color:'var(--ss-olympics)',
+    color:'var(--ss-olympics)', ink:'var(--ss-olympics-ink)',
     desc:'On kateqoriya üzrə məktəbdaxili çempionat: təsnifat, sinif, paralel, final.',
     tagline:'Məktəbin öz çempionatı.' }
 ];
@@ -12458,7 +12467,7 @@ function ssStat(value, label, sub){
 /** ModuleCard */
 function ssModuleCard(m, stats, status){
   return `
-  <button class="ss-mod" style="--c:${m.color}" data-ss-go="${m.key}"
+  <button class="ss-mod" style="--c:${m.color};--ci:${m.ink}" data-ss-go="${m.key}"
           aria-label="${ssEsc(m.name)} — ${ssEsc(m.desc)}">
     <span class="ss-mod-ic" aria-hidden="true">${m.icon}</span>
     <span class="ss-mod-name">${ssEsc(m.name)}</span>
@@ -13372,7 +13381,7 @@ async function ssRenderBank(box){
             <div class="ss-badge">
               <span class="ss-badge-ic" aria-hidden="true">${ic}</span>
               <div><b>${ssEsc(name)}</b><span>hər dəfə</span></div>
-              <span style="margin-left:auto;font-weight:800;color:var(--m-yellow)">+${pts}</span>
+              <span style="margin-left:auto;font-weight:800;color:var(--ss-warn)">+${pts}</span>
             </div>`).join('')}
         </div>
       </div>
@@ -13412,7 +13421,7 @@ async function ssRenderBank(box){
           </span>
           <span class="ss-item-body">${ssEsc(r.description)}</span>
           <span class="ss-item-meta" style="align-items:center">
-            <span style="font-weight:800;color:var(--m-yellow)">${ssNum(r.cost)} 205P</span>
+            <span style="font-weight:800;color:var(--ss-warn)">${ssNum(r.cost)} 205P</span>
             <button class="ss-btn sm" style="margin-left:auto"
               data-ss-act="claimReward" data-id="${r.id}" data-cost="${r.cost}"
               ${can ? '' : 'disabled'}>${can ? 'Al' : (currentUser ? 'Xal çatmır' : 'Daxil ol')}</button>
@@ -13532,7 +13541,7 @@ async function ssRenderBank(box){
           ${SS_EARN.slice(0,4).map(([ic,n,p]) =>
             `<div style="display:flex;gap:8px;align-items:center;font-size:.78rem;padding:5px 0">
               <span aria-hidden="true">${ic}</span><span style="flex:1">${ssEsc(n)}</span>
-              <b style="color:var(--m-yellow)">+${p}</b></div>`).join('')}
+              <b style="color:var(--ss-warn)">+${p}</b></div>`).join('')}
           <button class="ss-btn sm" style="width:100%;margin-top:10px" data-ss-tab="how">Tam cədvəl</button>
         </div>
       </aside>
@@ -13658,7 +13667,7 @@ async function ssRenderStartup(box){
             <div class="ss-badge">
               <span class="ss-badge-ic" aria-hidden="true">${st.icon}</span>
               <div><b>${i+1}. ${ssEsc(st.label)}</b><span>${ssEsc(st.desc)}</span></div>
-              <span style="margin-left:auto;font-weight:800;color:var(--ss-startup)">
+              <span style="margin-left:auto;font-weight:800;color:var(--ss-startup-ink)">
                 ${S.filter(x => x.stage === st.key).length}</span>
             </div>`).join('')}
         </div>
@@ -14138,7 +14147,7 @@ async function ssRenderProblemDetail(box){
               ${sol.idea      ? `<p class="ss-p"><b>İdeya:</b> ${ssEsc(sol.idea)}</p>` : ''}
               ${sol.solution  ? `<p class="ss-p" style="margin-top:5px"><b>Həll:</b> ${ssEsc(sol.solution)}</p>` : ''}
               ${sol.prototype ? `<p class="ss-p" style="margin-top:5px"><b>Prototip:</b> ${ssEsc(sol.prototype)}</p>` : ''}
-              ${sol.feedback  ? `<p class="ss-p" style="margin-top:7px;color:var(--m-primary)">💬 ${ssEsc(sol.feedback)}</p>` : ''}
+              ${sol.feedback  ? `<p class="ss-p" style="margin-top:7px;color:var(--ss-world-ink)">💬 ${ssEsc(sol.feedback)}</p>` : ''}
               ${ssIsTeacher() && sol.status !== 'implemented' ? `
                 <div style="display:flex;gap:7px;margin-top:11px;flex-wrap:wrap">
                   <button class="ss-btn sm primary" data-ss-act="markSolved"
@@ -15060,7 +15069,7 @@ function sscLine(id, points, opts){
       ${[0,.5,1].map(f => `<line x1="${PL}" y1="${y(nice*f)}" x2="${W-PR}" y2="${y(nice*f)}"
           stroke="#E2E8F0" stroke-width="1"/>
         <text x="${PL-8}" y="${y(nice*f)+4}" text-anchor="end" font-size="11"
-          fill="#94A3B8">${ssNum(Math.round(nice*f))}</text>`).join('')}
+          fill="#64748B">${ssNum(Math.round(nice*f))}</text>`).join('')}
       <path d="${area}" fill="url(#sscFill${id})"/>
       <path d="${line}" fill="none" stroke="${SSC_HUE}" stroke-width="2"
             stroke-linejoin="round" stroke-linecap="round"/>
@@ -15072,7 +15081,7 @@ function sscLine(id, points, opts){
         ${label(i) ? `<text x="${x(i)}" y="${y(p[1])-11}" text-anchor="middle"
           font-size="11" font-weight="700" fill="#334155">${ssNum(p[1])}</text>` : ''}
         <text x="${x(i)}" y="${H-9}" text-anchor="middle" font-size="11"
-          fill="#94A3B8">${ssEsc(p[0])}</text>`).join('')}
+          fill="#64748B">${ssEsc(p[0])}</text>`).join('')}
     </svg></div>`;
 }
 
