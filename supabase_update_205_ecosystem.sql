@@ -533,8 +533,11 @@ begin
   if not public.ss_is_staff(auth.uid()) then raise exception 'İcazə yoxdur'; end if;
   return jsonb_build_object(
     'students',        (select count(*) from public.profiles where role='user'),
-    'active_students', (select count(distinct username) from public.ss_points_ledger
-                         where created_at > now() - interval '30 days'),
+    -- Yalnız ŞAGİRDLƏR sayılır: əvvəl admin/müəllim/direktorun xalları da sayılırdı,
+    -- məxrəc isə yalnız şagird idi — iştirak faizi 100%-dən çox çıxırdı (məs. 133%).
+    'active_students', (select count(distinct l.username) from public.ss_points_ledger l
+                         join public.profiles p on p.username = l.username and p.role = 'user'
+                         where l.created_at > now() - interval '30 days'),
     'startups',        (select count(*) from public.ss_startups),
     'startups_by_stage', (select coalesce(jsonb_object_agg(stage, n),'{}'::jsonb)
                            from (select stage, count(*) n from public.ss_startups group by stage) t),

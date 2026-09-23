@@ -1,7 +1,7 @@
 -- ════════════════════════════════════════════════════════════════
 -- SözLab — Supabase SQL Quraşdırılması (TAM SKRİPT)
 -- Bu faylı Supabase Dashboard → SQL Editor-da açıb "Run" edin.
--- Layihə: https://vukgqovtoeceevigsngq.supabase.co
+-- Layihə: https://skijahzkjlzhejrzomai.supabase.co
 -- ════════════════════════════════════════════════════════════════
 -- QEYD: Bu skript yalnız "anon" (publishable) açarla frontend-dən
 -- işləyəcək təhlükəsizlik modelini qurur. service_role/secret açar
