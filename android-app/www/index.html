@@ -1322,10 +1322,60 @@ body.m205-guest #guestExitBtn{display:block}
   display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.69rem;font-weight:600;color:#475569}
 .m205-tabbar button span{font-size:1.05rem}
 .m205-tabbar button.active{color:var(--m-primary);font-weight:800}
+/* ── Aydın naviqasiya: "← SözLab" düyməsi, harada olduğun, "Menyu" vərəqi ── */
+.m205-exit-btn{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;height:34px;padding:0 12px;
+  border-radius:99px;border:1px solid var(--m-border);background:var(--m-surface);color:var(--m-navy-950);
+  font-family:inherit;font-size:.78rem;font-weight:800;cursor:pointer;white-space:nowrap}
+.m205-exit-btn:hover{border-color:var(--m-primary);color:var(--m-primary)}
+.m205-exit-btn:focus-visible,.m205-tabbar button:focus-visible,.m205-sheet-item:focus-visible,
+.m205-sheet-x:focus-visible,.m205-iconbtn:focus-visible{outline:2px solid var(--m-primary);outline-offset:2px}
+.m205-topbar .m205-exit-btn,.m205-where,.m205-search-toggle{display:none}
+.m205-where{flex-direction:column;min-width:0;flex:1;line-height:1.15}
+.m205-where span{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#475569}
+.m205-where b{font-size:.92rem;font-weight:800;color:var(--m-navy-950);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m205-tabbar{position:relative;z-index:6}
+.m205-sheet{position:fixed;inset:0;z-index:540;background:rgba(7,21,47,.46);display:flex;align-items:flex-end;
+  opacity:0;transition:opacity .18s ease}
+.m205-sheet[hidden]{display:none}
+.m205-sheet.on{opacity:1}
+.m205-sheet-panel{width:100%;max-height:82vh;overflow-y:auto;background:var(--m-surface);color:var(--m-text);
+  border-radius:20px 20px 0 0;padding:14px 16px calc(18px + env(safe-area-inset-bottom));
+  transform:translateY(24px);transition:transform .22s ease;box-shadow:0 -12px 40px rgba(7,21,47,.25)}
+.m205-sheet.on .m205-sheet-panel{transform:none}
+.m205-sheet-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.m205-sheet-head b{font-size:.95rem;color:var(--m-navy-950)}
+.m205-sheet-x{width:36px;height:36px;border-radius:50%;border:1px solid var(--m-border);background:var(--m-bg);
+  font-size:1rem;cursor:pointer;color:var(--m-text)}
+.m205-sheet-group{padding:10px 0;border-top:1px solid var(--m-border)}
+.m205-sheet-group:first-of-type{border-top:none}
+.m205-sheet-title{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#475569;margin:2px 0 8px}
+.m205-sheet-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.m205-sheet-item{display:flex;align-items:center;gap:8px;min-height:46px;padding:10px 12px;border-radius:12px;
+  border:1px solid var(--m-border);background:var(--m-surface);color:var(--m-text);font-family:inherit;
+  font-size:.84rem;font-weight:700;text-align:left;cursor:pointer;position:relative}
+.m205-sheet-item span:first-child{font-size:1rem;flex-shrink:0}
+.m205-sheet-item.active{background:var(--m-primary-light);border-color:var(--m-primary);color:#3730A3}
+.m205-sheet-item.exit{grid-column:1/-1;background:var(--m-navy-950);border-color:var(--m-navy-950);color:#fff}
+.m205-sheet-item .ss-dot{width:8px;height:8px;border-radius:50%;margin-left:auto;flex-shrink:0}
+.m205-sheet-item .m205-side-badge{margin-left:auto}
+@media(prefers-reduced-motion:reduce){.m205-sheet,.m205-sheet-panel{transition:none}}
+
 @media(max-width:860px){
   .m205-side{display:none}
   .m205-tabbar{display:flex}
   .m205-page{padding:14px}
+  /* Telefon üst paneli: [← SözLab] [harada olduğun] [🔍] [avatar] */
+  .m205-topbar{gap:8px;padding:9px 12px}
+  .m205-topbar .m205-exit-btn{display:inline-flex}
+  .m205-where{display:flex}
+  .m205-topbar .m205-search{display:none}
+  .m205-search-toggle{display:inline-flex}
+  .m205-topbar.search-open .m205-search{display:block;position:absolute;left:10px;right:10px;top:6px;max-width:none;z-index:4}
+  .m205-topbar.search-open .m205-search input{height:40px;box-shadow:0 6px 18px rgba(7,21,47,.14)}
+  .m205-topbar{position:sticky}
+  .m205-site-shortcut{display:none}
+  /* Qonaq rejimindəki "Giriş / Qeydiyyat" düyməsi alt menyunun üstünə düşürdü */
+  body.m205-guest #guestExitBtn{bottom:calc(72px + env(safe-area-inset-bottom))}
   .m205-sitehero{min-height:250px}
   .m205-sitehero-card{padding:24px 18px}
   .m205-sitehero-card h1{font-size:1.35rem}
@@ -3245,6 +3295,25 @@ async function afterAuthSuccess(profile){
   startDuelInviteWatch();
 }
 
+// Supabase-in ingiliscə auth xətalarını şagirdin başa düşəcəyi mətnə çevirir.
+// Əvvəl ya xam ingilis mətni ("Error sending confirmation email"), ya da hər
+// halda eyni "şifrə yanlışdır" göstərilirdi — şagird problemin nə olduğunu bilmirdi.
+function authErrorText(error, ctx){
+  const m = String(error?.message || '');
+  if(/email not confirmed/i.test(m)) return 'E-poçtun hələ təsdiqlənməyib. Poçtuna gələn 6 rəqəmli kodu daxil et.';
+  if(/invalid login credentials/i.test(m)) return 'Email və ya şifrə yanlışdır!';
+  if(/already registered|already exists|user already/i.test(m)) return 'Bu email artıq qeydiyyatdan keçib — «Giriş» bölməsindən daxil ol.';
+  if(/rate limit|too many|security purposes/i.test(m)) return 'Çox tez-tez cəhd edildi. Bir neçə dəqiqə gözləyib yenidən yoxla.';
+  if(/sending .*email|confirmation email|smtp|mail/i.test(m)) return 'Təsdiq kodu e-poçta göndərilə bilmədi. Bunu müəlliminə və ya sayt administratoruna bildir.';
+  if(/password.*(at least|short|weak|characters)|weak password/i.test(m)) return 'Şifrə çox zəifdir — ən az 6 simvol, hərf və rəqəm qarışığı istifadə et.';
+  if(/invalid.*email|email.*invalid|unable to validate email/i.test(m)) return 'Email ünvanı düzgün deyil. Yoxlayıb yenidən yaz.';
+  if(/signups not allowed|signup.*disabled/i.test(m)) return 'Qeydiyyat hazırda bağlıdır. Sayt administratoru ilə əlaqə saxla.';
+  if(/database error/i.test(m)) return 'Hesab yaradıla bilmədi (verilənlər bazası xətası). Sayt administratoruna bildir.';
+  if(/token.*(expired|invalid)|otp/i.test(m)) return 'Kod yanlışdır və ya vaxtı bitib. «Kodu yenidən göndər» düyməsini sına.';
+  if(/network|fetch|failed to fetch/i.test(m)) return 'İnternet bağlantısı yoxdur və ya zəifdir. Yenidən cəhd et.';
+  return (ctx === 'login' ? 'Daxil olmaq alınmadı: ' : 'Qeydiyyat alınmadı: ') + m;
+}
+
 async function doLogin(){
   if(loginMode==='register')return doRegister();
   const email=document.getElementById('authEmail').value.trim();
@@ -3254,7 +3323,16 @@ async function doLogin(){
   btn.disabled=true;btn.textContent='Yüklənir...';
   try{
     const{data,error}=await sb.auth.signInWithPassword({email,password});
-    if(error){showToast('Email və ya şifrə yanlışdır!','red');return;}
+    if(error){
+      // Təsdiqlənməmiş hesab: şifrə düzgündür, sadəcə kod daxil edilməyib.
+      // Kod pəncərəsini birbaşa açırıq ki, şagird qalan addımı tamamlasın.
+      if(/email not confirmed/i.test(error.message||'')){
+        showToast(authErrorText(error,'login'),'gold');
+        showOtpStep(email);
+        return;
+      }
+      showToast(authErrorText(error,'login'),'red');return;
+    }
     const profile=await getProfileById(data.user.id);
     if(!profile){showToast('Profil tapılmadı. Dəstəklə əlaqə saxlayın.','red');return;}
     await afterAuthSuccess(profile);
@@ -3276,7 +3354,7 @@ async function doRegister(){
   const email=document.getElementById('authEmail').value.trim();
   const password=document.getElementById('authPassword').value;
   if(!username||username.length<3){showToast('İstifadəçi adı ən az 3 simvol olmalıdır (a-z, 0-9, _)!','red');return;}
-  if(username!==usernameRaw){showToast('İstifadəçi adında yalnız hərf, rəqəm və "_" istifadə edin!','red');return;}
+  if(username!==usernameRaw){showToast('İstifadəçi adında yalnız ingilis hərfləri (a-z), rəqəm və "_" ola bilər. ə, ş, ç, ğ, ö, ü, ı və boşluq olmaz.','red');return;}
   if(!firstName){showToast('Adınızı daxil edin!','red');return;}
   if(!lastName){showToast('Soyadınızı daxil edin!','red');return;}
   if(!classGrade){showToast('Sinifinizi seçin (məs. 5B)!','red');return;}
@@ -3287,14 +3365,20 @@ async function doRegister(){
   btn.disabled=true;btn.textContent='Yüklənir...';
   try{
     const{data:taken,error:checkErr}=await sb.rpc('is_username_taken',{p_username:username});
-    if(!checkErr&&taken){showToast('Bu kullanıcı adı zaten kullanılıyor.','red');return;}
+    if(!checkErr&&taken){showToast('Bu istifadəçi adı artıq tutulub — başqasını seç.','red');return;}
     const{data,error}=await sb.auth.signUp({
       email,password,
       options:{data:{username,display_name:displayName,first_name:firstName,last_name:lastName,class_grade:classGrade,phone,referred_by:referredBy}}
     });
     if(error){
-      if(/already registered|already exists/i.test(error.message))showToast('Bu email artıq qeydiyyatdan keçib!','red');
-      else showToast('Qeydiyyat xətası: '+error.message,'red');
+      showToast(authErrorText(error,'register'),'red');
+      return;
+    }
+    // Supabase e-poçt təsdiqi AÇIQ olanda artıq mövcud email üçün XƏTA qaytarmır
+    // (hesab siyahısını gizlətmək üçün) — boş "identities" ilə saxta istifadəçi qaytarır.
+    // Əvvəl bu halda kod pəncərəsi açılırdı və şagird heç vaxt gəlməyəcək kodu gözləyirdi.
+    if(data?.user&&Array.isArray(data.user.identities)&&data.user.identities.length===0){
+      showToast('Bu email artıq qeydiyyatdan keçib — «Giriş» bölməsindən daxil ol.','red');
       return;
     }
     if(!data.session){
@@ -3350,7 +3434,7 @@ async function doVerifyOtp(){
   btn.disabled=true;btn.textContent='Yoxlanılır...';
   try{
     const{data,error}=await sb.auth.verifyOtp({email:pendingOtpEmail,token,type:'signup'});
-    if(error||!data?.session){showToast('Kod yanlış və ya vaxtı bitib. Yenidən cəhd edin.','red');return;}
+    if(error||!data?.session){showToast(error?authErrorText(error,'otp'):'Kod yanlış və ya vaxtı bitib. Yenidən cəhd edin.','red');return;}
     let profile=null;
     for(let i=0;i<6&&!profile;i++){
       profile=await getProfileById(data.user.id);
@@ -3370,7 +3454,7 @@ async function doResendOtp(){
   btn.disabled=true;btn.textContent='Göndərilir...';
   try{
     const{error}=await sb.auth.resend({type:'signup',email:pendingOtpEmail});
-    showToast(error?('Göndərilmədi: '+error.message):'Yeni kod göndərildi 📧',error?'red':'teal');
+    showToast(error?authErrorText(error,'otp'):'Yeni kod göndərildi 📧 Spam qovluğunu da yoxla.',error?'red':'teal');
   }catch(e){showToast('Göndərilmədi.','red');}
   finally{btn.disabled=false;btn.textContent='🔄 Kodu yenidən göndər';}
 }
@@ -9539,7 +9623,7 @@ const M205_CARDS=[
 
 // Sol sidebar naviqasiyası
 const M205_NAV=[
-  {page:'dash',        icon:'🏠',  label:'Ana səhifə'},
+  {page:'dash',        icon:'🏠',  label:'Şagird portalı'},
   {page:'project',     icon:'🧠',  label:'Şagird layihələri'},
   {page:'idea',        icon:'💡',  label:'İdeya bankı'},
   {page:'achievements',icon:'🏆',  label:'Nailiyyətlər'},
@@ -9658,11 +9742,17 @@ function m205WireDelegation(){
     const zoom=e.target.closest('[data-zoom]');
     if(zoom){m205OpenLightbox(zoom.dataset.zoom);return;}
 
+    const menu=e.target.closest('[data-m205-menu]');
+    if(menu){m205Sheet(menu.dataset.m205Menu==='open');return;}
+    if(e.target.classList&&e.target.classList.contains('m205-sheet')){m205Sheet(false);return;}
+    const srch=e.target.closest('[data-m205-search]');
+    if(srch){const tb=srch.closest('.m205-topbar');tb?.classList.add('search-open');tb?.querySelector('#m205SearchInput')?.focus();return;}
+
     const ex=e.target.closest('[data-exit]');
-    if(ex){switchView('Home');return;}
+    if(ex){m205Sheet(false);switchView('Home');return;}
 
     const go=e.target.closest('[data-go]');
-    if(go){m205Go(go.dataset.go);return;}
+    if(go){m205Sheet(false);m205Go(go.dataset.go);return;}
 
     const flt=e.target.closest('[data-filter]');
     if(flt){m205Filter=flt.dataset.filter;renderMekteb205();return;}
@@ -9739,11 +9829,15 @@ function m205TopBar(withSearch){
   const role=currentUser
     ? ({admin:'Admin',teacher:'Müəllim',director:'Direktor',user:'Şagird'}[currentUser.role]||'Şagird')
     : 'Qonaq rejimi';
+  const where=m205WhereAmI();
   return `
-    <div class="m205-topbar">
-      ${withSearch?`<div class="m205-search"><input id="m205SearchInput" placeholder="Layihə, şagird və ya mövzu axtar..." value="${m205Esc(m205Search)}"></div>`:''}
+    <div class="m205-topbar${m205Search?' search-open':''}">
+      ${currentUser?'<button class="m205-exit-btn" data-exit="1" aria-label="SözLab-a qayıt">← SözLab</button>':''}
+      <div class="m205-where"><span>${m205Esc(where.area)}</span><b>${m205Esc(where.title)}</b></div>
+      ${withSearch?`<div class="m205-search"><input id="m205SearchInput" placeholder="Layihə, şagird və ya mövzu axtar..." value="${m205Esc(m205Search)}" aria-label="Axtar"></div>
+        <button class="m205-iconbtn m205-search-toggle" data-m205-search="1" aria-label="Axtarışı aç">🔍</button>`:''}
       <div class="m205-topuser">
-        <button class="m205-iconbtn" data-go="site" title="Məktəbin saytı">🏫</button>
+        <button class="m205-iconbtn m205-site-shortcut" data-go="site" title="Məktəbin saytı" aria-label="Məktəbin saytı">🏫</button>
         <div class="m205-avatar">${m205Initials(name)}</div>
         <div>
           <div class="m205-topuser-name">${m205Esc(name)}</div>
@@ -9764,7 +9858,7 @@ async function m205RenderSite(v){
           <div class="m205-brand-sub">Rövşən İmanov adına</div>
         </div>
       </div>
-      ${currentUser?'<button class="m205-sitenav-link" data-exit="1">← SözLab</button>':''}
+      ${currentUser?'<button class="m205-exit-btn" data-exit="1" aria-label="SözLab-a qayıt">← SözLab</button>':''}
       ${M205_SITE_NAV.map(n=>`<button class="m205-sitenav-link" data-go="${n.page}">${n.label}</button>`).join('')}
       <button class="m205-btn-primary" style="margin-left:auto;padding:7px 14px;font-size:.74rem" data-go="dash">205 Smart School →</button>
     </div>
@@ -9793,7 +9887,8 @@ async function m205RenderSite(v){
           <button class="m205-sec-more" data-go="achievements">Hamısına bax →</button></div>
         <div class="m205-cards" id="m205SiteAchv"><div class="m205-empty">Yüklənir…</div></div>
       </div>
-    </div>`;
+    </div>
+    ${m205MobileNavHtml(m205NavGroups(),true)}`;
 
   const [info,news,achv]=await Promise.all([m205Info(),m205News(),m205Achv()]);
   const cover=info[0]?.cover_image_url||'school205/sagird-toplantisi.jpg';
@@ -9807,10 +9902,80 @@ async function m205RenderSite(v){
 }
 
 // ── SIDEBAR ŞƏBƏKƏSİ (mockup 2–5/6) ───────────────────────────
+// ── 205 naviqasiyasının TƏK MƏNBƏYİ ──────────────────────────────
+// Əvvəl kompüterdəki yan panel və telefondakı alt menyu ayrı-ayrı yazılmışdı:
+// telefonda "SözLab-a qayıt", Nailiyyətlər, Startap layihələri, AI köməkçi,
+// Təsdiq paneli və Məktəb analitikasına ümumiyyətlə çatmaq olmurdu. İndi
+// hər ikisi bu funksiyadan qurulur — bir bölmə birində olub digərində
+// olmaya bilməz.
+function m205NavGroups(){
+  const nav=[...M205_NAV];
+  if(m205IsStaff())nav.push({page:'admin',icon:'🛠️',label:'Təsdiq paneli',badge:true});
+  const groups=[];
+  const top=[];
+  if(currentUser)top.push({attr:'data-exit="1"',icon:'←',label:'SözLab-a qayıt',exit:true});
+  top.push({attr:'data-go="site"',icon:'🏫',label:'Məktəbin saytı',active:m205Page==='site'});
+  groups.push({title:'',items:top});
+  groups.push({title:'Şagird portalı',items:nav.map(n=>({attr:`data-go="${n.page}"`,icon:n.icon,label:n.label,
+    active:m205Page===n.page,badge:n.badge}))});
+  const eco=[{attr:'data-ss-go="home"',icon:'◎',label:'Ümumi baxış',active:m205Page==='ss-home'}]
+    .concat(SS_MODULES.map(m=>({attr:`data-ss-go="${m.key}"`,icon:m.icon,label:m.short,active:m205Page===m.page,dot:m.color})));
+  if(currentUser)eco.push({attr:'data-ss-go="me"',icon:'👤',label:'Mənim panelim',active:m205Page==='ss-me'});
+  if(currentUser&&['director','admin'].includes(currentUser.role))
+    eco.push({attr:'data-ss-go="analytics"',icon:'📊',label:'Məktəb analitikası',active:m205Page==='ss-analytics'});
+  groups.push({title:'Ekosistem',items:eco});
+  return groups;
+}
+function m205NavItemHtml(it,cls){
+  return `<button class="${cls}${it.active?' active':''}${it.exit?' exit':''}" ${it.attr}>
+    <span aria-hidden="true">${it.icon}</span> ${it.label}
+    ${it.badge?'<span class="m205-side-badge m205-pend-badge" style="display:none">0</span>':''}
+    ${it.dot?`<span class="ss-dot" style="background:${it.dot}"></span>`:''}
+  </button>`;
+}
+// İstifadəçinin HARADA olduğunu göstərən qısa ad (telefon üst paneli üçün)
+function m205WhereAmI(){
+  if(ssIsEcoPage(m205Page)){
+    const mod=SS_MODULES.find(m=>m.page===m205Page);
+    const sub=mod?mod.short:(SS_PAGES[m205Page]?.title||'Ümumi baxış');
+    return {area:'Ekosistem',title:m205Page==='ss-home'?'Ümumi baxış':sub};
+  }
+  if(m205Page==='site')return {area:'205 Məktəb',title:'Məktəbin saytı'};
+  if(m205Page==='admin')return {area:'205 Məktəb',title:'Təsdiq paneli'};
+  if(m205Page==='dash')return {area:'205 Məktəb',title:'Şagird portalı'};
+  const n=M205_NAV.find(x=>x.page===m205Page);
+  return {area:'Şagird portalı',title:n?n.label:'205 Məktəb'};
+}
+
+// Telefon alt menyusu + "Menyu" vərəqi — HƏM portal/ekosistem örtüyündə,
+// HƏM də məktəb saytında eyni olsun (əvvəl saytda alt menyu yox olurdu).
+function m205MobileNavHtml(navGroups,inTab){
+  return `
+    <nav class="m205-tabbar" aria-label="205 Məktəb menyusu">
+      <button data-go="site" class="${m205Page==='site'?'active':''}"><span>🏫</span>Məktəb</button>
+      <button data-go="project" class="${m205Page==='project'?'active':''}"><span>🧠</span>Layihələr</button>
+      <button data-ss-go="home" class="${String(m205Page).startsWith('ss-')?'active':''}"><span>◎</span>Ekosistem</button>
+      <button data-go="portfolio" class="${m205Page==='portfolio'?'active':''}"><span>👤</span>Profil</button>
+      <button data-m205-menu="open" class="${inTab?'':'active'}" aria-haspopup="dialog" aria-controls="m205Sheet"><span>☰</span>Menyu</button>
+    </nav>
+    <div class="m205-sheet" id="m205Sheet" role="dialog" aria-modal="true" aria-label="205 Məktəb — bütün bölmələr" hidden>
+      <div class="m205-sheet-panel">
+        <div class="m205-sheet-head">
+          <b>205 Məktəb — bütün bölmələr</b>
+          <button class="m205-sheet-x" data-m205-menu="close" aria-label="Bağla">✕</button>
+        </div>
+        ${navGroups.map(g=>`<div class="m205-sheet-group">
+            ${g.title?`<div class="m205-sheet-title">${g.title}</div>`:''}
+            <div class="m205-sheet-grid">${g.items.map(it=>m205NavItemHtml(it,'m205-sheet-item')).join('')}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
 function m205RenderShell(v){
   const isAdminPage=m205Page==='admin';
-  const nav=[...M205_NAV];
-  if(m205IsStaff())nav.push({page:'admin',icon:'🛠️',label:'Təsdiq paneli'});
+  const navGroups=m205NavGroups();
+  const inTab=['site','project','portfolio'].includes(m205Page)||String(m205Page).startsWith('ss-');
 
   v.innerHTML=`
     <div class="m205-shell">
@@ -9823,26 +9988,8 @@ function m205RenderShell(v){
           </div>
         </div>
         <div class="m205-side-nav">
-          ${currentUser?'<button class="m205-side-item" data-exit="1"><span>←</span> SözLab-a qayıt</button>':''}
-          <button class="m205-side-item" data-go="site"><span>🏫</span> Məktəbin saytı</button>
-          ${nav.map(n=>`
-            <button class="m205-side-item${m205Page===n.page?' active':''}" data-go="${n.page}">
-              <span>${n.icon}</span> ${n.label}
-              ${n.page==='admin'?'<span class="m205-side-badge" id="m205PendBadge" style="display:none">0</span>':''}
-            </button>`).join('')}
-          <div class="m205-side-group">Ekosistem</div>
-          <button class="m205-side-item${m205Page==='ss-home'?' active':''}" data-ss-go="home">
-            <span>◎</span> 205 Smart School</button>
-          ${SS_MODULES.map(m=>`
-            <button class="m205-side-item${m205Page===m.page?' active':''}" data-ss-go="${m.key}">
-              <span>${m.icon}</span> ${m.short}
-              <span class="ss-dot" style="background:${m.color}"></span>
-            </button>`).join('')}
-          ${currentUser?`<button class="m205-side-item${m205Page==='ss-me'?' active':''}" data-ss-go="me">
-            <span>👤</span> Mənim panelim</button>`:''}
-          ${(currentUser&&['director','admin'].includes(currentUser.role))?`
-          <button class="m205-side-item${m205Page==='ss-analytics'?' active':''}" data-ss-go="analytics">
-            <span>📊</span> Məktəb analitikası</button>`:''}
+          ${navGroups.map(g=>`${g.title?`<div class="m205-side-group">${g.title}</div>`:''}
+            ${g.items.map(it=>m205NavItemHtml(it,'m205-side-item')).join('')}`).join('')}
         </div>
       </div>
       <div class="m205-main">
@@ -9850,13 +9997,7 @@ function m205RenderShell(v){
         <div class="m205-page" id="m205Page"><div class="m205-empty">Yüklənir…</div></div>
       </div>
     </div>
-    <div class="m205-tabbar">
-      <button data-go="site" class="${m205Page==='site'?'active':''}"><span>🏠</span>Ana səhifə</button>
-      <button data-go="project" class="${m205Page==='project'?'active':''}"><span>🧠</span>Layihələr</button>
-      <button data-go="idea" class="${m205Page==='idea'?'active':''}"><span>💡</span>İdeya bankı</button>
-      <button data-ss-go="home" class="${String(m205Page).startsWith('ss-')?'active':''}"><span>◎</span>Ekosistem</button>
-      <button data-go="portfolio" class="${m205Page==='portfolio'?'active':''}"><span>👤</span>Profil</button>
-    </div>`;
+    ${m205MobileNavHtml(navGroups,inTab)}`;
 
   const box=document.getElementById('m205Page');
   if(m205Detail)m205RenderDetail(box);
@@ -9864,11 +10005,28 @@ function m205RenderShell(v){
   if(m205IsStaff())m205UpdatePendingBadge();
 }
 
+function m205Sheet(open){
+  const sh=document.getElementById('m205Sheet');
+  if(!sh)return;
+  if(open){
+    sh.hidden=false;
+    requestAnimationFrame(()=>sh.classList.add('on'));
+    (sh.querySelector('.m205-sheet-item.active')||sh.querySelector('.m205-sheet-x'))?.focus();
+  }else{
+    sh.classList.remove('on');sh.hidden=true;
+  }
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('m205Sheet')?.classList.contains('on'))m205Sheet(false);});
+// Telefonda açılan axtarış: boş qalıb fokusu itirəndə bağlanır ("← SözLab" yenidən görünsün)
+document.addEventListener('focusout',e=>{
+  if(e.target&&e.target.id==='m205SearchInput'&&!e.target.value.trim())
+    setTimeout(()=>e.target.closest('.m205-topbar')?.classList.remove('search-open'),120);
+});
+
 async function m205UpdatePendingBadge(){
   try{
     const{count}=await sb.from('school_submissions').select('id',{count:'exact',head:true}).eq('status','pending');
-    const b=document.getElementById('m205PendBadge');
-    if(b&&count){b.textContent=count;b.style.display='';}
+    if(count)document.querySelectorAll('.m205-pend-badge').forEach(b=>{b.textContent=count;b.style.display='';});
   }catch(e){}
 }
 
@@ -9898,7 +10056,7 @@ function m205PageDash(box){
   box.innerHTML=`
     <div class="m205-banner">
       <div class="m205-banner-ic">💡</div>
-      <h2>205 Smart School</h2>
+      <h2>205 Şagird Portalı</h2>
       <div class="m205-banner-flow">İdeyalar → Layihələr → Uğurlar</div>
       <div class="m205-banner-tag">Daha çox öyrən, daha çox yarat, daha çox nail ol!</div>
     </div>
@@ -13175,7 +13333,7 @@ function ssModalClose(){ document.getElementById('ssModal')?.classList.remove('o
 
 /** Ekosistemin alt-naviqasiyası — mobil üçün üfüqi sürüşən sətir */
 function ssSubnav(active){
-  const items = [{key:'home',icon:'◎',name:'Ana səhifə'}]
+  const items = [{key:'home',icon:'◎',name:'Ümumi baxış'}]
     .concat(SS_MODULES.map(m => ({key:m.key,icon:m.icon,name:m.short})));
   if(currentUser) items.push({key:'me',icon:'👤',name:'Mənim panelim'});
   if(ssIsDir())   items.push({key:'analytics',icon:'📊',name:'Analitika'});
