@@ -2005,6 +2005,140 @@ body.kiosk-on{overflow:hidden}
 /* ── Oxunaqlılıq (2026-09): ağ mətn rəngli fonda azı 4.5:1 olsun — hər mövzu rəngində işləyir ── */
 .admin-tab.active,.type-btn.active,.vf-btn.active,.duel-mode-btn.active{background:color-mix(in srgb,var(--purple) 82%,#000);border-color:color-mix(in srgb,var(--purple) 82%,#000)}
 .st-btn.primary{background:linear-gradient(135deg,color-mix(in srgb,var(--purple) 82%,#000),color-mix(in srgb,var(--purple2) 88%,#000))}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SözLab Motion v5 — "Navigation Tabs V5" video referansından (kadr-kadr ölçülüb)
+   Ölçülən dəyərlər (30 fps video, 1 kadr = 33 ms):
+   • Qaranlıq panel: parlayan "təpə" aktiv düyməyə 300 ms, cubic-bezier(.3,.7,.4,1)
+   • Axtarış pəncərəsi: dairədən sola bağlı açılır 300 ms (.3,.7,.4,1); mətn 230 ms
+     sonra 130 ms-də görünür; bağlananda 230 ms-də dairəyə, sonra 60 ms-də yox olur;
+     lupa ikonu paneldən pəncərəyə 200 ms-də "uçur"
+   • Nöqtə göstərici (205): qövslə tullanır 280–420 ms, ease(.25,.1,.25,1), qalxanda
+     şaquli, enəndə üfüqi uzanır; köhnə çuxur bağlanır, yenisi açılır; 130 ms-də çuxura
+     oturur, sonra halə yayılır; aktiv ikon 1.12× böyüyür
+   • Maye blob (giriş tabları): 430 ms — düşür, uzanır, ~8% ötüb keçir, şaquli
+     uzanıb dairəyə qayıdır
+   ══════════════════════════════════════════════════════════════════════════ */
+:root{--mo-ease:cubic-bezier(.3,.7,.4,1);--mo-ease-std:cubic-bezier(.25,.1,.25,1)}
+.nv-ic{width:22px;height:22px;display:block;overflow:visible}
+.nv-ic .f,.nv-ic .d,.nv-ic .k{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+  transition:fill-opacity .18s ease,stroke .18s ease}
+.nv-ic .f{fill:currentColor;fill-opacity:0}
+
+/* ── 1) Əsas alt panel (telefon/planşet) — qaranlıq panel + parlayan təpə ── */
+@media(max-width:1179px){
+  .bottom-nav{--nav-bg:#141218;--nav-acc:var(--purple);--nav-acc-txt:color-mix(in srgb,var(--purple) 62%,#fff);
+    position:sticky;background:var(--nav-bg);border:1px solid rgba(255,255,255,.06);border-radius:999px;
+    padding:7px 8px 8px;gap:0;overflow:visible;
+    box-shadow:0 14px 30px -12px rgba(0,0,0,.55),0 4px 10px -4px rgba(0,0,0,.35)}
+  .bottom-nav .nav-btn{position:relative;z-index:2;background:none!important;box-shadow:none!important;color:#f4f4f8;
+    gap:3px;padding:6px 1px 4px;border-radius:14px;transition:color .15s ease}
+  .bottom-nav .nav-btn .lbl{color:#ececf2;font-weight:600;transition:color .15s ease}
+  .bottom-nav .nav-btn .icon{position:relative;height:22px;display:flex;align-items:center;justify-content:center}
+  .bottom-nav .nav-btn .icon::after{content:'';position:absolute;left:50%;bottom:-4px;width:3px;height:3px;margin-left:-1.5px;
+    border-radius:50%;background:var(--nav-acc);opacity:0;transform:scale(.3);transition:opacity .15s ease,transform .15s ease}
+  .bottom-nav .nav-btn.active{color:var(--nav-acc)}
+  .bottom-nav .nav-btn.active .lbl{color:var(--nav-acc-txt)}
+  /* gələn düymə təpə yolun yarısına çatanda yanır (videoda ~4-cü kadr) */
+  .bottom-nav .nav-btn.active,.bottom-nav .nav-btn.active .lbl{transition-delay:.12s}
+  .bottom-nav .nav-btn.active .icon::after{opacity:1;transform:scale(1);transition-delay:.14s}
+  .bottom-nav .nav-btn.active .nv-ic .f{fill-opacity:1;transition-delay:.12s}
+  .bottom-nav .nav-btn.active .nv-ic .d{stroke:var(--nav-bg);transition-delay:.12s}
+  .bottom-nav .nav-btn:focus-visible{outline:2px solid var(--nav-acc-txt);outline-offset:-2px}
+  .nav-glow{position:absolute;inset:0;border-radius:inherit;overflow:hidden;pointer-events:none;z-index:1}
+  .nav-glow svg{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;
+    filter:drop-shadow(0 0 2px var(--nav-acc)) drop-shadow(0 0 7px color-mix(in srgb,var(--nav-acc) 65%,transparent))}
+  .nav-glow .ng-move{transition:transform .3s var(--mo-ease)}
+  .nav-glow .ng-line{fill:none;stroke:var(--nav-acc);stroke-width:2.2;stroke-linejoin:round}
+  .nav-glow .ng-fill{fill:url(#ngFillGrad)}
+  .nav-glow.no-anim .ng-move{transition:none}
+  /* axtarış düyməsi: lupa pəncərəyə uçanda yerində görünməz olur */
+  .nav-search-btn.flown .icon svg{opacity:0}
+  /* axtarış açıqdır: təpə "Axtar"dadır, əvvəlki bölmə sönür (videodakı kimi) */
+  .bottom-nav.searching .nav-btn.active{color:#f4f4f8;transition-delay:0s}
+  .bottom-nav.searching .nav-btn.active .lbl{color:#ececf2;transition-delay:0s}
+  .bottom-nav.searching .nav-btn.active .icon::after{opacity:0;transition-delay:0s}
+  .bottom-nav.searching .nav-btn.active .nv-ic .f{fill-opacity:0;transition-delay:0s}
+  .bottom-nav.searching .nav-btn.active .nv-ic .d{stroke:currentColor;transition-delay:0s}
+  .bottom-nav.searching .nav-search-btn{color:var(--nav-acc);transition-delay:.12s}
+  .bottom-nav.searching .nav-search-btn .lbl{color:var(--nav-acc-txt);transition-delay:.12s}
+}
+.nav-btn-mobile{display:flex}
+@media(min-width:1180px){.nav-btn-mobile,.nav-glow,.nav-search-pop{display:none!important}}
+
+/* Axtarış pəncərəsi (qaranlıq kapsul) */
+.nav-search-pop{position:absolute;bottom:calc(100% + 14px);left:18%;width:64%;height:44px;z-index:30;
+  background:#25232d;border-radius:22px;overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.09),0 16px 34px -10px rgba(0,0,0,.7),0 5px 12px -4px rgba(0,0,0,.45);transform-origin:left center}
+.nav-search-pop[hidden]{display:none}
+.nav-search-pop .nsp-ic{position:absolute;left:14px;top:50%;margin-top:-10px;width:20px;height:20px;color:var(--purple);z-index:2}
+.nav-search-pop .nsp-ic svg{width:20px;height:20px}
+.nav-search-pop .nsp-body{position:absolute;left:44px;right:8px;top:0;bottom:0;display:flex;align-items:center;gap:6px}
+.nav-search-pop input{flex:1;min-width:0;background:transparent;border:none;outline:none;color:#f1f1f5;
+  font-family:inherit;font-size:.92rem;height:100%}
+.nav-search-pop input::placeholder{color:#9a98a6}
+.nav-search-pop .nsp-x{width:28px;height:28px;flex-shrink:0;border-radius:50%;border:none;cursor:pointer;
+  background:rgba(255,255,255,.07);color:#b9b7c3;font-size:1rem;line-height:28px;padding:0}
+.nav-search-pop .nsp-x:hover{background:rgba(255,255,255,.12);color:#fff}
+.nav-search-pop .nsp-x:focus-visible{outline:2px solid var(--purple);outline-offset:1px}
+.nav-search-pop input{caret-color:var(--purple)}
+.nav-search-pop input:focus,.nav-search-pop input:focus-visible{outline:none}
+.nav-search-pop input::-webkit-search-cancel-button{display:none}
+.nav-search-pop:focus-within{box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--purple) 60%,transparent),0 16px 34px -10px rgba(0,0,0,.7),0 5px 12px -4px rgba(0,0,0,.45)}
+body.nav-searching .support-fab{opacity:0;pointer-events:none}
+.support-fab{transition:opacity .2s ease}
+.nsp-flyer{position:fixed;z-index:9999;pointer-events:none;color:var(--purple);width:22px;height:22px}
+.nsp-flyer svg{width:100%;height:100%}
+
+/* ── 2) 205 Məktəb alt paneli — ağ panel, qaldırılmış mərkəz düymə, tullanan nöqtə ── */
+@media(max-width:860px){
+  .m205-tabbar.v5{position:relative;display:flex;align-items:flex-end;background:transparent;border-top:none;
+    height:66px;margin:0 10px max(8px,env(safe-area-inset-bottom));padding:0 6px 7px;flex-shrink:0;z-index:6}
+  body.m205-guest #guestExitBtn{bottom:calc(90px + env(safe-area-inset-bottom))}
+}
+.m205-tabbar.v5 .tb-bg{position:absolute;left:0;bottom:0;width:100%;height:56px;overflow:visible;pointer-events:none;
+  filter:drop-shadow(0 10px 18px rgba(43,54,116,.14)) drop-shadow(0 2px 4px rgba(43,54,116,.06))}
+.m205-tabbar.v5 .tb-bg path{fill:#fff}
+.m205-tabbar.v5 button{position:relative;z-index:2;flex:1;height:56px;justify-content:center;gap:3px;padding:6px 2px 4px;
+  color:#526071;background:none;transition:color .2s ease}
+.m205-tabbar.v5 button .tb-ic{display:block;transition:transform .22s var(--mo-ease)}
+.m205-tabbar.v5 button .tb-ic svg{width:22px;height:22px;display:block}
+.m205-tabbar.v5 button .tb-ic svg *{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.m205-tabbar.v5 button.active{color:var(--m-primary)}
+.m205-tabbar.v5 button.active .tb-ic{transform:scale(1.12)}
+.m205-tabbar.v5 button.tb-landing{color:#526071}
+.m205-tabbar.v5 button.tb-landing .tb-ic{transform:none}
+.m205-tabbar.v5 .tb-fab{justify-content:flex-end}
+.m205-tabbar.v5 .tb-fab .tb-ic{position:absolute;left:50%;top:-18px;width:46px;height:46px;margin-left:-23px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;color:#fff;
+  background:linear-gradient(150deg,color-mix(in srgb,var(--m-primary) 78%,#fff),var(--m-primary));
+  box-shadow:0 8px 18px -4px color-mix(in srgb,var(--m-primary) 60%,transparent),0 0 16px -2px color-mix(in srgb,var(--m-primary) 45%,transparent);
+  transition:box-shadow .25s ease,transform .22s var(--mo-ease)}
+.m205-tabbar.v5 .tb-fab .tb-ic svg{width:22px;height:22px}
+.m205-tabbar.v5 .tb-fab.active .tb-ic{transform:none;box-shadow:0 0 0 5px color-mix(in srgb,var(--m-primary) 16%,transparent),
+  0 8px 18px -4px color-mix(in srgb,var(--m-primary) 60%,transparent),0 0 16px -2px color-mix(in srgb,var(--m-primary) 45%,transparent)}
+.m205-tabbar.v5 .tb-lbl{font-size:.7rem;line-height:1}
+.m205-tabbar.v5 .tb-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.m205-tabbar.v5 .tb-dot{position:absolute;left:0;top:0;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;
+  background:var(--m-primary);z-index:3;pointer-events:none;will-change:transform;
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--m-primary) 10%,transparent),0 0 9px color-mix(in srgb,var(--m-primary) 55%,transparent)}
+.m205-tabbar.v5 .tb-dot.halo{animation:tbHalo .26s ease-out}
+@keyframes tbHalo{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--m-primary) 34%,transparent),0 0 4px color-mix(in srgb,var(--m-primary) 40%,transparent)}
+  100%{box-shadow:0 0 0 4px color-mix(in srgb,var(--m-primary) 10%,transparent),0 0 9px color-mix(in srgb,var(--m-primary) 55%,transparent)}}
+
+/* ── 3) Giriş / Qeydiyyat tabları — maye blob ── */
+.login-tabs{position:relative;isolation:isolate}
+.login-tabs .login-tab{position:relative;z-index:2;background:transparent!important;transition:color .12s ease}
+.login-tabs .login-tab.active{color:#0b1f1b;transition:color .12s ease .23s}
+.login-blob{position:absolute;z-index:1;left:0;top:0;border-radius:999px;background:var(--teal);pointer-events:none;
+  transform:translateY(-3px);will-change:transform;
+  box-shadow:0 8px 16px -6px color-mix(in srgb,var(--teal) 70%,transparent)}
+.login-field-anim{will-change:clip-path,opacity}
+
+@media(prefers-reduced-motion:reduce){
+  .nav-glow .ng-move,.m205-tabbar.v5 button .tb-ic,.login-tabs .login-tab,.bottom-nav .nav-btn,.bottom-nav .nav-btn .lbl{transition:none!important}
+  .m205-tabbar.v5 .tb-dot.halo{animation:none}
+}
 </style>
 </head>
 <body>
@@ -2218,17 +2352,22 @@ setTimeout(function(){
     <div class="view" id="viewStudio"></div>
   </div>
   <nav class="bottom-nav">
-    <button class="nav-btn active" data-view="Home"><span class="icon">🏠</span><span class="lbl">Əsas</span></button>
-    <button class="nav-btn" data-view="Alpha"><span class="icon">🔤</span><span class="lbl">Əlifba</span></button>
-    <button class="nav-btn" data-view="Games"><span class="icon">🎮</span><span class="lbl">Oyunlar</span></button>
-    <button class="nav-btn" data-view="Vocab"><span class="icon">📚</span><span class="lbl">Lüğət</span></button>
-    <button class="nav-btn" data-view="Studio"><span class="icon">✨</span><span class="lbl" data-short="İnkişaf">Özünü İnkişaf Etdir</span></button>
-    <button class="nav-btn" data-view="Derslikler"><span class="icon">📖</span><span class="lbl" data-short="Dərslik">Dərsliklər</span></button>
-    <button class="nav-btn nav-btn-desktop" data-view="Leaderboard"><span class="icon">🏆</span><span class="lbl">Liderlər</span></button>
-    <button class="nav-btn" data-view="AI"><span class="icon">🤖</span><span class="lbl">AI</span></button>
-    <button class="nav-btn nav-btn-desktop" data-view="Profile"><span class="icon">👤</span><span class="lbl">Profil</span></button>
-    <button class="nav-btn nav-btn-desktop" data-view="Mekteb205"><span class="icon">🏫</span><span class="lbl">205 Məktəb</span></button>
-    <button class="nav-btn" data-view="About"><span class="icon">ℹ️</span><span class="lbl" data-short="Haqqında">Haqqımızda</span></button>
+    <div class="nav-search-pop" id="navSearchPop" role="search" hidden>
+      <span class="nsp-ic" aria-hidden="true"><svg class="nv-ic" viewBox="0 0 24 24" aria-hidden="true"><circle class="k" cx="11" cy="11" r="7"/><path class="k" d="m20 20-4.2-4.2"/></svg></span>
+      <div class="nsp-body"><input id="navSearchInput" type="search" placeholder="Söz və ya oyun axtar…" aria-label="Axtar" autocomplete="off"><button class="nsp-x" type="button" aria-label="Axtarışı bağla">✕</button></div>
+    </div>
+    <button class="nav-btn active" data-view="Home"><span class="icon"><svg class="nv-ic" viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M3 10.2 12 3l9 7.2V20a1 1 0 0 1-1 1h-5.2v-6.2H9.2V21H4a1 1 0 0 1-1-1z"/></svg></span><span class="lbl">Əsas</span></button>
+    <button class="nav-btn nav-btn-mobile nav-search-btn" type="button" aria-label="Axtar" aria-expanded="false" aria-controls="navSearchPop"><span class="icon"><svg class="nv-ic" viewBox="0 0 24 24" aria-hidden="true"><circle class="k" cx="11" cy="11" r="7"/><path class="k" d="m20 20-4.2-4.2"/></svg></span><span class="lbl">Axtar</span></button>
+    <button class="nav-btn" data-view="Alpha"><span class="icon"><svg class="nv-ic" viewBox="0 0 24 24" aria-hidden="true"><rect class="f" x="3" y="3" width="18" height="18" rx="5"/><path class="d" d="m8.2 16.6 3.8-9.2 3.8 9.2M9.6 13.4h4.8"/></svg></span><span class="lbl">Əlifba</span></button>
+    <button class="nav-btn" data-view="Games"><span class="icon"><svg class="nv-ic" viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M7.5 7h9a5 5 0 0 1 4.9 6l-.9 4.3a2.4 2.4 0 0 1-4.1 1.1L14 16.2h-4l-2.3 2.2a2.4 2.4 0 0 1-4.1-1.1L2.6 13A5 5 0 0 1 7.5 7z"/><path class="d" d="M7.2 10.3v3.2M5.6 11.9h3.2M15.6 11h.01M17.6 13h.01"/></svg></span><span class="lbl">Oyunlar</span></button>
+    <button class="nav-btn" data-view="Vocab"><span class="icon"><svg class="nv-ic" viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M5.5 3H19v15H6.2A2.2 2.2 0 0 0 4 20.2V4.5A1.5 1.5 0 0 1 5.5 3z"/><path class="k" d="M4 20.2A1.8 1.8 0 0 0 5.8 22H19v-4"/><path class="d" d="M8.5 7.5h6.5M8.5 11h4"/></svg></span><span class="lbl">Lüğət</span></button>
+    <button class="nav-btn" data-view="Studio"><span class="icon"><svg class="nv-ic" viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="m11 3 1.9 5.1L18 10l-5.1 1.9L11 17l-1.9-5.1L4 10l5.1-1.9z"/><path class="k" d="M19 15v5M16.5 17.5h5"/></svg></span><span class="lbl" data-short="İnkişaf">Özünü İnkişaf Etdir</span></button>
+    <button class="nav-btn" data-view="Derslikler"><span class="icon"><svg class="nv-ic" viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M2 9.2 12 4.5l10 4.7-10 4.7z"/><path class="k" d="M6 11.3v4.4c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.4M22 9.2v5"/></svg></span><span class="lbl" data-short="Dərslik">Dərsliklər</span></button>
+    <button class="nav-btn nav-btn-desktop" data-view="Leaderboard"><span class="icon"><svg class="nv-ic" viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M7 4h10v5a5 5 0 0 1-10 0z"/><path class="k" d="M7 6H4v1.5A3.5 3.5 0 0 0 7.5 11M17 6h3v1.5a3.5 3.5 0 0 1-3.5 3.5M12 14v4M8 21h8M9.5 18h5"/></svg></span><span class="lbl">Liderlər</span></button>
+    <button class="nav-btn" data-view="AI"><span class="icon"><svg class="nv-ic" viewBox="0 0 24 24" aria-hidden="true"><rect class="f" x="4" y="8" width="16" height="12" rx="4"/><path class="d" d="M9.2 13v1.6M14.8 13v1.6"/><path class="k" d="M12 8V4.6M10.4 4.2h3.2"/></svg></span><span class="lbl">AI</span></button>
+    <button class="nav-btn nav-btn-desktop" data-view="Profile"><span class="icon"><svg class="nv-ic" viewBox="0 0 24 24" aria-hidden="true"><circle class="f" cx="12" cy="8" r="4"/><path class="f" d="M4 21a8 8 0 0 1 16 0z"/></svg></span><span class="lbl">Profil</span></button>
+    <button class="nav-btn nav-btn-desktop" data-view="Mekteb205"><span class="icon"><svg class="nv-ic" viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M3 21V10l9-6 9 6v11z"/><path class="d" d="M10 21v-5h4v5M8.8 11.6h.01M15.2 11.6h.01"/></svg></span><span class="lbl">205 Məktəb</span></button>
+    <button class="nav-btn nav-btn-desktop" data-view="About"><span class="icon"><svg class="nv-ic" viewBox="0 0 24 24" aria-hidden="true"><circle class="f" cx="12" cy="12" r="9.5"/><path class="d" d="M12 11v5.4M12 7.8h.01"/></svg></span><span class="lbl" data-short="Haqqında">Haqqımızda</span></button>
     <div class="sidebar-streak-card">
       <div class="sidebar-streak-trophy">🏆</div>
       <div class="sidebar-streak-title">Gün Seriyası</div>
@@ -3547,6 +3686,272 @@ function switchView(name){
   const renders={Home:renderHome,Alpha:renderAlpha,Games:renderGames,Vocab:renderVocab,
     Creative:renderCreative,Leaderboard:renderLeaderboard,Profile:renderProfile,Derslikler:renderDerslikler,AI:renderAI,About:renderAbout,Mekteb205:renderMekteb205,Studio:renderStudio};
   if(renders[name])renders[name]();
+  try{navGlowSync();}catch(e){}
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// SözLab Motion v5 — "Navigation Tabs V5" video referansı (kadr-kadr ölçülüb).
+// Rəqəmlər CSS blokundakı şərhdədir. Hərəkət azaldılıbsa (prefers-reduced-motion)
+// bütün keçidlər dərhal olur.
+// ══════════════════════════════════════════════════════════════════════════
+const MO_REDUCED=()=>window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const MO_EASE='cubic-bezier(.3,.7,.4,1)';
+function moBezier(p1x,p1y,p2x,p2y){
+  const cx=3*p1x,bx=3*(p2x-p1x)-cx,ax=1-cx-bx,cy=3*p1y,by=3*(p2y-p1y)-cy,ay=1-cy-by;
+  const X=u=>((ax*u+bx)*u+cx)*u,Y=u=>((ay*u+by)*u+cy)*u,DX=u=>(3*ax*u+2*bx)*u+cx;
+  return t=>{if(t<=0)return 0;if(t>=1)return 1;let u=t;
+    for(let i=0;i<8;i++){const e=X(u)-t,d=DX(u);if(Math.abs(e)<1e-5||!d)break;u-=e/d;}
+    return Y(Math.min(1,Math.max(0,u)));};
+}
+const moEaseStd=moBezier(.25,.1,.25,1), moEaseOut=moBezier(.3,.7,.4,1);
+
+// ── 1) Əsas alt panel: parlayan təpə ─────────────────────────────────────
+function navGlowEnsure(){
+  const nav=document.querySelector('.bottom-nav');
+  if(!nav)return null;
+  let g=nav.querySelector('.nav-glow');
+  if(!g){
+    g=document.createElement('div');g.className='nav-glow no-anim';g.setAttribute('aria-hidden','true');
+    g.innerHTML=`<svg><defs><radialGradient id="ngFillGrad" cx="50%" cy="40%" r="60%">
+        <stop offset="0" stop-color="var(--purple)" stop-opacity=".30"/><stop offset="1" stop-color="var(--purple)" stop-opacity="0"/></radialGradient></defs>
+      <g class="ng-move"><path class="ng-fill"/><path class="ng-line"/></g></svg>`;
+    nav.insertBefore(g,nav.firstChild);
+    if(window.ResizeObserver)new ResizeObserver(()=>navGlowSync(true)).observe(nav);
+  }
+  return g;
+}
+function navGlowTarget(){
+  const nav=document.querySelector('.bottom-nav');
+  const pop=document.getElementById('navSearchPop');
+  if(pop&&!pop.hidden&&!pop.dataset.closing)return nav.querySelector('.nav-search-btn');
+  return [...nav.querySelectorAll('.nav-btn.active')].find(b=>b.offsetWidth>0)||null;
+}
+function navGlowSync(instant){
+  const g=navGlowEnsure();if(!g)return;
+  const nav=g.parentElement, W=nav.clientWidth, H=nav.clientHeight;
+  if(!W||getComputedStyle(g).display==='none')return;
+  const btn=navGlowTarget();
+  const svg=g.querySelector('svg'), mv=g.querySelector('.ng-move');
+  const iw=btn?btn.offsetWidth:W/8;
+  const hb=Math.max(22,Math.min(40,iw*.62)), yb=H-1.6, yt=3.5;
+  if(g.dataset.key!==W+'x'+H+'x'+Math.round(hb)){
+    g.dataset.key=W+'x'+H+'x'+Math.round(hb);
+    svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+    const bell=`C${-hb*.5},${yb} ${-hb*.44},${yt} 0,${yt} C${hb*.44},${yt} ${hb*.5},${yb} ${hb},${yb}`;
+    g.querySelector('.ng-line').setAttribute('d',`M${-W-40},${yb} L${-hb},${yb} ${bell} L${W+40},${yb}`);
+    g.querySelector('.ng-fill').setAttribute('d',`M${-hb},${yb} ${bell} Z`);
+  }
+  const x=btn?btn.offsetLeft+btn.offsetWidth/2:-200;
+  if(instant||MO_REDUCED()){g.classList.add('no-anim');mv.style.transform=`translateX(${x}px)`;void g.offsetWidth;g.classList.remove('no-anim');}
+  else{g.classList.remove('no-anim');mv.style.transform=`translateX(${x}px)`;}
+}
+
+// ── Axtarış pəncərəsi (videodakı "Search anything…" kapsulu) ─────────────
+const NAV_SEARCH_SVG='<svg class="nv-ic" viewBox="0 0 24 24"><circle class="k" cx="11" cy="11" r="7"/><path class="k" d="m20 20-4.2-4.2"/></svg>';
+function navFly(fromEl,toEl,dur,delay){
+  // lupa ikonu bir nöqtədən o birinə uçur (FLIP)
+  if(!fromEl||!toEl||MO_REDUCED())return Promise.resolve();
+  const a=fromEl.getBoundingClientRect(),b=toEl.getBoundingClientRect();
+  if(!a.width||!b.width)return Promise.resolve();
+  const f=document.createElement('div');f.className='nsp-flyer';f.innerHTML=NAV_SEARCH_SVG;
+  f.style.left=b.left+'px';f.style.top=b.top+'px';f.style.width=b.width+'px';f.style.height=b.height+'px';
+  document.body.appendChild(f);toEl.style.visibility='hidden';
+  const s=a.width/b.width;
+  const an=f.animate([{transform:`translate(${a.left-b.left+(a.width-b.width)/2}px,${a.top-b.top+(a.height-b.height)/2}px) scale(${s})`},
+    {transform:'none'}],{duration:dur,delay:delay||0,easing:MO_EASE,fill:'both'});
+  return an.finished.catch(()=>{}).then(()=>{f.remove();toEl.style.visibility='';});
+}
+let navSearchBusy=false;
+function navSearchOpen(){
+  const pop=document.getElementById('navSearchPop'), btn=document.querySelector('.nav-search-btn');
+  if(!pop||!btn||navSearchBusy||!pop.hidden)return;
+  navSearchBusy=true;
+  pop.hidden=false;delete pop.dataset.closing;
+  btn.classList.add('flown');btn.setAttribute('aria-expanded','true');
+  btn.closest('.bottom-nav').classList.add('searching');document.body.classList.add('nav-searching');
+  navGlowSync();
+  const body=pop.querySelector('.nsp-body'), ic=pop.querySelector('.nsp-ic');
+  const inp=document.getElementById('navSearchInput');
+  if(MO_REDUCED()){navSearchBusy=false;inp.focus();return;}
+  const full=pop.offsetWidth, h=pop.offsetHeight;
+  pop.animate([{width:h+'px',opacity:.55},{opacity:1,offset:.3},{width:full+'px',opacity:1}],{duration:300,easing:MO_EASE});
+  body.animate([{opacity:0},{opacity:0,offset:.64},{opacity:1}],{duration:360,easing:'linear'});
+  navFly(btn.querySelector('.icon svg'),ic,200,30).then(()=>{navSearchBusy=false;});
+  setTimeout(()=>inp.focus({preventScroll:true}),240);
+}
+function navSearchClose(){
+  const pop=document.getElementById('navSearchPop'), btn=document.querySelector('.nav-search-btn');
+  if(!pop||pop.hidden||pop.dataset.closing)return Promise.resolve();
+  pop.dataset.closing='1';btn?.setAttribute('aria-expanded','false');
+  btn?.closest('.bottom-nav').classList.remove('searching');document.body.classList.remove('nav-searching');
+  navGlowSync();                         // təpə dərhal əvvəlki / yeni bölməyə qayıdır
+  const finish=()=>{pop.hidden=true;delete pop.dataset.closing;btn?.classList.remove('flown');};
+  if(MO_REDUCED()){finish();return Promise.resolve();}
+  const body=pop.querySelector('.nsp-body'), ic=pop.querySelector('.nsp-ic'), h=pop.offsetHeight;
+  body.animate([{opacity:1},{opacity:0}],{duration:60,fill:'forwards'});
+  const shrink=pop.animate([{width:pop.offsetWidth+'px'},{width:h+'px',offset:.8,opacity:.8},{width:h+'px',transform:'scaleX(0)',opacity:0}],
+    {duration:290,easing:MO_EASE,fill:'forwards'});
+  const fly=navFly(ic,btn?.querySelector('.icon svg'),150,70).then(()=>btn?.classList.remove('flown'));
+  ic.style.visibility='hidden';
+  return Promise.all([shrink.finished.catch(()=>{}),fly]).then(()=>{
+    shrink.cancel();body.getAnimations().forEach(a=>a.cancel());ic.style.visibility='';finish();});
+}
+function navSearchSubmit(){
+  const q=(document.getElementById('navSearchInput')?.value||'').trim();
+  navSearchClose();
+  if(!q)return;
+  switchView('Vocab');
+  setTimeout(()=>{const vs=document.getElementById('vocabSearch');if(vs){vs.value=q;vs.dispatchEvent(new Event('input'));}},50);
+}
+function navSearchWire(){
+  const btn=document.querySelector('.nav-search-btn');if(!btn||btn.dataset.wired)return;btn.dataset.wired='1';
+  btn.addEventListener('click',e=>{e.stopPropagation();
+    const pop=document.getElementById('navSearchPop');
+    if(pop&&!pop.hidden)navSearchClose();else navSearchOpen();});
+  const pop=document.getElementById('navSearchPop');
+  pop.querySelector('.nsp-x').addEventListener('click',e=>{e.stopPropagation();navSearchClose();});
+  document.getElementById('navSearchInput').addEventListener('keydown',e=>{
+    if(e.key==='Enter')navSearchSubmit();
+    if(e.key==='Escape'){navSearchClose();btn.focus();}});
+  pop.addEventListener('click',e=>e.stopPropagation());
+  document.addEventListener('click',e=>{if(!pop.hidden&&!e.target.closest('.bottom-nav'))navSearchClose();});
+  document.querySelectorAll('.bottom-nav .nav-btn[data-view]').forEach(b=>
+    b.addEventListener('click',()=>{if(!pop.hidden)navSearchClose();},true));
+}
+
+// ── 2) 205 alt panel: tullanan nöqtə + çuxur ──────────────────────────────
+const TB_H=56;
+function tbPath(W,dips){
+  // ağ panel: künclər yuvarlaq, mərkəzdə qaldırılmış düymə üçün hamar oyuq,
+  // aktiv düymənin üstündə kiçik çuxur (nöqtə orada oturur)
+  const H=TB_H,r=24,cx=W/2,R=30,sh=12,nd=19;
+  let d=`M${r},0`;
+  const pts=[];
+  dips.forEach(p=>{if(p.depth>0.05)pts.push(p);});
+  pts.push({x:cx,notch:true});
+  pts.sort((a,b)=>a.x-b.x);
+  for(const p of pts){
+    if(p.notch){
+      d+=` L${cx-R-sh},0 C${cx-R-sh*.25},0 ${cx-R+2},${nd*.1} ${cx-R+5},${nd*.45}`
+        +` A${R-5},${R-5} 0 0 0 ${cx+R-5},${nd*.45}`
+        +` C${cx+R-2},${nd*.1} ${cx+R+sh*.25},0 ${cx+R+sh},0`;
+    }else{
+      const w=15,dp=5*p.depth;
+      d+=` L${p.x-w},0 C${p.x-w*.45},0 ${p.x-w*.35},${dp} ${p.x},${dp} C${p.x+w*.35},${dp} ${p.x+w*.45},0 ${p.x+w},0`;
+    }
+  }
+  d+=` L${W-r},0 A${r},${r} 0 0 1 ${W},${r} L${W},${H-r} A${r},${r} 0 0 1 ${W-r},${H} L${r},${H} A${r},${r} 0 0 1 0,${H-r} L0,${r} A${r},${r} 0 0 1 ${r},0 Z`;
+  return d;
+}
+let tbAnimId=0;
+function m205TabbarMotion(){
+  const bar=[...document.querySelectorAll('.m205-tabbar.v5')].find(b=>b.offsetWidth>0);
+  if(!bar)return;
+  const btns=[...bar.querySelectorAll(':scope > button')];
+  const cur=btns.findIndex(b=>b.classList.contains('active'));
+  const prev=window.__m205TabIdx;
+  window.__m205TabIdx=cur;
+  const svg=bar.querySelector('.tb-bg path'), dot=bar.querySelector('.tb-dot');
+  const W=bar.clientWidth, top=bar.clientHeight-TB_H;
+  bar.querySelector('.tb-bg').setAttribute('viewBox',`0 0 ${W} ${TB_H}`);
+  const cxOf=i=>{const b=btns[i];return b?b.offsetLeft+b.offsetWidth/2:W/2;};
+  const isFab=i=>btns[i]?.classList.contains('tb-fab');
+  const restY=top+1;
+  const place=(x,y,sx,sy,op)=>{dot.style.transform=`translate(${x}px,${y}px) scale(${sx},${sy})`;dot.style.opacity=op;};
+  const drawStatic=()=>{
+    const x=cxOf(cur), fab=cur<0||isFab(cur);
+    svg.setAttribute('d',tbPath(W,fab?[]:[{x,depth:1}]));
+    place(x,restY,fab?0:1,fab?0:1,fab?0:1);
+  };
+  if(!bar.dataset.ro&&window.ResizeObserver){bar.dataset.ro='1';new ResizeObserver(()=>{if(!bar.dataset.animating)m205TabbarMotion.__static?.();}).observe(bar);}
+  m205TabbarMotion.__static=()=>{if(document.body.contains(bar))drawStatic();};
+  if(prev==null||prev===cur||prev<0||cur<0||MO_REDUCED()||prev>=btns.length){drawStatic();return;}
+
+  const x0=cxOf(prev), x1=cxOf(cur), dist=Math.abs(x1-x0);
+  const T=Math.max(280,Math.min(420,260+dist*.5)), SETTLE=130, lift=10+dist*.07;
+  const from0=isFab(prev), to1=isFab(cur);
+  const id=++tbAnimId, t0=performance.now();
+  bar.dataset.animating='1';
+  btns[cur].classList.add('tb-landing');
+  const frame=now=>{
+    if(id!==tbAnimId||!document.body.contains(bar))return;
+    const ms=now-t0, t=Math.min(1,ms/T);
+    const k=moEaseStd(t);
+    const x=x0+(x1-x0)*k;
+    let y=restY-4-lift*Math.sin(Math.PI*t);
+    if(t<.15)y=restY-(restY-(restY-4-lift*Math.sin(Math.PI*.15)))*(t/.15);   // çuxurdan qalxır
+    // qalxanda şaquli, enəndə üfüqi uzanma (videoda 13–14 və 17–19-cu kadrlar)
+    let sx=1,sy=1;
+    if(t<.4){const a=Math.sin(Math.PI*t/.4);sx=1-.22*a;sy=1+.38*a;}
+    else if(t>.55&&t<.95){const a=Math.sin(Math.PI*(t-.55)/.4);sx=1+.32*a;sy=1-.24*a;}
+    let op=1;
+    if(dist>120)op=1-.45*Math.sin(Math.PI*t);
+    if(from0)op*=Math.min(1,t/.25);
+    const oldD=from0?0:Math.max(0,1-moEaseOut(Math.min(1,t/.4)));
+    const newD=to1?0:moEaseOut(Math.max(0,(t-.5)/.5));
+    const dips=[];if(!from0)dips.push({x:x0,depth:oldD});if(!to1)dips.push({x:x1,depth:newD});
+    svg.setAttribute('d',tbPath(W,dips));
+    if(ms<T){place(x,y,sx,sy,op);requestAnimationFrame(frame);return;}
+    // oturma fazası: 130 ms-də çuxura enir, sonra halə
+    const s=Math.min(1,(ms-T)/SETTLE), e=moEaseOut(s);
+    if(to1){const fy=top+5;place(x1,restY-4+(fy-(restY-4))*e,1-e,1-e,1-e);}   // mərkəz düyməyə "girir"
+    else place(x1,restY-4+4*e,1,1,1);
+    if(s<1){requestAnimationFrame(frame);return;}
+    delete bar.dataset.animating;
+    btns[cur].classList.remove('tb-landing');
+    if(!to1){dot.classList.remove('halo');void dot.offsetWidth;dot.classList.add('halo');}
+    drawStatic();
+  };
+  place(x0,restY,from0?0:1,from0?0:1,from0?0:1);
+  svg.setAttribute('d',tbPath(W,from0?[]:[{x:x0,depth:1}]));
+  requestAnimationFrame(frame);
+}
+
+// ── 3) Giriş tabları: maye blob + formun açılması ─────────────────────────
+function loginBlobPlace(){
+  const tabs=document.querySelector('.login-tabs');if(!tabs)return null;
+  let blob=tabs.querySelector('.login-blob');
+  if(!blob){blob=document.createElement('span');blob.className='login-blob';blob.setAttribute('aria-hidden','true');tabs.insertBefore(blob,tabs.firstChild);}
+  const a=tabs.querySelector('.login-tab.active');if(!a)return blob;
+  Object.assign(blob.style,{left:a.offsetLeft+'px',top:a.offsetTop+'px',width:a.offsetWidth+'px',height:a.offsetHeight+'px'});
+  return blob;
+}
+function loginBlobMove(fromTab,toTab){
+  const blob=loginBlobPlace();
+  if(!blob||!fromTab||fromTab===toTab||MO_REDUCED()||!blob.animate)return;
+  const dx=fromTab.offsetLeft-toTab.offsetLeft, dir=Math.sign(-dx)||1, os=Math.abs(dx)*.08*dir;
+  // 430 ms: düşür + dairədən yumru düzbucaqlıya → uzanır → ötüb keçir → şaquli uzanır → dairə
+  blob.animate([
+    {transform:`translate(${dx}px,-3px) scale(1,1)`,borderRadius:'999px'},
+    {transform:`translate(${dx*.97}px,0) scale(1.04,.94)`,borderRadius:'14px',offset:.08},
+    {transform:`translate(${dx*.45}px,0) scale(1.42,.88)`,borderRadius:'14px',offset:.32},
+    {transform:`translate(${os}px,0) scale(.94,.98)`,borderRadius:'16px',offset:.55},
+    {transform:`translate(${os*.3}px,-3px) scale(.9,1.16)`,borderRadius:'999px',offset:.74},
+    {transform:`translate(0,-4px) scale(1.03,.97)`,borderRadius:'999px',offset:.88},
+    {transform:'translate(0,-3px) scale(1,1)',borderRadius:'999px'}
+  ],{duration:430,easing:'linear'});
+}
+const LOGIN_REG_FIELDS=['regUsername','regFirstName','regLastName','regClassRow','regPhone','regReferralCode'];
+function loginFieldsReveal(show){
+  if(MO_REDUCED())return;
+  LOGIN_REG_FIELDS.map(id=>document.getElementById(id)).filter(el=>el&&el.offsetHeight).forEach((el,i)=>{
+    const h=el.offsetHeight, w=el.offsetWidth, r=Math.min(12,h/2);
+    el.classList.add('login-field-anim');
+    // videodakı kapsul kimi: sol tərəfdə dairə → sağa doğru açılır, sonra məzmun görünür
+    const a=el.animate(show?[
+        {clipPath:`inset(0 ${w-h}px 0 0 round ${h/2}px)`,opacity:.35},
+        {clipPath:`inset(0 0 0 0 round ${r}px)`,opacity:1}
+      ]:[
+        {clipPath:`inset(0 0 0 0 round ${r}px)`,opacity:1},
+        {clipPath:`inset(0 ${w-h}px 0 0 round ${h/2}px)`,opacity:0}
+      ],{duration:show?300:170,delay:show?60+i*45:0,easing:MO_EASE,fill:'backwards'});
+    a.finished.catch(()=>{}).then(()=>el.classList.remove('login-field-anim'));
+  });
+}
+
+function motionInit(){
+  navGlowSync(true);navSearchWire();loginBlobPlace();
+  window.addEventListener('resize',()=>{loginBlobPlace();navGlowSync(true);});
 }
 
 // ══════════════════════════════════════════════
@@ -7600,6 +8005,7 @@ function renderProfile(){
       <h3>⚙️ Hesab</h3>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn-outline" id="logoutBtn">🚪 Çıxış</button>
+        <button class="btn-outline" id="profileAboutBtn" type="button">ℹ️ Haqqımızda</button>
         <button class="btn-danger" id="deleteBtn">🗑️ Hesabı Sil</button>
       </div>
     </div>`;
@@ -7626,6 +8032,7 @@ function renderProfile(){
     catch(e){showToast('Kopyalama uğursuz oldu, əl ilə seçib kopyalayın','red');}
   });
   document.getElementById('logoutBtn').addEventListener('click',doLogout);
+  document.getElementById('profileAboutBtn')?.addEventListener('click',()=>switchView('About'));
   document.getElementById('deleteBtn').addEventListener('click',async()=>{
     if(!confirm('Hesabınızı birdəfəlik silmək istədiyinizə əminsiniz? Bu əməliyyat geri alına bilməz!'))return;
     try{
@@ -9911,6 +10318,7 @@ async function m205RenderSite(v){
       </div>
     </div>
     ${m205MobileNavHtml(m205NavGroups(),true)}`;
+  m205TabbarMotion();
 
   const [info,news,achv]=await Promise.all([m205Info(),m205News(),m205Achv()]);
   const cover=info[0]?.cover_image_url||'school205/sagird-toplantisi.jpg';
@@ -9973,12 +10381,13 @@ function m205WhereAmI(){
 // HƏM də məktəb saytında eyni olsun (əvvəl saytda alt menyu yox olurdu).
 function m205MobileNavHtml(navGroups,inTab){
   return `
-    <nav class="m205-tabbar" aria-label="205 Məktəb menyusu">
-      <button data-go="site" class="${m205Page==='site'?'active':''}"><span>🏫</span>Məktəb</button>
-      <button data-go="project" class="${m205Page==='project'?'active':''}"><span>🧠</span>Layihələr</button>
-      <button data-ss-go="home" class="${String(m205Page).startsWith('ss-')?'active':''}"><span>◎</span>Ekosistem</button>
-      <button data-go="portfolio" class="${m205Page==='portfolio'?'active':''}"><span>👤</span>Profil</button>
-      <button data-m205-menu="open" class="${inTab?'':'active'}" aria-haspopup="dialog" aria-controls="m205Sheet"><span>☰</span>Menyu</button>
+    <nav class="m205-tabbar v5" aria-label="205 Məktəb menyusu">
+      <svg class="tb-bg" aria-hidden="true" preserveAspectRatio="none"><path/></svg><span class="tb-dot" aria-hidden="true"></span>
+      <button data-go="site" class="${m205Page==='site'?'active':''}"><span class="tb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V10l9-6 9 6v11z"/><path d="M10 21v-5h4v5"/></svg></span><span class="tb-lbl">Məktəb</span></button>
+      <button data-go="project" class="${m205Page==='project'?'active':''}"><span class="tb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6v-1.4c0-1.2.6-2.2 1.5-3A6 6 0 1 0 7.5 13.6c.9.8 1.5 1.8 1.5 3z"/><path d="M10 21.5h4"/></svg></span><span class="tb-lbl">Layihələr</span></button>
+      <button data-ss-go="home" class="tb-fab ${String(m205Page).startsWith('ss-')?'active':''}"><span class="tb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3a9 9 0 1 1-6.4 2.6"/><path d="M5.6 2.4v3.2h3.2"/></svg></span><span class="tb-lbl tb-sr">Ekosistem</span></button>
+      <button data-go="portfolio" class="${m205Page==='portfolio'?'active':''}"><span class="tb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span class="tb-lbl">Profil</span></button>
+      <button data-m205-menu="open" class="${inTab?'':'active'}" aria-haspopup="dialog" aria-controls="m205Sheet"><span class="tb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></span><span class="tb-lbl">Menyu</span></button>
     </nav>
     <div class="m205-sheet" id="m205Sheet" role="dialog" aria-modal="true" aria-label="205 Məktəb — bütün bölmələr" hidden>
       <div class="m205-sheet-panel">
@@ -10020,6 +10429,7 @@ function m205RenderShell(v){
       </div>
     </div>
     ${m205MobileNavHtml(navGroups,inTab)}`;
+  m205TabbarMotion();
 
   const box=document.getElementById('m205Page');
   if(m205Detail)m205RenderDetail(box);
@@ -16100,15 +16510,24 @@ window.addEventListener('DOMContentLoaded',async()=>{
 
   // Login tabs
   document.querySelectorAll('.login-tab').forEach(t=>t.addEventListener('click',function(){
+    const prevTab=document.querySelector('.login-tab.active');
+    const same=prevTab===this;
     document.querySelectorAll('.login-tab').forEach(x=>x.classList.remove('active'));
     this.classList.add('active');loginMode=this.dataset.mode;
     const isReg=loginMode==='register';
-    document.getElementById('regUsername').style.display=isReg?'':'none';
-    document.getElementById('regFirstName').style.display=isReg?'':'none';
-    document.getElementById('regLastName').style.display=isReg?'':'none';
-    document.getElementById('regClassRow').style.display=isReg?'flex':'none';
-    document.getElementById('regPhone').style.display=isReg?'':'none';
-    document.getElementById('regReferralCode').style.display=isReg?'':'none';
+    if(!same)loginBlobMove(prevTab,this);else loginBlobPlace();
+    const apply=()=>{
+      document.getElementById('regUsername').style.display=isReg?'':'none';
+      document.getElementById('regFirstName').style.display=isReg?'':'none';
+      document.getElementById('regLastName').style.display=isReg?'':'none';
+      document.getElementById('regClassRow').style.display=isReg?'flex':'none';
+      document.getElementById('regPhone').style.display=isReg?'':'none';
+      document.getElementById('regReferralCode').style.display=isReg?'':'none';
+    };
+    const tok=(window.__loginSwitchTok=(window.__loginSwitchTok||0)+1);
+    if(same)apply();
+    else if(isReg){apply();loginFieldsReveal(true);}
+    else{loginFieldsReveal(false);setTimeout(()=>{if(tok===window.__loginSwitchTok&&loginMode!=='register')apply();},MO_REDUCED()?0:170);}
     document.getElementById('loginBtn').textContent=isReg?'📝 Qeydiyyat':'🚀 Daxil Ol';
   }));
   document.getElementById('loginBtn').addEventListener('click',doLogin);
@@ -16246,7 +16665,8 @@ window.addEventListener('DOMContentLoaded',async()=>{
   document.getElementById('lessonEditorBackBtn')?.addEventListener('click',()=>showScreen('teacherScreen'));
 
   // Nav
-  document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',function(){switchView(this.dataset.view);}));
+  document.querySelectorAll('.nav-btn[data-view]').forEach(b=>b.addEventListener('click',function(){switchView(this.dataset.view);}));
+  motionInit();
   document.getElementById('avatarBtn').addEventListener('click',()=>switchView('Profile'));
   document.getElementById('topbarSearch')?.addEventListener('keydown',function(e){
     if(e.key!=='Enter')return;
