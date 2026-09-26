@@ -1,0 +1,5063 @@
+{
+ "announcements": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "title",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "content",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "type",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "info"
+    },
+    "short": false
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [],
+  "checks": [],
+  "indexes": [
+   {
+    "name": "idx_announcements_created",
+    "unique": false,
+    "cols": [
+     {
+      "col": "created_at",
+      "desc": true
+     }
+    ]
+   }
+  ]
+ },
+ "class_boss_participants": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "session_id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "display_name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "damage_dealt",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "hits",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "last_answered_index",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": -1
+    }
+   },
+   {
+    "name": "joined_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [
+   [
+    "session_id",
+    "username"
+   ]
+  ],
+  "fks": [
+   {
+    "cols": [
+     "session_id"
+    ],
+    "ref": "class_boss_sessions",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "CASCADE"
+   }
+  ],
+  "checks": [],
+  "indexes": [
+   {
+    "name": "idx_boss_participants_session",
+    "unique": false,
+    "cols": [
+     {
+      "col": "session_id",
+      "desc": false
+     }
+    ]
+   }
+  ]
+ },
+ "class_boss_sessions": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "code",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "teacher_username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "class_grade",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "boss_name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "Söz Divi"
+    },
+    "short": false
+   },
+   {
+    "name": "boss_max_hp",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 200
+    }
+   },
+   {
+    "name": "boss_hp",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 200
+    }
+   },
+   {
+    "name": "damage_per_correct",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 5
+    }
+   },
+   {
+    "name": "questions",
+    "kind": "json",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "status",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "waiting"
+    },
+    "short": true
+   },
+   {
+    "name": "defeated",
+    "kind": "bool",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": false
+    }
+   },
+   {
+    "name": "current_index",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": -1
+    }
+   },
+   {
+    "name": "question_started_at",
+    "kind": "datetime",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "xp_awarded",
+    "kind": "bool",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": false
+    }
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [
+   [
+    "code"
+   ]
+  ],
+  "fks": [],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "status",
+    "values": [
+     "waiting",
+     "question",
+     "reveal",
+     "finished"
+    ]
+   }
+  ],
+  "indexes": [
+   {
+    "name": "idx_boss_sessions_code",
+    "unique": false,
+    "cols": [
+     {
+      "col": "code",
+      "desc": false
+     }
+    ]
+   },
+   {
+    "name": "idx_boss_sessions_class",
+    "unique": false,
+    "cols": [
+     {
+      "col": "class_grade",
+      "desc": false
+     },
+     {
+      "col": "created_at",
+      "desc": true
+     }
+    ]
+   }
+  ]
+ },
+ "class_task_completions": {
+  "columns": [
+   {
+    "name": "task_id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "completed_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "task_id",
+   "username"
+  ],
+  "uniques": [],
+  "fks": [
+   {
+    "cols": [
+     "task_id"
+    ],
+    "ref": "class_tasks",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "CASCADE"
+   }
+  ],
+  "checks": [],
+  "indexes": []
+ },
+ "class_tasks": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "teacher_username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "class_grade",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "title",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "target_xp",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [],
+  "checks": [
+   {
+    "type": "regex",
+    "col": "class_grade",
+    "pattern": "^(1[01]|[1-9])[A-D]$",
+    "allowEmpty": false
+   },
+   {
+    "type": "len",
+    "col": "title",
+    "min": 1,
+    "max": 200
+   }
+  ],
+  "indexes": [
+   {
+    "name": "idx_class_tasks_class",
+    "unique": false,
+    "cols": [
+     {
+      "col": "class_grade",
+      "desc": false
+     },
+     {
+      "col": "created_at",
+      "desc": true
+     }
+    ]
+   }
+  ]
+ },
+ "community_words": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "en",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "az",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "ex",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "ex_az",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "tags",
+    "kind": "json",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": []
+    }
+   },
+   {
+    "name": "difficulty",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 2
+    }
+   },
+   {
+    "name": "added_by",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "added_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   },
+   {
+    "name": "source_submission_id",
+    "kind": "bigint",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [
+   {
+    "cols": [
+     "source_submission_id"
+    ],
+    "ref": "word_submissions",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "SET NULL"
+   }
+  ],
+  "checks": [],
+  "indexes": []
+ },
+ "cosmetics_catalog": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "type",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "icon",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "min_xp",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "sort_order",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "type",
+    "values": [
+     "frame",
+     "theme"
+    ]
+   }
+  ],
+  "indexes": []
+ },
+ "duels": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "p1_username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "p2_username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "status",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "pending"
+    },
+    "short": true
+   },
+   {
+    "name": "questions",
+    "kind": "json",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "p1_score",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "p1_progress",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "p1_finished_at",
+    "kind": "datetime",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "p2_score",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "p2_progress",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "p2_finished_at",
+    "kind": "datetime",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "winner_username",
+    "kind": "text",
+    "nullable": true,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "xp_awarded",
+    "kind": "bool",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": false
+    }
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   },
+   {
+    "name": "mode",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "normal"
+    },
+    "short": true
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "mode",
+    "values": [
+     "normal",
+     "sureli"
+    ]
+   },
+   {
+    "type": "enum",
+    "col": "status",
+    "values": [
+     "pending",
+     "active",
+     "declined",
+     "finished",
+     "cancelled"
+    ]
+   }
+  ],
+  "indexes": [
+   {
+    "name": "idx_duels_p1",
+    "unique": false,
+    "cols": [
+     {
+      "col": "p1_username",
+      "desc": false
+     },
+     {
+      "col": "created_at",
+      "desc": true
+     }
+    ]
+   },
+   {
+    "name": "idx_duels_p2",
+    "unique": false,
+    "cols": [
+     {
+      "col": "p2_username",
+      "desc": false
+     },
+     {
+      "col": "created_at",
+      "desc": true
+     }
+    ]
+   }
+  ]
+ },
+ "live_quiz_participants": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "session_id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "display_name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "score",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "last_answered_index",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": -1
+    }
+   },
+   {
+    "name": "last_correct",
+    "kind": "bool",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "last_points",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "joined_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [
+   [
+    "session_id",
+    "username"
+   ]
+  ],
+  "fks": [
+   {
+    "cols": [
+     "session_id"
+    ],
+    "ref": "live_quiz_sessions",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "CASCADE"
+   }
+  ],
+  "checks": [],
+  "indexes": [
+   {
+    "name": "idx_lq_participants_session",
+    "unique": false,
+    "cols": [
+     {
+      "col": "session_id",
+      "desc": false
+     }
+    ]
+   }
+  ]
+ },
+ "live_quiz_sessions": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "code",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "teacher_username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "class_grade",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "status",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "waiting"
+    },
+    "short": true
+   },
+   {
+    "name": "questions",
+    "kind": "json",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "current_index",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": -1
+    }
+   },
+   {
+    "name": "question_started_at",
+    "kind": "datetime",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   },
+   {
+    "name": "xp_awarded",
+    "kind": "bool",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": false
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [
+   [
+    "code"
+   ]
+  ],
+  "fks": [],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "status",
+    "values": [
+     "waiting",
+     "question",
+     "reveal",
+     "finished"
+    ]
+   }
+  ],
+  "indexes": [
+   {
+    "name": "idx_lq_sessions_code",
+    "unique": false,
+    "cols": [
+     {
+      "col": "code",
+      "desc": false
+     }
+    ]
+   },
+   {
+    "name": "idx_lq_sessions_class",
+    "unique": false,
+    "cols": [
+     {
+      "col": "class_grade",
+      "desc": false
+     },
+     {
+      "col": "created_at",
+      "desc": true
+     }
+    ]
+   }
+  ]
+ },
+ "newsletter_signups": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "email",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [],
+  "checks": [],
+  "indexes": [
+   {
+    "name": "idx_newsletter_email",
+    "unique": true,
+    "cols": [
+     {
+      "col": "email",
+      "desc": false,
+      "expr": "lower"
+     }
+    ]
+   }
+  ]
+ },
+ "profiles": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "uuid",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "display_name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "xp",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "level",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 1
+    }
+   },
+   {
+    "name": "streak",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "last_visit",
+    "kind": "text",
+    "nullable": true,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "learned",
+    "kind": "array",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": []
+    },
+    "elem": "text"
+   },
+   {
+    "name": "badges",
+    "kind": "array",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": []
+    },
+    "elem": "text"
+   },
+   {
+    "name": "role",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "user"
+    },
+    "short": true
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   },
+   {
+    "name": "updated_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   },
+   {
+    "name": "first_name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "last_name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "class_grade",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": true
+   },
+   {
+    "name": "teacher_class",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": true
+   },
+   {
+    "name": "days_active",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "equipped_frame",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "frame_none"
+    },
+    "short": false
+   },
+   {
+    "name": "equipped_theme",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "theme_default"
+    },
+    "short": false
+   },
+   {
+    "name": "weak_words",
+    "kind": "json",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": {}
+    }
+   },
+   {
+    "name": "games_played",
+    "kind": "json",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": {}
+    }
+   },
+   {
+    "name": "longest_streak",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "referred_by",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "phone",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [
+   [
+    "username"
+   ]
+  ],
+  "fks": [
+   {
+    "cols": [
+     "id"
+    ],
+    "ref": "users",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "CASCADE"
+   }
+  ],
+  "checks": [
+   {
+    "type": "regex",
+    "col": "class_grade",
+    "pattern": "^(1[01]|[1-9])[A-D]$",
+    "allowEmpty": true
+   },
+   {
+    "type": "enum",
+    "col": "role",
+    "values": [
+     "user",
+     "admin",
+     "teacher",
+     "director",
+     "mentor"
+    ]
+   },
+   {
+    "type": "regex",
+    "col": "username",
+    "pattern": "^[a-z0-9_]{3,20}$",
+    "allowEmpty": false
+   }
+  ],
+  "indexes": [
+   {
+    "name": "idx_profiles_xp",
+    "unique": false,
+    "cols": [
+     {
+      "col": "xp",
+      "desc": true
+     }
+    ]
+   },
+   {
+    "name": "idx_profiles_username",
+    "unique": false,
+    "cols": [
+     {
+      "col": "username",
+      "desc": false
+     }
+    ]
+   },
+   {
+    "name": "idx_profiles_role",
+    "unique": false,
+    "cols": [
+     {
+      "col": "role",
+      "desc": false
+     }
+    ]
+   },
+   {
+    "name": "idx_profiles_class_grade",
+    "unique": false,
+    "cols": [
+     {
+      "col": "class_grade",
+      "desc": false
+     }
+    ]
+   },
+   {
+    "name": "idx_profiles_teacher_class",
+    "unique": false,
+    "cols": [
+     {
+      "col": "teacher_class",
+      "desc": false
+     }
+    ]
+   }
+  ]
+ },
+ "school_achievements": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "title",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "description",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "achieved_on",
+    "kind": "date",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "image_url",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "created_by",
+    "kind": "uuid",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   },
+   {
+    "name": "category",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "Şagird nailiyyətləri"
+    },
+    "short": false
+   },
+   {
+    "name": "section",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "author",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "Məktəb rəhbərliyi"
+    },
+    "short": false
+   },
+   {
+    "name": "keywords",
+    "kind": "array",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": []
+    },
+    "elem": "text"
+   },
+   {
+    "name": "student_name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "class_name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [
+   {
+    "cols": [
+     "created_by"
+    ],
+    "ref": "users",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "NO ACTION"
+   }
+  ],
+  "checks": [
+   {
+    "type": "len",
+    "col": "title",
+    "min": 1,
+    "max": 200
+   }
+  ],
+  "indexes": [
+   {
+    "name": "idx_school_achievements_date",
+    "unique": false,
+    "cols": [
+     {
+      "col": "achieved_on",
+      "desc": true
+     }
+    ]
+   }
+  ]
+ },
+ "school_events": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "title",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "description",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "event_date",
+    "kind": "date",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "location",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "image_url",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "created_by",
+    "kind": "uuid",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   },
+   {
+    "name": "category",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "Tədbirlər"
+    },
+    "short": false
+   },
+   {
+    "name": "section",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "author",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "Məktəb rəhbərliyi"
+    },
+    "short": false
+   },
+   {
+    "name": "keywords",
+    "kind": "array",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": []
+    },
+    "elem": "text"
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [
+   {
+    "cols": [
+     "created_by"
+    ],
+    "ref": "users",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "NO ACTION"
+   }
+  ],
+  "checks": [
+   {
+    "type": "len",
+    "col": "title",
+    "min": 1,
+    "max": 200
+   }
+  ],
+  "indexes": [
+   {
+    "name": "idx_school_events_date",
+    "unique": false,
+    "cols": [
+     {
+      "col": "event_date",
+      "desc": true
+     }
+    ]
+   }
+  ]
+ },
+ "school_info": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "smallint",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 1
+    }
+   },
+   {
+    "name": "school_name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "about_text",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "address",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "phone",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "email",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "cover_image_url",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "updated_by",
+    "kind": "uuid",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "updated_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [
+   {
+    "cols": [
+     "updated_by"
+    ],
+    "ref": "users",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "NO ACTION"
+   }
+  ],
+  "checks": [
+   {
+    "type": "cmp",
+    "col": "id",
+    "op": "=",
+    "value": 1
+   }
+  ],
+  "indexes": []
+ },
+ "school_news": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "title",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "body",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "image_url",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "published",
+    "kind": "bool",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": true
+    }
+   },
+   {
+    "name": "created_by",
+    "kind": "uuid",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   },
+   {
+    "name": "category",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "Məktəb həyatı"
+    },
+    "short": true
+   },
+   {
+    "name": "section",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "author",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "Məktəb rəhbərliyi"
+    },
+    "short": false
+   },
+   {
+    "name": "keywords",
+    "kind": "array",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": []
+    },
+    "elem": "text"
+   },
+   {
+    "name": "published_at",
+    "kind": "date",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "today": true
+    }
+   },
+   {
+    "name": "gallery",
+    "kind": "array",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": []
+    },
+    "elem": "text"
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [
+   {
+    "cols": [
+     "created_by"
+    ],
+    "ref": "users",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "NO ACTION"
+   }
+  ],
+  "checks": [
+   {
+    "type": "len",
+    "col": "title",
+    "min": 1,
+    "max": 200
+   }
+  ],
+  "indexes": [
+   {
+    "name": "idx_school_news_created",
+    "unique": false,
+    "cols": [
+     {
+      "col": "published",
+      "desc": false
+     },
+     {
+      "col": "created_at",
+      "desc": true
+     }
+    ]
+   },
+   {
+    "name": "idx_school_news_category",
+    "unique": false,
+    "cols": [
+     {
+      "col": "category",
+      "desc": false
+     },
+     {
+      "col": "published_at",
+      "desc": true
+     }
+    ]
+   }
+  ]
+ },
+ "school_submissions": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "student_id",
+    "kind": "uuid",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "type",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "title",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "description",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "file_url",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "image_url",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "status",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "pending"
+    },
+    "short": true
+   },
+   {
+    "name": "admin_note",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "reviewed_by",
+    "kind": "uuid",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "reviewed_at",
+    "kind": "datetime",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [
+   {
+    "cols": [
+     "reviewed_by"
+    ],
+    "ref": "users",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "NO ACTION"
+   },
+   {
+    "cols": [
+     "student_id"
+    ],
+    "ref": "users",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "CASCADE"
+   }
+  ],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "status",
+    "values": [
+     "pending",
+     "approved",
+     "rejected"
+    ]
+   },
+   {
+    "type": "len",
+    "col": "title",
+    "min": 1,
+    "max": 200
+   },
+   {
+    "type": "enum",
+    "col": "type",
+    "values": [
+     "project",
+     "idea",
+     "startup"
+    ]
+   }
+  ],
+  "indexes": [
+   {
+    "name": "idx_school_submissions_student",
+    "unique": false,
+    "cols": [
+     {
+      "col": "student_id",
+      "desc": false
+     },
+     {
+      "col": "created_at",
+      "desc": true
+     }
+    ]
+   },
+   {
+    "name": "idx_school_submissions_status",
+    "unique": false,
+    "cols": [
+     {
+      "col": "type",
+      "desc": false
+     },
+     {
+      "col": "status",
+      "desc": false
+     },
+     {
+      "col": "created_at",
+      "desc": true
+     }
+    ]
+   }
+  ]
+ },
+ "school_teachers": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "full_name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "subject",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "photo_url",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "bio",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "sort_order",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "created_by",
+    "kind": "uuid",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [
+   {
+    "cols": [
+     "created_by"
+    ],
+    "ref": "users",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "NO ACTION"
+   }
+  ],
+  "checks": [
+   {
+    "type": "len",
+    "col": "full_name",
+    "min": 1,
+    "max": 120
+   }
+  ],
+  "indexes": [
+   {
+    "name": "idx_school_teachers_sort",
+    "unique": false,
+    "cols": [
+     {
+      "col": "sort_order",
+      "desc": false
+     },
+     {
+      "col": "full_name",
+      "desc": false
+     }
+    ]
+   }
+  ]
+ },
+ "ss_achievements": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "code",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "title",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "detail",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "icon",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "🏆"
+    },
+    "short": false
+   },
+   {
+    "name": "module",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "world"
+    },
+    "short": true
+   },
+   {
+    "name": "ref_id",
+    "kind": "bigint",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "module",
+    "values": [
+     "world",
+     "bank",
+     "startup",
+     "problem",
+     "humanity",
+     "olympics"
+    ]
+   }
+  ],
+  "indexes": [
+   {
+    "name": "ss_achievements_user_idx",
+    "unique": false,
+    "cols": [
+     {
+      "col": "username",
+      "desc": false
+     },
+     {
+      "col": "created_at",
+      "desc": true
+     }
+    ]
+   }
+  ]
+ },
+ "ss_challenges": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "scope",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "world"
+    },
+    "short": true
+   },
+   {
+    "name": "title",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "slug",
+    "kind": "text",
+    "nullable": true,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "category",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "icon",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "🌍"
+    },
+    "short": false
+   },
+   {
+    "name": "summary",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "problem",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "why",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "research",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "approaches",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "difficulty",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "orta"
+    },
+    "short": true
+   },
+   {
+    "name": "points",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 50
+    }
+   },
+   {
+    "name": "deadline",
+    "kind": "date",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "status",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "open"
+    },
+    "short": true
+   },
+   {
+    "name": "created_by",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [
+   [
+    "slug"
+   ]
+  ],
+  "fks": [],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "difficulty",
+    "values": [
+     "asan",
+     "orta",
+     "çətin"
+    ]
+   },
+   {
+    "type": "enum",
+    "col": "scope",
+    "values": [
+     "world",
+     "humanity"
+    ]
+   },
+   {
+    "type": "enum",
+    "col": "status",
+    "values": [
+     "open",
+     "judging",
+     "closed"
+    ]
+   }
+  ],
+  "indexes": []
+ },
+ "ss_hall_of_fame": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "season",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "category",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "display_name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "class_grade",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "medal",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "score",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "note",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "medal",
+    "values": [
+     "gold",
+     "silver",
+     "bronze"
+    ]
+   }
+  ],
+  "indexes": []
+ },
+ "ss_humanity_projects": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "challenge_id",
+    "kind": "bigint",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "title",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "category",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "author",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "team_id",
+    "kind": "bigint",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "research",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "idea",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "solution",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "prototype",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "link",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "stage",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "research"
+    },
+    "short": true
+   },
+   {
+    "name": "status",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "active"
+    },
+    "short": true
+   },
+   {
+    "name": "impact_points",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [
+   {
+    "cols": [
+     "challenge_id"
+    ],
+    "ref": "ss_challenges",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "SET NULL"
+   },
+   {
+    "cols": [
+     "team_id"
+    ],
+    "ref": "ss_teams",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "SET NULL"
+   }
+  ],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "stage",
+    "values": [
+     "research",
+     "idea",
+     "team",
+     "solution",
+     "prototype",
+     "presentation"
+    ]
+   },
+   {
+    "type": "enum",
+    "col": "status",
+    "values": [
+     "active",
+     "completed",
+     "featured",
+     "archived"
+    ]
+   }
+  ],
+  "indexes": []
+ },
+ "ss_mentor_feedback": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "startup_id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "mentor",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "stage",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "verdict",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "comment"
+    },
+    "short": true
+   },
+   {
+    "name": "body",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [
+   {
+    "cols": [
+     "startup_id"
+    ],
+    "ref": "ss_startups",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "CASCADE"
+   }
+  ],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "verdict",
+    "values": [
+     "comment",
+     "approved",
+     "changes",
+     "rejected"
+    ]
+   }
+  ],
+  "indexes": []
+ },
+ "ss_olympics_events": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "season",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "205 OLYMPICS 2026"
+    },
+    "short": false
+   },
+   {
+    "name": "category",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "icon",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "🏅"
+    },
+    "short": false
+   },
+   {
+    "name": "stage",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "qualification"
+    },
+    "short": true
+   },
+   {
+    "name": "status",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "upcoming"
+    },
+    "short": true
+   },
+   {
+    "name": "starts_at",
+    "kind": "datetime",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "duration_min",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 15
+    }
+   },
+   {
+    "name": "question_count",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 12
+    }
+   },
+   {
+    "name": "description",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "created_by",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "stage",
+    "values": [
+     "qualification",
+     "class",
+     "grade",
+     "final",
+     "championship"
+    ]
+   },
+   {
+    "type": "enum",
+    "col": "status",
+    "values": [
+     "upcoming",
+     "live",
+     "finished"
+    ]
+   }
+  ],
+  "indexes": []
+ },
+ "ss_olympics_results": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "event_id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "class_grade",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "score",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "accuracy",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "best_combo",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "duration_s",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "medal",
+    "kind": "text",
+    "nullable": true,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "rank",
+    "kind": "int",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [
+   [
+    "event_id",
+    "username"
+   ]
+  ],
+  "fks": [
+   {
+    "cols": [
+     "event_id"
+    ],
+    "ref": "ss_olympics_events",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "CASCADE"
+   }
+  ],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "medal",
+    "values": [
+     "gold",
+     "silver",
+     "bronze"
+    ]
+   }
+  ],
+  "indexes": [
+   {
+    "name": "ss_olympics_results_event_idx",
+    "unique": false,
+    "cols": [
+     {
+      "col": "event_id",
+      "desc": false
+     },
+     {
+      "col": "score",
+      "desc": true
+     }
+    ]
+   }
+  ]
+ },
+ "ss_points_ledger": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "amount",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "reason",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "source",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "system"
+    },
+    "short": true
+   },
+   {
+    "name": "ref_id",
+    "kind": "bigint",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "source",
+    "values": [
+     "system",
+     "quiz",
+     "challenge",
+     "project",
+     "startup",
+     "olympics",
+     "problem",
+     "help",
+     "teacher",
+     "reward",
+     "admin"
+    ]
+   }
+  ],
+  "indexes": [
+   {
+    "name": "ss_points_user_idx",
+    "unique": false,
+    "cols": [
+     {
+      "col": "username",
+      "desc": false
+     },
+     {
+      "col": "created_at",
+      "desc": true
+     }
+    ]
+   }
+  ]
+ },
+ "ss_problems": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "title",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "body",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "category",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "Məktəb həyatı"
+    },
+    "short": false
+   },
+   {
+    "name": "difficulty",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "orta"
+    },
+    "short": true
+   },
+   {
+    "name": "status",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "open"
+    },
+    "short": true
+   },
+   {
+    "name": "points",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 75
+    }
+   },
+   {
+    "name": "created_by",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "deadline",
+    "kind": "date",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "solved_by",
+    "kind": "array",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": []
+    },
+    "elem": "text"
+   },
+   {
+    "name": "solved_at",
+    "kind": "datetime",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "difficulty",
+    "values": [
+     "asan",
+     "orta",
+     "çətin"
+    ]
+   },
+   {
+    "type": "enum",
+    "col": "status",
+    "values": [
+     "open",
+     "progress",
+     "solved",
+     "implemented"
+    ]
+   }
+  ],
+  "indexes": []
+ },
+ "ss_reward_claims": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "reward_id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [
+   [
+    "username",
+    "reward_id"
+   ]
+  ],
+  "fks": [
+   {
+    "cols": [
+     "reward_id"
+    ],
+    "ref": "ss_rewards",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "CASCADE"
+   }
+  ],
+  "checks": [],
+  "indexes": []
+ },
+ "ss_rewards": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "code",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "description",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "icon",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "🎁"
+    },
+    "short": false
+   },
+   {
+    "name": "cost",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "kind",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "badge"
+    },
+    "short": true
+   },
+   {
+    "name": "stock",
+    "kind": "int",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "active",
+    "kind": "bool",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": true
+    }
+   },
+   {
+    "name": "sort_order",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [
+   [
+    "code"
+   ]
+  ],
+  "fks": [],
+  "checks": [
+   {
+    "type": "cmp",
+    "col": "cost",
+    "op": ">=",
+    "value": 0
+   },
+   {
+    "type": "enum",
+    "col": "kind",
+    "values": [
+     "badge",
+     "theme",
+     "booster",
+     "rank",
+     "pass",
+     "frame"
+    ]
+   }
+  ],
+  "indexes": []
+ },
+ "ss_schools": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "country",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "country_code",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "city",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "lat",
+    "kind": "decimal",
+    "nullable": true,
+    "identity": false,
+    "default": null,
+    "precision": [
+     6,
+     3
+    ]
+   },
+   {
+    "name": "lng",
+    "kind": "decimal",
+    "nullable": true,
+    "identity": false,
+    "default": null,
+    "precision": [
+     6,
+     3
+    ]
+   },
+   {
+    "name": "student_count",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "status",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "pending"
+    },
+    "short": true
+   },
+   {
+    "name": "website",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "note",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "is_home",
+    "kind": "bool",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": false
+    }
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "status",
+    "values": [
+     "connected",
+     "pending",
+     "invited"
+    ]
+   }
+  ],
+  "indexes": []
+ },
+ "ss_solutions": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "problem_id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "author",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "team_id",
+    "kind": "bigint",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "title",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "idea",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "solution",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "prototype",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "stage",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "idea"
+    },
+    "short": true
+   },
+   {
+    "name": "status",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "submitted"
+    },
+    "short": true
+   },
+   {
+    "name": "feedback",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [
+   {
+    "cols": [
+     "problem_id"
+    ],
+    "ref": "ss_problems",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "CASCADE"
+   },
+   {
+    "cols": [
+     "team_id"
+    ],
+    "ref": "ss_teams",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "SET NULL"
+   }
+  ],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "stage",
+    "values": [
+     "idea",
+     "team",
+     "solution",
+     "prototype",
+     "review",
+     "implemented"
+    ]
+   },
+   {
+    "type": "enum",
+    "col": "status",
+    "values": [
+     "submitted",
+     "accepted",
+     "implemented",
+     "rejected"
+    ]
+   }
+  ],
+  "indexes": []
+ },
+ "ss_startup_votes": {
+  "columns": [
+   {
+    "name": "startup_id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "startup_id",
+   "username"
+  ],
+  "uniques": [],
+  "fks": [
+   {
+    "cols": [
+     "startup_id"
+    ],
+    "ref": "ss_startups",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "CASCADE"
+   }
+  ],
+  "checks": [],
+  "indexes": []
+ },
+ "ss_startups": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "tagline",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "problem",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "solution",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "target_users",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "category",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "description",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "logo_url",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "deck_url",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "demo_url",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "founder",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "team_id",
+    "kind": "bigint",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "stage",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "idea"
+    },
+    "short": true
+   },
+   {
+    "name": "status",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "active"
+    },
+    "short": true
+   },
+   {
+    "name": "votes",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "demo_day",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   },
+   {
+    "name": "updated_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [
+   {
+    "cols": [
+     "team_id"
+    ],
+    "ref": "ss_teams",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "SET NULL"
+   }
+  ],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "stage",
+    "values": [
+     "idea",
+     "validation",
+     "team",
+     "prototype",
+     "mvp",
+     "mentor",
+     "pitch",
+     "demoday"
+    ]
+   },
+   {
+    "type": "enum",
+    "col": "status",
+    "values": [
+     "active",
+     "paused",
+     "graduated",
+     "archived"
+    ]
+   }
+  ],
+  "indexes": []
+ },
+ "ss_submissions": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "challenge_id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "team_id",
+    "kind": "bigint",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "author",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "title",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "description",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "link",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "image_url",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "status",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "submitted"
+    },
+    "short": true
+   },
+   {
+    "name": "score",
+    "kind": "int",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "feedback",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [
+   {
+    "cols": [
+     "challenge_id"
+    ],
+    "ref": "ss_challenges",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "CASCADE"
+   },
+   {
+    "cols": [
+     "team_id"
+    ],
+    "ref": "ss_teams",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "SET NULL"
+   }
+  ],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "status",
+    "values": [
+     "submitted",
+     "reviewed",
+     "winner",
+     "rejected"
+    ]
+   }
+  ],
+  "indexes": []
+ },
+ "ss_teams": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "purpose",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "challenge"
+    },
+    "short": true
+   },
+   {
+    "name": "ref_id",
+    "kind": "bigint",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "owner",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "members",
+    "kind": "array",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": []
+    },
+    "elem": "text"
+   },
+   {
+    "name": "school_ids",
+    "kind": "array",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": []
+    },
+    "elem": "bigint"
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "purpose",
+    "values": [
+     "challenge",
+     "startup",
+     "problem",
+     "humanity",
+     "olympics"
+    ]
+   }
+  ],
+  "indexes": []
+ },
+ "stories": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "user_id",
+    "kind": "uuid",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "display_name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "text",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "likes",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [
+   {
+    "cols": [
+     "user_id"
+    ],
+    "ref": "users",
+    "refcols": [
+     "id"
+    ],
+    "ondelete": "CASCADE"
+   }
+  ],
+  "checks": [
+   {
+    "type": "len",
+    "col": "text",
+    "min": 1,
+    "max": 2000
+   }
+  ],
+  "indexes": [
+   {
+    "name": "idx_stories_user",
+    "unique": false,
+    "cols": [
+     {
+      "col": "user_id",
+      "desc": false
+     }
+    ]
+   },
+   {
+    "name": "idx_stories_created",
+    "unique": false,
+    "cols": [
+     {
+      "col": "created_at",
+      "desc": true
+     }
+    ]
+   }
+  ]
+ },
+ "support_messages": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "sender_role",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "sender_name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "body",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "read",
+    "kind": "bool",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": false
+    }
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [],
+  "checks": [
+   {
+    "type": "len",
+    "col": "body",
+    "min": 1,
+    "max": 1000
+   },
+   {
+    "type": "enum",
+    "col": "sender_role",
+    "values": [
+     "user",
+     "admin",
+     "director",
+     "teacher"
+    ]
+   }
+  ],
+  "indexes": [
+   {
+    "name": "idx_support_messages_username",
+    "unique": false,
+    "cols": [
+     {
+      "col": "username",
+      "desc": false
+     },
+     {
+      "col": "created_at",
+      "desc": false
+     }
+    ]
+   }
+  ]
+ },
+ "teacher_lessons": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "teacher_username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "title",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "slides",
+    "kind": "json",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": []
+    }
+   },
+   {
+    "name": "created_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   },
+   {
+    "name": "updated_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [],
+  "checks": [],
+  "indexes": [
+   {
+    "name": "idx_teacher_lessons_owner",
+    "unique": false,
+    "cols": [
+     {
+      "col": "teacher_username",
+      "desc": false
+     },
+     {
+      "col": "created_at",
+      "desc": true
+     }
+    ]
+   }
+  ]
+ },
+ "word_submissions": {
+  "columns": [
+   {
+    "name": "id",
+    "kind": "bigint",
+    "nullable": false,
+    "identity": true,
+    "default": null
+   },
+   {
+    "name": "username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "display_name",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "word",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "definition",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": false
+   },
+   {
+    "name": "example",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": ""
+    },
+    "short": false
+   },
+   {
+    "name": "status",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": "pending"
+    },
+    "short": true
+   },
+   {
+    "name": "xp_awarded",
+    "kind": "bool",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": false
+    }
+   },
+   {
+    "name": "submitted_at",
+    "kind": "datetime",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "now": true
+    }
+   },
+   {
+    "name": "reviewed_at",
+    "kind": "datetime",
+    "nullable": true,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "reviewed_by",
+    "kind": "text",
+    "nullable": true,
+    "identity": false,
+    "default": null,
+    "short": false
+   }
+  ],
+  "pk": [
+   "id"
+  ],
+  "uniques": [],
+  "fks": [],
+  "checks": [
+   {
+    "type": "enum",
+    "col": "status",
+    "values": [
+     "pending",
+     "flagged",
+     "approved",
+     "rejected"
+    ]
+   }
+  ],
+  "indexes": [
+   {
+    "name": "idx_word_sub_username",
+    "unique": false,
+    "cols": [
+     {
+      "col": "username",
+      "desc": false
+     },
+     {
+      "col": "submitted_at",
+      "desc": true
+     }
+    ]
+   },
+   {
+    "name": "idx_word_sub_status",
+    "unique": false,
+    "cols": [
+     {
+      "col": "status",
+      "desc": false
+     },
+     {
+      "col": "submitted_at",
+      "desc": true
+     }
+    ]
+   }
+  ]
+ },
+ "xp_log": {
+  "columns": [
+   {
+    "name": "username",
+    "kind": "text",
+    "nullable": false,
+    "identity": false,
+    "default": null,
+    "short": true
+   },
+   {
+    "name": "log_date",
+    "kind": "date",
+    "nullable": false,
+    "identity": false,
+    "default": null
+   },
+   {
+    "name": "xp_gained",
+    "kind": "int",
+    "nullable": false,
+    "identity": false,
+    "default": {
+     "value": 0
+    }
+   }
+  ],
+  "pk": [
+   "username",
+   "log_date"
+  ],
+  "uniques": [],
+  "fks": [],
+  "checks": [],
+  "indexes": []
+ }
+}

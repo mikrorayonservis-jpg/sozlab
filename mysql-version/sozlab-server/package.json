@@ -1,0 +1,11 @@
+{
+  "name": "sozlab-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SözLab — Node.js + MySQL server (cPanel üçün)",
+  "main": "app.js",
+  "scripts": { "start": "node app.js" },
+  "engines": { "node": ">=18" },
+  "dependencies": { "mysql2": "^3.11.5" },
+  "optionalDependencies": { "nodemailer": "^6.9.16" }
+}

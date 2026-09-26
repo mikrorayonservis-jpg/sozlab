@@ -6,12 +6,12 @@
 <title>SözLab – Azərbaycan Dili Platforması</title>
 <meta name="description" content="SözLab ilə Azərbaycan dilini əyləncəli oyunlar, 2000-dən çox sözlük vahidi, əlifba məşqləri və günlük tapşırıqlarla öyrənin. Söz ehtiyatınızı artırın, nailiyyətlər qazanın.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://sozlab.example.com/">
+<link rel="canonical" href="https://sozlab205.vercel.app/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="SözLab – Azərbaycan Dili Platforması">
 <meta property="og:description" content="Azərbaycan dilini öyrənmək üçün oyunlaşdırılmış lüğət, oyunlar və AI köməkçi.">
 <meta property="og:locale" content="az_AZ">
-<meta property="og:url" content="https://sozlab.example.com/">
+<meta property="og:url" content="https://sozlab205.vercel.app/">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SözLab – Azərbaycan Dili Platforması">
 <meta name="twitter:description" content="Azərbaycan dilini öyrənmək üçün oyunlaşdırılmış lüğət, oyunlar və AI köməkçi.">
@@ -29,7 +29,7 @@
 <style>
 :root{
   --bg:#0a0a0f;--bg2:#111118;--card:#16161f;--card2:#1c1c28;
-  --border:#2a2a3a;--border2:#333348;--text:#e8e8f0;--muted:#6b6b85;
+  --border:#2a2a3a;--border2:#333348;--text:#e8e8f0;--muted:#9090a8;
   --gold:#f0c040;--gold2:#c89820;--teal:#40d9c0;--teal2:#219080;--purple:#7c5cff;
   --purple2:#5a3fd6;--red:#e05555;--red2:#a83232;--green:#40c080;--green2:#248a56;
   --blue:#4098f0;--blue2:#2568b8;--pink:#ff5ca8;--pink2:#c93f82;
@@ -101,7 +101,7 @@ input,textarea{font-family:var(--font-body)}
 .login-stats{display:flex;justify-content:center;gap:0;margin-top:4px}
 .l-stat{flex:1;text-align:center}
 .l-stat .num{font-family:var(--font-head);font-size:1.3rem;font-weight:700;color:var(--gold)}
-.l-stat .lbl{font-size:.68rem;color:var(--muted)}
+.l-stat .lbl{font-size:.72rem;color:var(--muted)}
 .l-div{width:1px;background:var(--border);margin:4px 0}
 
 /* ── MAIN DASHBOARD ── */
@@ -115,7 +115,7 @@ input,textarea{font-family:var(--font-body)}
 .top-stat{display:flex;align-items:center;gap:4px;font-size:.82rem;color:var(--muted);
   background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 10px}
 .top-stat span{color:var(--gold);font-weight:700;font-family:var(--font-head)}
-.avatar-btn{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--teal));
+.avatar-btn{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,color-mix(in srgb,var(--purple) 82%,#000),color-mix(in srgb,var(--teal) 52%,#000));
   border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
   font-weight:700;font-size:.95rem;color:#fff;font-family:var(--font-head);flex-shrink:0}
 .main-content{flex:1;overflow-y:auto;padding:14px 16px 80px;-webkit-overflow-scrolling:touch}
@@ -126,10 +126,10 @@ input,textarea{font-family:var(--font-body)}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
   padding:6px 2px;border:none;background:transparent;color:var(--muted);
   cursor:pointer;transition:.15s;border-radius:14px;min-width:0}
-.nav-btn.active{color:#fff;background:linear-gradient(135deg,var(--purple),var(--purple2));
+.nav-btn.active{color:#fff;background:linear-gradient(135deg,color-mix(in srgb,var(--purple) 82%,#000),color-mix(in srgb,var(--purple2) 88%,#000));
   box-shadow:0 4px 14px -4px rgba(124,92,255,.7)}
 .nav-btn .icon{font-size:1.15rem}
-.nav-btn .lbl{font-size:.58rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center}
+.nav-btn .lbl{font-size:.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center}
 .nav-btn-desktop{display:none}
 .sidebar-streak-card{display:none}
 .topbar-search-wrap{display:none}
@@ -176,7 +176,7 @@ input,textarea{font-family:var(--font-body)}
 .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px;text-align:center}
 .stat-card .val{font-family:var(--font-head);font-size:1.3rem;font-weight:800;color:var(--gold)}
-.stat-card .lbl{font-size:.68rem;color:var(--muted);margin-top:2px}
+.stat-card .lbl{font-size:.72rem;color:var(--muted);margin-top:2px}
 
 /* ── ANNOUNCE ── */
 .announce-card{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);
@@ -199,7 +199,7 @@ input,textarea{font-family:var(--font-body)}
   padding:10px 6px;text-align:center;cursor:pointer;transition:.2s}
 .alpha-letter:hover,.alpha-letter.active{border-color:var(--gold);background:#1e1e10}
 .alpha-az{font-family:var(--font-head);font-size:1.1rem;font-weight:700;color:var(--gold)}
-.alpha-name{font-size:.58rem;color:var(--muted);margin-top:1px}
+.alpha-name{font-size:.68rem;color:var(--muted);margin-top:1px}
 .alpha-detail{margin-top:12px;padding:14px;background:var(--bg2);border-radius:var(--radius-sm);display:none}
 .alpha-detail.show{display:block}
 .alpha-d-letter{font-family:var(--font-head);font-size:2rem;font-weight:800;color:var(--gold);margin-bottom:6px}
@@ -229,7 +229,7 @@ input,textarea{font-family:var(--font-body)}
 .game-xp{font-size:.68rem;color:var(--gold);font-weight:600}
 .game-arrow-btn{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
   background:linear-gradient(135deg,var(--tc),var(--tc-dark));color:#fff;font-size:.7rem;box-shadow:0 4px 12px -3px var(--tc-glow)}
-.game-difficulty{font-size:.6rem;background:var(--card2);border:1px solid var(--border);border-radius:20px;
+.game-difficulty{font-size:.68rem;background:var(--card2);border:1px solid var(--border);border-radius:20px;
   padding:2px 8px;color:var(--muted);white-space:nowrap;font-weight:600;flex-shrink:0}
 
 /* ── GAME AREA ── */
@@ -380,7 +380,7 @@ input,textarea{font-family:var(--font-body)}
 /* ── CREATIVE ── */
 .story-prompt{background:linear-gradient(135deg,#1a1028,#0f1a28);border:1px solid var(--border2);
   border-radius:var(--radius);padding:15px;margin-bottom:13px}
-.story-prompt-label{font-size:.68rem;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.story-prompt-label{font-size:.7rem;color:color-mix(in srgb,var(--purple) 65%,#fff);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
 .story-prompt-text{font-size:.92rem;font-weight:500;line-height:1.5}
 textarea.story-area{width:100%;min-height:120px;padding:13px;background:var(--card);border:1px solid var(--border);
   border-radius:var(--radius-sm);color:var(--text);font-size:.9rem;outline:none;resize:vertical;line-height:1.6;margin-bottom:10px}
@@ -389,7 +389,7 @@ textarea.story-area:focus{border-color:var(--purple)}
 .story-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
   padding:14px 16px;margin-bottom:9px}
 .story-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.story-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--teal));
+.story-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,color-mix(in srgb,var(--purple) 82%,#000),color-mix(in srgb,var(--teal) 52%,#000));
   display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
 .story-author{font-weight:600;font-size:.82rem}
 .story-date{font-size:.68rem;color:var(--muted);margin-left:auto}
@@ -402,7 +402,7 @@ textarea.story-area:focus{border-color:var(--purple)}
 .lb-rank{min-width:28px;text-align:center;font-family:var(--font-head);font-weight:700;color:var(--muted);font-size:.9rem}
 .lb-rank.top1{font-size:1.2rem}
 .lb-rank.top2,.lb-rank.top3{font-size:1.1rem}
-.lb-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--teal));
+.lb-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,color-mix(in srgb,var(--purple) 82%,#000),color-mix(in srgb,var(--teal) 52%,#000));
   display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;flex-shrink:0}
 .lb-name{font-size:.88rem;font-weight:600}
 .lb-sub{font-size:.7rem;color:var(--muted)}
@@ -415,7 +415,7 @@ textarea.story-area:focus{border-color:var(--purple)}
 /* ── PROFILE ── */
 .profile-header{background:linear-gradient(135deg,#1a1028,#0a1a20);border:1px solid var(--border2);
   border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:14px}
-.profile-big-av{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--teal));
+.profile-big-av{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,color-mix(in srgb,var(--purple) 82%,#000),color-mix(in srgb,var(--teal) 52%,#000));
   display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:1.6rem;font-weight:800;
   margin:0 auto 10px}
 .profile-name{font-family:var(--font-head);font-size:1.2rem;font-weight:700}
@@ -528,14 +528,14 @@ textarea.admin-input{resize:vertical;min-height:80px;line-height:1.5}
 
 .admin-user-row{display:flex;align-items:center;gap:10px;padding:11px 13px;
   background:var(--card2);border-radius:var(--radius-sm);margin-bottom:7px}
-.admin-user-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--teal));
+.admin-user-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,color-mix(in srgb,var(--purple) 82%,#000),color-mix(in srgb,var(--teal) 52%,#000));
   display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;flex-shrink:0}
 .admin-user-info{flex:1;min-width:0}
 .admin-user-name{font-size:.85rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .admin-user-sub{font-size:.7rem;color:var(--muted);margin-top:1px}
 .admin-user-xp{font-size:.8rem;color:var(--gold);font-weight:600;white-space:nowrap}
 .admin-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:700;
-  margin-left:6px;background:var(--purple);color:#fff}
+  margin-left:6px;background:color-mix(in srgb,var(--purple) 82%,#000);color:#fff}
 .admin-action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .admin-btn-sm{padding:7px 14px;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:.78rem;font-weight:600;transition:.15s}
 .admin-btn-del{background:#2a0a0a;color:var(--red);border:1px solid var(--red)}
@@ -554,7 +554,7 @@ textarea.admin-input{resize:vertical;min-height:80px;line-height:1.5}
 /* ── DƏSTƏK SÖHBƏTİ EKRANI ── */
 .schat-header{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--card);
   border-bottom:1px solid var(--border);flex-shrink:0}
-.schat-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--teal));
+.schat-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,color-mix(in srgb,var(--purple) 82%,#000),color-mix(in srgb,var(--teal) 52%,#000));
   display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;color:#fff}
 .schat-header-info{flex:1;min-width:0}
 .schat-name{font-family:var(--font-head);font-weight:800;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -650,9 +650,9 @@ textarea.admin-input{resize:vertical;min-height:80px;line-height:1.5}
   background:var(--card2);border:1px solid var(--border);border-radius:var(--radius);
   padding:12px 10px;min-width:72px;text-align:center;transition:.2s}
 .badge-item.unlocked{border-color:var(--gold);background:#1e1e08}
-.badge-item.locked{opacity:.4;filter:grayscale(1)}
+.badge-item.locked{opacity:.75;filter:grayscale(1)}
 .badge-icon{font-size:1.6rem}
-.badge-name{font-size:.65rem;font-weight:600;color:var(--muted)}
+.badge-name{font-size:.7rem;font-weight:600;color:var(--muted)}
 .badge-item.unlocked .badge-name{color:var(--gold)}
 
 /* ── THEME TOGGLE ── */
@@ -688,7 +688,8 @@ body.light-mode .theme-toggle::after{left:19px;background:#fff}
 @media(max-width:380px){
   .games-grid{grid-template-columns:repeat(2,1fr)}
   .admin-stats-grid{grid-template-columns:repeat(2,1fr)}
-  .nav-btn .lbl{font-size:.52rem}
+  .nav-btn .lbl{font-size:.64rem}
+  .nav-btn .lbl[data-short]::after{font-size:.64rem}
   .login-card{padding:24px 18px}
 }
 @media(min-width:600px){
@@ -738,6 +739,8 @@ body.light-mode .theme-toggle::after{left:19px;background:#fff}
     color:var(--gold);box-shadow:inset 0 0 0 1px rgba(124,92,255,.4),0 0 18px -6px rgba(124,92,255,.6)}
   .nav-btn .icon{font-size:1.3rem}
   .nav-btn .lbl{font-size:.86rem;font-weight:600;text-align:left;width:auto;overflow:visible}
+  .nav-btn .lbl[data-short]{font-size:.86rem}
+  .nav-btn .lbl[data-short]::after{content:none}
   .nav-btn-desktop{display:flex}
   .sidebar-streak-card{display:block;margin-top:auto;position:relative;z-index:1;padding:16px 14px;
     background:color-mix(in srgb,var(--card2) 80%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
@@ -837,7 +840,7 @@ body.is-standalone .site-footer{display:none}
 .cosmetic-item.locked{opacity:.4;filter:grayscale(1);cursor:not-allowed}
 .cosmetic-item.equipped{border-color:var(--gold);background:#1e1e08}
 .cosmetic-icon{font-size:1.6rem}
-.cosmetic-name{font-size:.65rem;font-weight:600;color:var(--muted)}
+.cosmetic-name{font-size:.7rem;font-weight:600;color:var(--muted)}
 .cosmetic-item.equipped .cosmetic-name{color:var(--gold)}
 .cosmetic-req{font-size:.6rem;color:var(--muted)}
 
@@ -1023,6 +1026,7 @@ body.m205-guest #guestExitBtn{display:block}
    tünd temasının açıq rəngini (#e8e8f0) alırdı və ağ fonda oxunmurdu (1.2:1),
    əsas düymənin fonu isə tamamilə şəffaf olurdu. */
 .m205-root,.ss-modal{
+  --muted:#6b6b85;   /* 205 portalı açıq fondadır — tünd "muted" burada qalır */
   --m-primary:#4F46E5;--m-primary-hover:#6366F1;--m-primary-light:#EEF2FF;
   --m-navy-950:#07152F;--m-navy-900:#0B1F3A;--m-navy-800:#102A4C;--m-navy-700:#183A63;
   --m-white:#FFFFFF;--m-bg:#F5F7FB;--m-surface:#FFFFFF;--m-border:#E2E8F0;
@@ -1991,6 +1995,16 @@ body.kiosk-on{overflow:hidden}
 @media(max-width:520px){
   .ss-eyebrow,.ss-stat span,.ss-stat small,.ss-pipe-lbl,.ss-def dt,.ss-chip,.ss-tx-txt span,.ss-rank small,.ss-me-note,.ss .ss-sub-note{font-size:.72rem}
 }
+
+
+/* Telefonda uzun menyu adları qısa yazılır (tam ad ekran oxuyucusu üçün qalır) */
+.nav-btn .lbl[data-short]{font-size:0}
+.nav-btn .lbl[data-short]::after{content:attr(data-short);font-size:.7rem}
+@media(max-width:380px){.nav-btn .lbl[data-short]::after{font-size:.64rem}}
+@media(min-width:1180px){.nav-btn .lbl[data-short]{font-size:.86rem}.nav-btn .lbl[data-short]::after{content:none}}
+/* ── Oxunaqlılıq (2026-09): ağ mətn rəngli fonda azı 4.5:1 olsun — hər mövzu rəngində işləyir ── */
+.admin-tab.active,.type-btn.active,.vf-btn.active,.duel-mode-btn.active{background:color-mix(in srgb,var(--purple) 82%,#000);border-color:color-mix(in srgb,var(--purple) 82%,#000)}
+.st-btn.primary{background:linear-gradient(135deg,color-mix(in srgb,var(--purple) 82%,#000),color-mix(in srgb,var(--purple2) 88%,#000))}
 </style>
 </head>
 <body>
@@ -2208,13 +2222,13 @@ setTimeout(function(){
     <button class="nav-btn" data-view="Alpha"><span class="icon">🔤</span><span class="lbl">Əlifba</span></button>
     <button class="nav-btn" data-view="Games"><span class="icon">🎮</span><span class="lbl">Oyunlar</span></button>
     <button class="nav-btn" data-view="Vocab"><span class="icon">📚</span><span class="lbl">Lüğət</span></button>
-    <button class="nav-btn" data-view="Studio"><span class="icon">✨</span><span class="lbl">Özünü İnkişaf Etdir</span></button>
-    <button class="nav-btn" data-view="Derslikler"><span class="icon">📖</span><span class="lbl">Dərsliklər</span></button>
+    <button class="nav-btn" data-view="Studio"><span class="icon">✨</span><span class="lbl" data-short="İnkişaf">Özünü İnkişaf Etdir</span></button>
+    <button class="nav-btn" data-view="Derslikler"><span class="icon">📖</span><span class="lbl" data-short="Dərslik">Dərsliklər</span></button>
     <button class="nav-btn nav-btn-desktop" data-view="Leaderboard"><span class="icon">🏆</span><span class="lbl">Liderlər</span></button>
     <button class="nav-btn" data-view="AI"><span class="icon">🤖</span><span class="lbl">AI</span></button>
     <button class="nav-btn nav-btn-desktop" data-view="Profile"><span class="icon">👤</span><span class="lbl">Profil</span></button>
     <button class="nav-btn nav-btn-desktop" data-view="Mekteb205"><span class="icon">🏫</span><span class="lbl">205 Məktəb</span></button>
-    <button class="nav-btn" data-view="About"><span class="icon">ℹ️</span><span class="lbl">Haqqımızda</span></button>
+    <button class="nav-btn" data-view="About"><span class="icon">ℹ️</span><span class="lbl" data-short="Haqqında">Haqqımızda</span></button>
     <div class="sidebar-streak-card">
       <div class="sidebar-streak-trophy">🏆</div>
       <div class="sidebar-streak-title">Gün Seriyası</div>
@@ -3527,7 +3541,8 @@ function switchView(name){
   const target=document.getElementById('view'+name);
   if(target){target.classList.add('active');target.style.display=(name==='AI'||name==='About'||name==='Derslikler'||name==='Mekteb205')?'flex':'block';}
   document.body.classList.toggle('m205-full',name==='Mekteb205');
-  if(name!=='Games'){stopAllGamePolls();gameSession++;currentGame=null;}
+  // Oyundan istənilən bölməyə (Oyunlar siyahısı da daxil) keçəndə köhnə oyunun taymerləri dayanır
+  stopAllGamePolls();gameSession++;currentGame=null;
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===name));
   const renders={Home:renderHome,Alpha:renderAlpha,Games:renderGames,Vocab:renderVocab,
     Creative:renderCreative,Leaderboard:renderLeaderboard,Profile:renderProfile,Derslikler:renderDerslikler,AI:renderAI,About:renderAbout,Mekteb205:renderMekteb205,Studio:renderStudio};
@@ -3887,9 +3902,10 @@ async function loadWordPool(){
 }
 
 async function startWordContrib(v){
+  const _tok=gameSession;   // oyundan yükləmə bitməmiş çıxılsa, heç nə çəkilməsin
   v.innerHTML=`<button class="btn-outline" id="gback" style="margin-bottom:14px">← Oyunlar</button>
     <div class="section-title">🔍 Söz Kəşf Et</div>
-    <div style="font-size:.78rem;color:var(--muted);margin-bottom:12px">Aşağıdakı söz hələ SözLab lüğətində yoxdur. Mənasını bil­irsənsə yaz, bilmirsənsə <a href="https://azleks.az/" target="_blank" rel="noopener">azleks.az</a> saytında axtar və tap! (Uydurma/mənasız cavablar admin tərəfindən yoxlanılır — real izah yaz ki, XP dərhal hesabına düşsün.)</div>
+    <div style="font-size:.78rem;color:var(--muted);margin-bottom:12px">Aşağıdakı söz hələ SözLab lüğətində yoxdur. Mənasını bil­irsənsə yaz, bilmirsənsə <a href="https://azleks.az/" target="_blank" rel="noopener" style="color:var(--teal);text-decoration:underline">azleks.az</a> saytında axtar və tap! (Uydurma/mənasız cavablar admin tərəfindən yoxlanılır — real izah yaz ki, XP dərhal hesabına düşsün.)</div>
     <div class="admin-section" style="text-align:center">
       <div style="font-size:.72rem;color:var(--muted);margin-bottom:6px">BU GÜNKÜ İRƏLİLƏYİŞ</div>
       <div id="wcProgress" style="font-weight:700;font-size:1.05rem;color:var(--teal)">Yüklənir...</div>
@@ -3900,6 +3916,7 @@ async function startWordContrib(v){
   document.getElementById('gback').onclick=gameBack;
 
   const[pool]=await Promise.all([loadWordPool()]);
+  if(!gameAlive(_tok)||!document.contains(v))return;
   let excludeSet=new Set();
   let todayCount=0;
   try{
@@ -6185,6 +6202,7 @@ function startMatchTap(v){
 
   let idx=0,lives=START_LIVES,roundXP=0,correctCount=0,timerHandle=null,timeLeft=20;
   const TOTAL_TIME=20;
+  const myTok=gameSession;   // oyundan çıxılanda taymer özü dayanır
 
   function backToGames(){restoreSEO();clearInterval(timerHandle);gameBack();}
 
@@ -6202,6 +6220,7 @@ function startMatchTap(v){
     stopTimer();timeLeft=TOTAL_TIME;
     updateTimerBar();
     timerHandle=setInterval(()=>{
+      if(!gameAlive(myTok)||!document.contains(v)){stopTimer();return;}
       timeLeft--;updateTimerBar();
       if(timeLeft<=0){stopTimer();onExpire();}
     },1000);
@@ -6245,7 +6264,7 @@ function startMatchTap(v){
     startTimer(()=>{ // vaxt bitdi — cəza yoxdur, sadəcə cavabı göstər və keç
       showToast(`⏰ Vaxt bitdi! Cavab: "${q.correctAnswer}"`,'muted');
       grid.querySelectorAll('.mt-tile').forEach(b=>{b.disabled=true;if(b.dataset.answer===q.correctAnswer)b.classList.add('correct');});
-      setTimeout(()=>{idx++;showQuestion();},1400);
+      setTimeout(()=>{if(gameAlive(myTok)){idx++;showQuestion();}},1400);
     });
 
     grid.querySelectorAll('.mt-tile').forEach(btn=>btn.addEventListener('click',function(){
@@ -6259,7 +6278,7 @@ function startMatchTap(v){
         addXP(q.xp,'– Uyğun Sözü Tap');
         showToast('✅ Düzgün! +'+q.xp+' XP','teal');
         if(correctCount>0&&correctCount%3===0)spawnConfetti();
-        setTimeout(()=>{idx++;showQuestion();},900);
+        setTimeout(()=>{if(gameAlive(myTok)){idx++;showQuestion();}},900);
       }else{
         sfxWrong();
         this.classList.add('wrong');this.disabled=true;
@@ -6267,7 +6286,7 @@ function startMatchTap(v){
         if(lives<=0){
           stopTimer();
           grid.querySelectorAll('.mt-tile').forEach(b=>{b.disabled=true;if(b.dataset.answer===q.correctAnswer)b.classList.add('correct');});
-          setTimeout(()=>finishRound(false),1100);
+          setTimeout(()=>{if(gameAlive(myTok))finishRound(false);},1100);
         }
       }
     }));
@@ -6522,6 +6541,7 @@ function wcBotWord(lastChar,used,minLen){
 }
 
 async function startWordChain(v){
+  const _tok0=gameSession;
   let usedWords=new Set();
   let combo=0;
   let totalXP=0;
@@ -6537,7 +6557,7 @@ async function startWordChain(v){
     <div style="font-size:.8rem;color:var(--muted)">Lüğət yüklənir…</div>`;
   document.getElementById('gback').onclick=()=>{gameOver=true;gameBack();};
   try{dict=await azDict();}catch(e){dict=null;}
-  if(gameOver)return;
+  if(gameOver||!gameAlive(_tok0)||!document.contains(v))return;
 
   // Vaxt komboya görə azalır: 12s → 6s
   function timeForCombo(){return Math.max(6,12-Math.floor(combo/3));}
@@ -6692,6 +6712,7 @@ function wsCanForm(word,letters){
   return true;
 }
 async function startWordscapes(v){
+  const _tok=gameSession;   // oyundan yükləmə bitməmiş çıxılsa, heç nə çəkilməsin
   const set=WORDSCAPES_SETS[Math.floor(Math.random()*WORDSCAPES_SETS.length)];
   const letters=shuffle([...set.letters]);
   let cancelled=false;
@@ -6702,6 +6723,7 @@ async function startWordscapes(v){
   document.getElementById('gback').onclick=()=>{cancelled=true;gameBack();};
   let dict=null;
   try{dict=await azDict();}catch(e){dict=null;}
+  if(!gameAlive(_tok)||!document.contains(v))return;
   if(cancelled)return;
 
   // Düzgün sözlər LÜĞƏTDƏN hesablanır — ən azı 3 hərf.
@@ -8892,7 +8914,7 @@ li{margin:2px 0}
 </div>
 
 <div class="ft">
-  <span>SözLab · sozlabyoxlama.vercel.app</span>
+  <span>SözLab · sozlab205.vercel.app</span>
   <span>Məlumatlar hesabat anına aiddir · Şagird məlumatları anonimləşdirilib</span>
 </div>`);
   w.document.close();w.focus();
@@ -9492,7 +9514,7 @@ function renderAbout(){
         <h3>📊 Platformada nələr var?</h3>
         <div style="font-size:.85rem;color:var(--muted);line-height:1.7">
           • ${WORDS.length}+ söz və mənaları (ədəbi lüğət + əsas söz ehtiyatı)<br>
-          • 14 fərqli oyun (klassik 10 oyun + ⚔️ Canlı Duel + 🎓 İmtahan Simulyasiyası + 🔁 Zəif Sözlərim + 🏆 Canlı Sinif Yarışması)<br>
+          • ${GAMES_COUNT} oyun — klassik söz oyunları, ⚔️ Canlı Duel, 🎓 İmtahan Simulyasiyası, 🧠 Bilik Yarışı, 🐉 Sinif Boss'u, 🏆 Canlı Sinif Yarışması<br>
           • XP, səviyyə, gün seriyası (streak) və nişanlar (badges) sistemi<br>
           • 🏆 Liderbord — Şəxsi sıralama və 🏫 Sinif Liqası<br>
           • 📖 Dərsliklər — 1-11 sinif rəsmi dərsliklər (e-derslik.edu.az) + fənn testləri<br>
@@ -9512,8 +9534,8 @@ function renderAbout(){
           <div style="margin-bottom:10px">💬 Ən sürətli yol: sağ-alt küncdəki <b>canlı dəstək</b> düyməsindən bizimlə birbaşa yazışın.</div>
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
             <span>📧 Email:</span>
-            <a href="mailto:sozlab@example.com" style="color:var(--gold);text-decoration:none">sozlab@example.com</a>
-            <button onclick="copyEmail()" style="background:transparent;border:1px solid var(--border);border-radius:12px;padding:4px 10px;font-size:.7rem;cursor:pointer">📋 Kopyala</button>
+            <a href="mailto:205mekteb@bakuedu.gov.az" style="color:var(--gold);text-decoration:none">205mekteb@bakuedu.gov.az</a>
+            <button onclick="copyEmail()" style="background:transparent;color:var(--text);border:1px solid var(--border);border-radius:12px;padding:4px 10px;font-size:.75rem;cursor:pointer">📋 Kopyala</button>
           </div>
           <div>Bildiriş və təkliflərinizi aşağıdakı forma ilə də göndərə bilərsiniz.</div>
         </div>
@@ -10764,12 +10786,14 @@ function bilikQuestion(r,pool,usedAnswers){
 loadQaDB().then(()=>{if(!bilikPoolCache)bilikPoolCache=(qaDB||[]).filter(bilikEligible);}).catch(()=>{});
 
 async function startBilikYarisi(v){
+  const _tok=gameSession;   // oyundan yükləmə bitməmiş çıxılsa, heç nə çəkilməsin
   v.innerHTML=`<button class="btn-outline" id="gback" style="margin-bottom:14px">← Oyunlar</button>
     <div class="section-title">🧠 Bilik Yarışı</div>
     <div style="font-size:.8rem;color:var(--muted)">Bilik bazası yüklənir…</div>`;
   document.getElementById('gback').onclick=gameBack;
 
   const pool=await bilikPool();
+  if(!gameAlive(_tok)||!document.contains(v))return;
   if(pool.length<20){
     v.innerHTML=`<button class="btn-outline" id="gback" style="margin-bottom:14px">← Oyunlar</button>
       <div class="admin-section">Bilik bazası yüklənmədi. İnternet bağlantını yoxlayıb yenidən cəhd et.</div>`;
@@ -11257,7 +11281,7 @@ function stDrawCanvas(){
   ctx.fillStyle=th.sub;ctx.globalAlpha=.75;
   ctx.font=`600 ${Math.round(W*0.028)}px 'DM Sans',sans-serif`;
   ctx.textAlign='left';
-  ctx.fillText('sozlabyoxlama.vercel.app',pad,H-Math.round(H*0.055));
+  ctx.fillText('sozlab205.vercel.app',pad,H-Math.round(H*0.055));
   if(currentUser?.display_name){
     ctx.textAlign='right';
     ctx.fillText('@'+(currentUser.username||''),W-pad,H-Math.round(H*0.055));
@@ -11905,7 +11929,7 @@ ${stSlides.map(s=>`<div class="s"><h2>${escapeHtml(s.t||'')}</h2><p>${escapeHtml
 // 4) BÜLLETEN / ELAN
 // ══════════════════════════════════════════════
 function stRenderMail(v){
-  const s=stLoad('mail',{title:'Həftəlik SözLab bülleteni',intro:'Salam! Bu həftənin xülasəsi:',items:'',cta:'SözLab-a keç',url:'https://sozlabyoxlama.vercel.app'});
+  const s=stLoad('mail',{title:'Həftəlik SözLab bülleteni',intro:'Salam! Bu həftənin xülasəsi:',items:'',cta:'SözLab-a keç',url:'https://sozlab205.vercel.app'});
   v.innerHTML=`
     <button class="st-back" data-st-back="1">← Alətlər</button>
     <div class="st-two">
@@ -12012,7 +12036,7 @@ function stRenderSite(v){
       <ul style="padding-left:20px;line-height:1.7;margin:0">${lis}</ul>`:''}
   </div>
   <div style="text-align:center;padding:18px;color:#8a8aa0;font-size:12px;border-top:1px solid #eee">
-    SözLab ilə hazırlanıb · sozlabyoxlama.vercel.app</div></div>`;
+    SözLab ilə hazırlanıb · sozlab205.vercel.app</div></div>`;
   }
   const paint=()=>{document.getElementById('wPrev').innerHTML=build();};
   ['wName','wTag','wAbout','wItems'].forEach(id=>document.getElementById(id).addEventListener('input',paint));
@@ -12308,7 +12332,7 @@ function stRenderWork(v){
   <div style="margin:14px 0 4px;font-size:13px;color:#444">Ad, soyad: ________________________________</div>
   <div style="margin-top:16px;font-size:14px">${items}</div>
   <div style="margin-top:26px;border-top:1px solid #ccc;padding-top:8px;font-size:11px;color:#888">
-    SözLab ilə hazırlanıb · sozlabyoxlama.vercel.app</div></div>`;
+    SözLab ilə hazırlanıb · sozlab205.vercel.app</div></div>`;
     return html;
   }
   const paint=()=>{g('kPrev').innerHTML=build();};
@@ -12485,8 +12509,10 @@ function corpusLoading(v,title){
 // 1) CÜMLƏ TAMAMLA — əsl mətndən bir söz çıxarılıb
 // ══════════════════════════════════════════════
 async function startCorpusFill(v){
+  const _tok=gameSession;   // oyundan yükləmə bitməmiş çıxılsa, heç nə çəkilməsin
   corpusLoading(v,'📖 Cümlə Tamamla');
   const pool=await loadCorpusData('sentences');
+  if(!gameAlive(_tok)||!document.contains(v))return;
   if(!pool||pool.length<20)return corpusError(v,'📖 Cümlə Tamamla');
 
   const TOTAL=12;
@@ -12560,8 +12586,10 @@ async function startCorpusFill(v){
 // 2) MÖVZU TAP — mətn parçasını oxu, sahəsini müəyyən et
 // ══════════════════════════════════════════════
 async function startCorpusTopic(v){
+  const _tok=gameSession;   // oyundan yükləmə bitməmiş çıxılsa, heç nə çəkilməsin
   corpusLoading(v,'🗂️ Mətnin Mövzusu');
   const db=await loadCorpusData('passages');
+  if(!gameAlive(_tok)||!document.contains(v))return;
   if(!db||!db.items||db.items.length<20)return corpusError(v,'🗂️ Mətnin Mövzusu');
   const topics=db.topics||[];
   const items=db.items;
@@ -12632,8 +12660,10 @@ async function startCorpusTopic(v){
 // 3) SÖZ MƏNASI OVU — korpusdan gələn söz + ƏSL cümlə konteksti
 // ══════════════════════════════════════════════
 async function startCorpusWord(v){
+  const _tok=gameSession;   // oyundan yükləmə bitməmiş çıxılsa, heç nə çəkilməsin
   corpusLoading(v,'🔎 Söz Mənası Ovu');
   const rows=await loadCorpusData('words');
+  if(!gameAlive(_tok)||!document.contains(v))return;
   if(!rows||rows.length<20)return corpusError(v,'🔎 Söz Mənası Ovu');
 
   const TOTAL=12;
@@ -12743,7 +12773,7 @@ async function kioskLoadData(){
   try{const r=await sb.from('class_leaderboard').select().order('total_xp',{ascending:false}).limit(8);out.classes=r.data||[];}catch(e){}
   try{const r=await sb.from('profiles').select('username,display_name,class_grade,xp,level,streak')
     .eq('role','user').order('xp',{ascending:false}).limit(8);out.top=r.data||[];}catch(e){}
-  try{const r=await sb.from('school_news').select('title,content,category,published_at')
+  try{const r=await sb.from('school_news').select('title,body,category,published_at')
     .eq('published',true).order('published_at',{ascending:false}).limit(1);out.news=(r.data||[])[0]||null;}catch(e){}
   out.stats={
     students:out.classes.reduce((a,c)=>a+(c.student_count||0),0),
@@ -12804,7 +12834,7 @@ function kioskSlides(){
 
   // 4) Son xəbər
   if(d.news){
-    const txt=String(d.news.content||'').replace(/\s+/g,' ').slice(0,320);
+    const txt=String(d.news.body||'').replace(/\s+/g,' ').slice(0,320);
     slides.push({
       eyebrow:`MƏKTƏB XƏBƏRİ${d.news.category?' · '+escapeHtml(d.news.category).toLocaleUpperCase('az'):''}`,
       title:escapeHtml(d.news.title||''),
@@ -15986,7 +16016,7 @@ SS_RENDER.analytics = async (box) => { sscTipInit(); return ssRenderAnalytics(bo
 
 
 window.copyEmail=()=>{
-  navigator.clipboard.writeText('sozlab@example.com');
+  navigator.clipboard.writeText('205mekteb@bakuedu.gov.az');
   showToast('Email ünvanı kopyalandı!','teal');
 };
 
@@ -16158,7 +16188,7 @@ window.addEventListener('DOMContentLoaded',async()=>{
   // sətirlərinin redaktəsini/silinməsini bloklayır (is_director() ilə); UI da bunu
   // əks etdirir (bax loadAdminUsers() — admin sətirləri direktor üçün kilidlənir).
   document.getElementById('kioskBtn')?.addEventListener('click',openKiosk);
-  // Foyedəki televizor üçün: sozlabyoxlama.vercel.app/#ekran linkini açmaq
+  // Foyedəki televizor üçün: sozlab205.vercel.app/#ekran linkini açmaq
   // kifayətdir — heç bir klik lazım deyil.
   if(location.hash==='#ekran'||location.hash==='#kiosk')setTimeout(openKiosk,1200);
   // 205 ekosistemi üçün dərin link: #/205/world kimi ünvanlar birbaşa açılır

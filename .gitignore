@@ -1,3 +1,9 @@
 .vercel
 .env*.local
 .env
+
+# MySQL versiyası — build_public.py ilə yenidən yaranır (GitHub/Vercel-ə getməsin)
+mysql-version/sozlab-server.zip
+mysql-version/sozlab-server/public/
+mysql-version/sozlab-server/node_modules/
+mysql-version/sozlab-server/uploads/
