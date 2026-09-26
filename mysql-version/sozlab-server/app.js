@@ -127,7 +127,7 @@ async function route(req, res) {
   const ctx = await auth.contextFromToken(token);
   const ip = clientIp(req);
   // Vaxtı keçmiş / silinmiş sessiya: Supabase kimi 401 (sayt sessiyanı təmizləyib giriş ekranını göstərir)
-  if (token && !ctx.uid && !/^\/api\/auth\/(signin|signup|verify|resend|signout)$/.test(p))
+  if (token && !ctx.uid && !/^\/api\/auth\/(signin|signup|verify|resend|signout|recover)$/.test(p))
     return send(res, 401, { error: { message: 'JWT expired', code: 'PGRST301' } });
 
   if (p.startsWith('/api/auth/')) {
@@ -141,6 +141,8 @@ async function route(req, res) {
       case 'verify': return send(res, 200, await auth.verifyOtp(body, ip));
       case 'resend': return send(res, 200, await auth.resend(body, ip));
       case 'signout': return send(res, 200, await auth.signOut(ctx));
+      case 'recover': return send(res, 200, await auth.recover(body, ip));
+      case 'update': return send(res, 200, await auth.updateUser(ctx, body));
     }
     return send(res, 404, { error: { message: 'Not found' } });
   }

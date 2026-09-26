@@ -103,6 +103,8 @@ Qeydiyyatda e-poçt kodu istəyirsinizsə:
    `SMTP_PASS=(poçt şifrəsi)`, `SMTP_FROM=noreply@domeniniz`
 3. **Restart**. Kod 6 rəqəmlidir, 15 dəqiqə etibarlıdır, 5 yanlış cəhddən sonra yenisi istənilir.
 
+SMTP qurulanda **«Şifrəni unutmusan?»** də işləyir: e-poçta 6 rəqəmli bərpa kodu gedir. SMTP yoxdursa, şagirdə bunu sinif rəhbərinə/adminə bildirməsi yazılır.
+
 Hostinqin öz poçtu işlədiyi üçün Supabase-dəki "kod gəlmir / saatda 2 məktub" limiti yoxdur.
 
 ## Digər ayarlar

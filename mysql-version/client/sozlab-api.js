@@ -160,6 +160,17 @@ export function createClient(baseUrl = '') {
       setSession(null, 'SIGNED_OUT');
       return { error: null };
     },
+    async resetPasswordForEmail(email) {
+      const r = await call('/api/auth/recover', { body: { email } });
+      if (r.error) return { data: null, error: authErr(r) };
+      return { data: {}, error: null };
+    },
+    async updateUser(attrs = {}) {
+      const r = await call('/api/auth/update', { body: attrs });
+      if (r.error) return { data: { user: null }, error: authErr(r) };
+      if (session) { session = { ...session, user: r.json.user }; writeSession(session); }
+      return { data: { user: r.json.user }, error: null };
+    },
     onAuthStateChange(fn) {
       listeners.add(fn);
       return { data: { subscription: { unsubscribe: () => listeners.delete(fn) } } };

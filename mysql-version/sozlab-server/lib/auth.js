@@ -121,7 +121,7 @@ async function insertWithDefaults(conn, table, values) {
   return res;
 }
 
-const OTP_TTL_MS = 15 * 60 * 1000, OTP_MAX_TRIES = 5, OTP_RESEND_MS = 60 * 1000;
+const OTP_TTL_MS = 15 * 60 * 1000, OTP_MAX_TRIES = 5, OTP_RESEND_MS = Number(process.env.OTP_RESEND_SECONDS || 60) * 1000;
 async function issueOtp(conn, user) {
   const code = String(crypto.randomInt(0, 1000000)).padStart(6, '0');
   await q('UPDATE auth_users SET otp_hash = ?, otp_expires_at = ?, otp_attempts = 0, otp_sent_at = UTC_TIMESTAMP(3) WHERE id = ?',
@@ -213,6 +213,35 @@ async function resend(body, ip) {
   });
 }
 
+// Şifrə bərpası: e-poçta 6 rəqəmli kod (yalnız SMTP qurulubsa). Kod verifyOtp ilə yoxlanır,
+// sonra /update ilə yeni şifrə yazılır. Hesabın olub-olmadığı bildirilmir.
+async function recover(body, ip) {
+  rateLimit('recover:' + ip, 20, 10 * 60 * 1000);
+  if (!config.smtp.host || !config.smtp.user)
+    throw apiError(400, 'email_disabled', 'Bu serverdə e-poçtla şifrə bərpası qurulmayıb — sinif rəhbərinə və ya adminə müraciət et.');
+  const email = String(body.email || '').trim().toLowerCase();
+  return tx(async conn => {
+    const [u] = await q('SELECT * FROM auth_users WHERE email = ? FOR UPDATE', [email], conn);
+    if (!u) return {};
+    if (u.otp_sent_at && Date.now() - new Date(isoFromMysql(u.otp_sent_at)).getTime() < OTP_RESEND_MS)
+      throw apiError(429, 'over_email_send_rate_limit', 'For security purposes, you can only request this after 60 seconds.');
+    try { await issueOtp(conn, u); } catch (e) { throw apiError(500, 'unexpected_failure', 'Error sending recovery email'); }
+    return {};
+  });
+}
+async function updateUser(ctx, body) {
+  if (!ctx.uid) throw apiError(401, 'no_authorization', 'Auth session missing!');
+  if (body.password !== undefined) {
+    const pw = String(body.password || '');
+    if (pw.length < 6) throw apiError(422, 'weak_password', 'Password should be at least 6 characters.');
+    await q('UPDATE auth_users SET password_hash = ? WHERE id = ?', [hashPassword(pw), ctx.uid]);
+    // digər cihazlardakı sessiyalar bağlanır, cari qalır
+    await q('DELETE FROM auth_sessions WHERE user_id = ? AND token_hash <> ?', [ctx.uid, sha256(ctx.token)]);
+  }
+  const [u] = await q('SELECT * FROM auth_users WHERE id = ?', [ctx.uid]);
+  return { user: userObj(u) };
+}
+
 async function getUser(ctx) {
   if (!ctx.uid) throw apiError(401, 'no_authorization', 'Auth session missing!');
   return { user: userObj(ctx.user) };
@@ -226,4 +255,4 @@ async function signOut(ctx) {
 // köhnəlmiş sessiyaları vaxtaşırı təmizlə
 setInterval(() => { q('DELETE FROM auth_sessions WHERE expires_at < UTC_TIMESTAMP(3)').catch(() => {}); }, 6 * 3600 * 1000).unref();
 
-module.exports = { signUp, signIn, verifyOtp, resend, getUser, signOut, contextFromToken, computeLevel, hashPassword, createProfile, insertWithDefaults };
+module.exports = { signUp, signIn, verifyOtp, resend, getUser, signOut, recover, updateUser, contextFromToken, computeLevel, hashPassword, createProfile, insertWithDefaults };

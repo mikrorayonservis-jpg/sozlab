@@ -2016,8 +2016,6 @@ body.kiosk-on{overflow:hidden}
    • Nöqtə göstərici (205): qövslə tullanır 280–420 ms, ease(.25,.1,.25,1), qalxanda
      şaquli, enəndə üfüqi uzanır; köhnə çuxur bağlanır, yenisi açılır; 130 ms-də çuxura
      oturur, sonra halə yayılır; aktiv ikon 1.12× böyüyür
-   • Maye blob (giriş tabları): 430 ms — düşür, uzanır, ~8% ötüb keçir, şaquli
-     uzanıb dairəyə qayıdır
    ══════════════════════════════════════════════════════════════════════════ */
 :root{--mo-ease:cubic-bezier(.3,.7,.4,1);--mo-ease-std:cubic-bezier(.25,.1,.25,1)}
 .nv-ic{width:22px;height:22px;display:block;overflow:visible}
@@ -2126,19 +2124,148 @@ body.nav-searching .support-fab{opacity:0;pointer-events:none}
 @keyframes tbHalo{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--m-primary) 34%,transparent),0 0 4px color-mix(in srgb,var(--m-primary) 40%,transparent)}
   100%{box-shadow:0 0 0 4px color-mix(in srgb,var(--m-primary) 10%,transparent),0 0 9px color-mix(in srgb,var(--m-primary) 55%,transparent)}}
 
-/* ── 3) Giriş / Qeydiyyat tabları — maye blob ── */
-.login-tabs{position:relative;isolation:isolate}
-.login-tabs .login-tab{position:relative;z-index:2;background:transparent!important;transition:color .12s ease}
-.login-tabs .login-tab.active{color:#0b1f1b;transition:color .12s ease .23s}
-.login-blob{position:absolute;z-index:1;left:0;top:0;border-radius:999px;background:var(--teal);pointer-events:none;
-  transform:translateY(-3px);will-change:transform;
-  box-shadow:0 8px 16px -6px color-mix(in srgb,var(--teal) 70%,transparent)}
-.login-field-anim{will-change:clip-path,opacity}
-
 @media(prefers-reduced-motion:reduce){
-  .nav-glow .ng-move,.m205-tabbar.v5 button .tb-ic,.login-tabs .login-tab,.bottom-nav .nav-btn,.bottom-nav .nav-btn .lbl{transition:none!important}
+  .nav-glow .ng-move,.m205-tabbar.v5 button .tb-ic,.bottom-nav .nav-btn,.bottom-nav .nav-btn .lbl{transition:none!important}
   .m205-tabbar.v5 .tb-dot.halo{animation:none}
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Giriş / Qeydiyyat — "Login form V7" video referansı (180 kadr, 30 fps ölçülüb)
+   Keçid ardıcıllığı (klikdən sonra, ms):
+     0–100   forma bulanıqlaşıb itir (blur 0→8px, opacity 1→0)
+     0–260   iki şüşə üçbucaq küncdən mərkəzə uçur, birləşib loqo kvadratına çevrilir
+     260–470 loqo gözləyir
+     470     loqonun sağ-alt küncündə qızılı işıq kürəsi yanır (70 ms), halqası genişlənib söner (200 ms)
+     590–720 yeni forma bulanıqdan aydınlaşır; üçbucaqlar 150 ms-də künclərə qayıdır
+     ~800    kürə tam söner
+   ══════════════════════════════════════════════════════════════════════════ */
+#loginScreen{background:#030203;padding:28px 16px 20px;align-items:center;justify-content:flex-start;position:relative;isolation:isolate}
+#loginScreen > *{position:relative;z-index:1}
+#loginScreen > .lv7-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.lv7-bg svg{width:100%;height:100%;display:block}
+.lv7-brand{margin:6px 0 18px;text-align:center}
+.lv7-brand .login-logo{font-size:1.5rem;letter-spacing:.01em}
+
+.lv7{--y:#fde047;--y2:#facc15;--y-ink:#1c1600;--line:rgba(255,255,255,.1);--txt:#f4f4f5;--mut:#a1a1aa;
+  --C:78px;--L:64px;
+  position:relative;width:100%;max-width:448px;margin:0 auto;color:var(--txt);
+  font-family:'DM Sans',system-ui,sans-serif;transition:transform .25s ease-out;transform-style:preserve-3d;will-change:transform}
+@media(max-width:420px){.lv7{--C:66px;--L:54px}}
+.lv7-shape{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:0}
+.lv7-shape .lv7-shadow{fill:rgba(0,0,0,.55);filter:blur(22px);transform:translateY(18px)}
+.lv7-shape .lv7-edge{fill:none;stroke:rgba(255,255,255,.14);stroke-width:1}
+.lv7-surface{position:absolute;inset:0;z-index:0;border-radius:18px;
+  background:linear-gradient(160deg,rgba(38,34,40,.72),rgba(18,16,20,.66) 55%,rgba(24,20,16,.7));
+  -webkit-backdrop-filter:blur(22px) saturate(1.25);backdrop-filter:blur(22px) saturate(1.25)}
+.lv7-surface::after{content:'';position:absolute;inset:0;clip-path:inherit;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),transparent 30%)}
+
+/* küncdəki şüşə üçbucaqlar */
+.lv7-shard{position:absolute;left:0;top:0;width:var(--L);height:var(--L);z-index:3;pointer-events:none;will-change:transform}
+.lv7-shard::before{content:'';position:absolute;inset:0;clip-path:polygon(0 0,100% 0,0 100%);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.lv7-shard svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.lv7-shard path{fill:url(#lv7ShardFill);stroke:rgba(255,255,255,.34);stroke-width:1;vector-effect:non-scaling-stroke}
+
+/* qızılı işıq kürəsi */
+.lv7-orb{position:absolute;left:0;top:0;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;z-index:4;
+  pointer-events:none;opacity:0;
+  background:radial-gradient(circle,#fffdf0 0 16%,#fff3a6 26%,#fde047 42%,rgba(250,204,21,.45) 60%,rgba(250,204,21,0) 72%);
+  box-shadow:0 0 22px 8px rgba(250,204,21,.45),0 0 48px 16px rgba(250,204,21,.18)}
+.lv7-orb::after{content:'';position:absolute;inset:-9px;border-radius:50%;border:1.5px solid rgba(250,204,21,.7);opacity:0}
+
+.lv7-body{position:relative;z-index:2;padding:34px 32px 30px}
+@media(max-width:420px){.lv7-body{padding:28px 20px 24px}}
+.lv7-head{padding-left:calc(var(--C) - 34px);margin-bottom:18px}
+@media(max-width:420px){.lv7-head{padding-left:calc(var(--C) - 26px)}}
+.lv7-title{font-family:'DM Sans',system-ui,sans-serif;font-size:1.75rem;line-height:1.15;font-weight:700;letter-spacing:-.01em;margin:0;color:#fff}
+.lv7-title em{font-style:normal;color:var(--y2)}
+.lv7-sub{margin:6px 0 0;font-size:.84rem;color:var(--mut)}
+@media(max-width:420px){.lv7-title{font-size:1.45rem}}
+
+.lv7 [data-show]{display:none!important}
+.lv7[data-view="login"] span[data-show~="login"],.lv7[data-view="register"] span[data-show~="register"],
+.lv7[data-view="forgot"] span[data-show~="forgot"],.lv7[data-view="otp"] span[data-show~="otp"]{display:inline!important}
+.lv7[data-view="login"] .lv7-form[data-show~="login"],.lv7[data-view="register"] .lv7-form[data-show~="register"],
+.lv7[data-view="forgot"] .lv7-form[data-show~="forgot"]{display:flex!important}
+.lv7[data-view="login"] .reg-only,.lv7[data-view="register"] .login-only{display:none!important}
+.lv7[data-view="login"] .lv7-pass-row{grid-template-columns:1fr}
+
+.lv7-form{display:flex;flex-direction:column;gap:13px}
+.lv7-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lv7-field{display:flex;flex-direction:column;gap:7px;min-width:0}
+.lv7-lbl{font-size:.82rem;font-weight:600;color:#e4e4e7}
+.lv7-lbl i{font-style:normal;font-weight:400;color:var(--mut)}
+.lv7-in{position:relative;display:flex;align-items:center}
+.lv7-ic{position:absolute;left:13px;width:17px;height:17px;fill:none;stroke:#8b8b95;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;pointer-events:none;transition:stroke .15s ease}
+.lv7 .login-input{width:100%;height:46px;padding:0 14px 0 40px;border-radius:12px;background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.08);color:#fafafa;font-size:.92rem;font-family:inherit;outline:none;
+  transition:border-color .15s ease,background .15s ease,box-shadow .15s ease}
+.lv7 .login-input::placeholder{color:#8e8e98}
+.lv7 .login-input:hover{border-color:rgba(255,255,255,.14)}
+.lv7 .login-input:focus{border-color:var(--y2);background:rgba(250,204,21,.05);box-shadow:0 0 0 3px rgba(250,204,21,.14)}
+.lv7-in:focus-within .lv7-ic{stroke:var(--y2)}
+.lv7 select.login-input{appearance:none;-webkit-appearance:none;padding-right:30px;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,#8b8b95 50%),linear-gradient(135deg,#8b8b95 50%,transparent 50%);
+  background-position:calc(100% - 17px) 20px,calc(100% - 12px) 20px;background-size:5px 5px;background-repeat:no-repeat}
+.lv7 select.login-input option{background:#18161b;color:#fafafa}
+.lv7 .lv7-code{text-align:center;letter-spacing:.45em;font-weight:700;font-size:1.05rem;padding-left:40px}
+.lv7-eye{position:absolute;right:8px;width:32px;height:32px;border:none;border-radius:8px;background:transparent;cursor:pointer;
+  background-repeat:no-repeat;background-position:center;background-size:18px;opacity:.75;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E")}
+.lv7-eye.on{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23facc15' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9.9 4.2A10.4 10.4 0 0 1 12 4c6.4 0 10 8 10 8a17 17 0 0 1-2.2 3.2M6.6 6.6A17.6 17.6 0 0 0 2 12s3.6 8 10 8a9.8 9.8 0 0 0 5.4-1.6M3 3l18 18M9.9 9.9a3 3 0 0 0 4.2 4.2'/%3E%3C/svg%3E");opacity:1}
+.lv7-eye:hover{opacity:1;background-color:rgba(255,255,255,.05)}
+.lv7 input[type="password"]{padding-right:44px}
+
+.lv7-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:-2px}
+.lv7-check{display:inline-flex;align-items:center;gap:9px;font-size:.82rem;color:#d4d4d8;cursor:pointer;line-height:1.35;user-select:none}
+.lv7-check input{position:absolute;opacity:0;width:1px;height:1px}
+.lv7-box{flex-shrink:0;width:17px;height:17px;border-radius:5px;border:1.5px solid rgba(255,255,255,.28);background:rgba(255,255,255,.03);
+  display:grid;place-items:center;transition:background .15s ease,border-color .15s ease}
+.lv7-box::after{content:'';width:9px;height:5px;border-left:2px solid var(--y-ink);border-bottom:2px solid var(--y-ink);
+  transform:rotate(-45deg) translate(1px,-1px) scale(0);transition:transform .15s ease}
+.lv7-check input:checked + .lv7-box{background:var(--y2);border-color:var(--y2)}
+.lv7-check input:checked + .lv7-box::after{transform:rotate(-45deg) translate(1px,-1px) scale(1)}
+.lv7-check input:focus-visible + .lv7-box{outline:2px solid var(--y2);outline-offset:2px}
+.lv7-muted-link{background:none;border:none;padding:4px 0;color:#b4b4bc;font-size:.82rem;cursor:pointer;font-family:inherit}
+.lv7-muted-link:hover{color:#fff}
+
+.lv7-btn{position:relative;height:48px;margin-top:4px;border:none;border-radius:12px;cursor:pointer;
+  background:var(--y);color:var(--y-ink);font-family:inherit;font-size:.98rem;font-weight:700;letter-spacing:.005em;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 8px 24px -8px rgba(253,224,71,.65),0 0 20px -2px rgba(250,204,21,.28);
+  transition:transform .15s ease,box-shadow .2s ease,filter .2s ease}
+.lv7-btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s ease}
+.lv7-btn:hover{filter:brightness(1.04);box-shadow:0 10px 28px -8px rgba(253,224,71,.8),0 0 26px 0 rgba(250,204,21,.34)}
+.lv7-btn:hover svg{transform:translateX(3px)}
+.lv7-btn:active{transform:scale(.985)}
+.lv7-btn:disabled{opacity:.6;cursor:progress}
+.lv7-btn:focus-visible,.lv7-alt:focus-visible,.lv7-switch button:focus-visible,.lv7-muted-link:focus-visible{outline:2px solid var(--y2);outline-offset:2px}
+
+.lv7-divider{display:flex;align-items:center;gap:12px;margin:4px 0 0;color:#8e8e98;font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.lv7-divider::before,.lv7-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08)}
+.lv7-alt{height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);color:#f4f4f5;
+  font-family:inherit;font-size:.86rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:background .15s ease,border-color .15s ease}
+.lv7-alt svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.lv7-alt:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.14)}
+
+.lv7-switch{display:block!important;text-align:center;font-size:.84rem;color:#a1a1aa;margin-top:2px;background:none!important;padding:0!important}
+.lv7-switch button{background:none;border:none;padding:2px 0;color:var(--y2);font-weight:700;cursor:pointer;font-family:inherit;font-size:inherit;
+  text-underline-offset:3px}
+.lv7-switch button:hover{text-decoration:underline}
+.lv7-note{margin:0;font-size:.84rem;line-height:1.55;color:#d4d4d8}
+.lv7-note b{color:#fff}
+
+#loginScreen .login-stats{max-width:448px;width:100%;margin:18px auto 0;padding:10px 6px;border-radius:14px;
+  background:rgba(12,10,14,.55);border:1px solid rgba(255,255,255,.07);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+#loginScreen .l-stat .num{color:var(--y2,#facc15)}
+.lv7-feats{max-width:448px;margin:12px auto 0}
+#loginScreen .feat-pill{background:rgba(12,10,14,.55);border-color:rgba(255,255,255,.08);color:#c4c4cc}
+#loginScreen .site-footer{margin-top:28px}
+
+@media(prefers-reduced-motion:reduce){.lv7{transition:none}}
+#footerNewsletterBtn{background:color-mix(in srgb,var(--purple) 82%,#000)!important}
 </style>
 </head>
 <body>
@@ -2181,68 +2308,184 @@ setTimeout(function(){
 <!-- ═══ LOGIN ═══ -->
 <button id="guestExitBtn">🔐 Giriş / Qeydiyyat</button>
 <div class="screen active" id="loginScreen">
-  <div class="login-card">
-    <div class="login-logo">SözLab</div>
-    <div class="login-tagline">Azərbaycan dilini öyrən, inkişaf et 🌟</div>
-    <div class="feat-row">
-      <div class="feat-pill" id="featGamesPill">🎮 21 Oyun</div>
-      <div class="feat-pill">🔤 Əlifba</div>
-      <div class="feat-pill">📚 Ədəbi Lüğət</div>
-      <div class="feat-pill">🤖 AI Köməkçi</div>
-    </div>
-    <div class="login-tabs">
-      <button class="login-tab active" data-mode="login">Giriş</button>
-      <button class="login-tab" data-mode="register">Qeydiyyat</button>
-    </div>
-    <input type="text" id="regUsername" class="login-input" placeholder="İstifadəçi adı" autocomplete="off" autocapitalize="none" style="display:none">
-    <input type="text" id="regFirstName" class="login-input" placeholder="Ad" autocomplete="given-name" style="display:none">
-    <input type="text" id="regLastName" class="login-input" placeholder="Soyad" autocomplete="family-name" style="display:none">
-    <div id="regClassRow" style="display:none;gap:8px">
-      <select id="regClassNum" class="login-input" style="flex:1">
-        <option value="">Sinif</option>
-        <option value="1">1-ci sinif</option>
-        <option value="2">2-ci sinif</option>
-        <option value="3">3-cü sinif</option>
-        <option value="4">4-cü sinif</option>
-        <option value="5">5-ci sinif</option>
-        <option value="6">6-cı sinif</option>
-        <option value="7">7-ci sinif</option>
-        <option value="8">8-ci sinif</option>
-        <option value="9">9-cu sinif</option>
-        <option value="10">10-cu sinif</option>
-        <option value="11">11-ci sinif</option>
-      </select>
-      <select id="regClassLetter" class="login-input" style="flex:1">
-        <option value="">Bölmə</option>
-        <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
-      </select>
-    </div>
-    <input type="tel" id="regPhone" class="login-input" placeholder="Telefon nömrəsi (məs. +994501234567)" autocomplete="tel" style="display:none">
-    <input type="text" id="regReferralCode" class="login-input" placeholder="Dəvət kodu (istəyə bağlı)" autocomplete="off" style="display:none">
-    <input type="email" id="authEmail" class="login-input" placeholder="Email" autocomplete="email" autocapitalize="none">
-    <input type="password" id="authPassword" class="login-input" placeholder="Şifrə (ən az 6 simvol)" autocomplete="current-password">
-    <button id="loginBtn" class="btn-primary">🚀 Daxil Ol</button>
-    <!-- E-poçt doğrulama kodu paneli — qeydiyyatdan sonra görünür -->
-    <div id="otpBox" style="display:none">
-      <div style="font-size:.8rem;color:var(--muted);line-height:1.6;margin:10px 0 8px;text-align:center">
-        📧 <b id="otpEmailLabel"></b> ünvanına <b>6 rəqəmli təsdiq kodu</b> göndərdik.<br>Kodu aşağıya daxil edin.
+  <script>window.__lv7Recovery=/type=recovery/.test(location.hash);</script>
+  <div class="lv7-bg" aria-hidden="true">
+    <svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="lv7Gold" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#000"/><stop offset=".22" stop-color="#2a1402"/><stop offset=".45" stop-color="#9a520b"/>
+          <stop offset=".58" stop-color="#f3b640"/><stop offset=".66" stop-color="#ffe29a"/><stop offset=".76" stop-color="#7a4208"/><stop offset="1" stop-color="#050302"/>
+        </linearGradient>
+        <linearGradient id="lv7Gold2" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#050302"/><stop offset=".3" stop-color="#6b3a07"/><stop offset=".52" stop-color="#d9962a"/>
+          <stop offset=".6" stop-color="#8a4a0a"/><stop offset="1" stop-color="#000"/>
+        </linearGradient>
+        <linearGradient id="lv7Steel" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#050506"/><stop offset=".4" stop-color="#2b2b31"/><stop offset=".55" stop-color="#8d8d97"/>
+          <stop offset=".63" stop-color="#34343b"/><stop offset="1" stop-color="#050506"/>
+        </linearGradient>
+        <linearGradient id="lv7ShardFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".17"/><stop offset=".55" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#fff" stop-opacity=".02"/></linearGradient>
+        <radialGradient id="lv7Vig" cx="50%" cy="48%" r="70%"><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".85"/></radialGradient>
+        <filter id="lv7Blur6" filterUnits="userSpaceOnUse" x="-400" y="-400" width="2400" height="1800"><feGaussianBlur stdDeviation="6"/></filter>
+        <filter id="lv7Blur14" filterUnits="userSpaceOnUse" x="-400" y="-400" width="2400" height="1800"><feGaussianBlur stdDeviation="16"/></filter>
+        <filter id="lv7Blur2" filterUnits="userSpaceOnUse" x="-400" y="-400" width="2400" height="1800"><feGaussianBlur stdDeviation="1.4"/></filter>
+      </defs>
+      <rect width="1600" height="1000" fill="#030203"/>
+      <g fill="none" stroke-linecap="round">
+        <path d="M-300 -40 C 250 40, 560 330, 900 420 S 1500 330, 1950 120" stroke="url(#lv7Gold)" stroke-width="170" filter="url(#lv7Blur14)" opacity=".85"/>
+        <path d="M-300 150 C 200 170, 520 470, 860 560 S 1480 520, 1950 330" stroke="url(#lv7Steel)" stroke-width="120" filter="url(#lv7Blur6)" opacity=".95"/>
+        <path d="M-300 330 C 180 330, 470 620, 820 700 S 1440 700, 1950 520" stroke="url(#lv7Gold2)" stroke-width="80" filter="url(#lv7Blur6)" opacity=".9"/>
+        <path d="M-300 640 C 160 600, 420 860, 760 930 S 1400 960, 1950 780" stroke="url(#lv7Gold)" stroke-width="190" filter="url(#lv7Blur14)" opacity=".65"/>
+        <path d="M-300 900 C 150 860, 420 1080, 800 1120 S 1450 1150, 1950 1000" stroke="url(#lv7Steel)" stroke-width="150" filter="url(#lv7Blur6)" opacity=".85"/>
+        <path d="M-300 44 C 250 124, 560 414, 900 504 S 1500 414, 1950 204" stroke="#ffd36b" stroke-width="2.4" filter="url(#lv7Blur2)" opacity=".8"/>
+        <path d="M-300 372 C 180 372, 470 662, 820 742 S 1440 742, 1950 562" stroke="#f0a93a" stroke-width="1.6" filter="url(#lv7Blur2)" opacity=".65"/>
+        <path d="M-300 735 C 160 695, 420 955, 760 1025 S 1400 1055, 1950 875" stroke="#ffcb57" stroke-width="2" filter="url(#lv7Blur2)" opacity=".55"/>
+      </g>
+      <rect width="1600" height="1000" fill="url(#lv7Vig)"/>
+    </svg>
+  </div>
+  <div class="lv7-brand"><div class="login-logo">SözLab</div></div>
+
+  <div class="lv7" id="authCard" data-mode="login" data-step="form">
+    <svg class="lv7-shape" aria-hidden="true"><path class="lv7-shadow"/><path class="lv7-edge"/></svg>
+    <div class="lv7-surface" aria-hidden="true"></div>
+    <span class="lv7-shard lv7-shard-a" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path/></svg></span>
+    <span class="lv7-shard lv7-shard-b" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path/></svg></span>
+    <span class="lv7-orb" aria-hidden="true"></span>
+
+    <div class="lv7-body">
+      <div class="lv7-head">
+        <h1 class="lv7-title">
+          <span data-show="login">Yenidən <em>xoş gəldin</em></span>
+          <span data-show="register">Hesab <em>yarat</em></span>
+          <span data-show="forgot">Şifrəni <em>bərpa et</em></span>
+          <span data-show="otp">E-poçtu <em>təsdiqlə</em></span>
+        </h1>
+        <p class="lv7-sub">
+          <span data-show="login">Davam etmək üçün hesabına daxil ol</span>
+          <span data-show="register">SözLab-a qoşul — sözləri oynayaraq öyrən</span>
+          <span data-show="forgot">E-poçtuna bərpa kodu göndərəcəyik</span>
+          <span data-show="otp">Kodu e-poçtundan götür</span>
+        </p>
       </div>
-      <input type="text" id="otpCode" class="login-input" placeholder="6 rəqəmli kod" inputmode="numeric" maxlength="6"
-             autocomplete="one-time-code" style="text-align:center;letter-spacing:.4em;font-size:1.1rem;font-weight:700">
-      <button id="otpVerifyBtn" class="btn-primary">✅ Təsdiqlə və daxil ol</button>
-      <button id="otpResendBtn" class="btn-outline" style="width:100%;margin-top:8px">🔄 Kodu yenidən göndər</button>
-      <button id="otpCancelBtn" class="btn-outline" style="width:100%;margin-top:8px">← Geri qayıt</button>
+
+      <div class="lv7-form" data-show="login register">
+        <div class="lv7-grid reg-only">
+          <label class="lv7-field"><span class="lv7-lbl">Ad</span>
+            <span class="lv7-in"><svg class="lv7-ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+            <input type="text" id="regFirstName" class="login-input" placeholder="Aysel" autocomplete="given-name"></span></label>
+          <label class="lv7-field"><span class="lv7-lbl">Soyad</span>
+            <span class="lv7-in"><svg class="lv7-ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+            <input type="text" id="regLastName" class="login-input" placeholder="Həsənova" autocomplete="family-name"></span></label>
+        </div>
+        <label class="lv7-field reg-only"><span class="lv7-lbl">İstifadəçi adı</span>
+          <span class="lv7-in"><svg class="lv7-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></svg>
+          <input type="text" id="regUsername" class="login-input" placeholder="aysel_h" autocomplete="off" autocapitalize="none"></span></label>
+        <div class="lv7-grid reg-only" id="regClassRow">
+          <label class="lv7-field"><span class="lv7-lbl">Sinif</span>
+            <span class="lv7-in lv7-sel"><svg class="lv7-ic" viewBox="0 0 24 24"><path d="M2 9.2 12 4.5l10 4.7-10 4.7z"/><path d="M6 11.3v4.4c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.4"/></svg>
+            <select id="regClassNum" class="login-input">
+              <option value="">Seç</option>
+              <option value="1">1-ci sinif</option><option value="2">2-ci sinif</option><option value="3">3-cü sinif</option>
+              <option value="4">4-cü sinif</option><option value="5">5-ci sinif</option><option value="6">6-cı sinif</option>
+              <option value="7">7-ci sinif</option><option value="8">8-ci sinif</option><option value="9">9-cu sinif</option>
+              <option value="10">10-cu sinif</option><option value="11">11-ci sinif</option>
+            </select></span></label>
+          <label class="lv7-field"><span class="lv7-lbl">Bölmə</span>
+            <span class="lv7-in lv7-sel"><svg class="lv7-ic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 15.5 12 8.5l3 7M10 13h4"/></svg>
+            <select id="regClassLetter" class="login-input">
+              <option value="">Seç</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
+            </select></span></label>
+        </div>
+        <label class="lv7-field reg-only"><span class="lv7-lbl">Telefon</span>
+          <span class="lv7-in"><svg class="lv7-ic" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M11 18h2"/></svg>
+          <input type="tel" id="regPhone" class="login-input" placeholder="+994 50 123 45 67" autocomplete="tel"></span></label>
+        <label class="lv7-field"><span class="lv7-lbl">E-poçt ünvanı</span>
+          <span class="lv7-in"><svg class="lv7-ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+          <input type="email" id="authEmail" class="login-input" placeholder="ad@domen.az" autocomplete="email" autocapitalize="none"></span></label>
+        <div class="lv7-grid lv7-pass-row">
+          <label class="lv7-field"><span class="lv7-lbl">Şifrə</span>
+            <span class="lv7-in"><svg class="lv7-ic" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
+            <input type="password" id="authPassword" class="login-input" placeholder="••••••••" autocomplete="current-password">
+            <button type="button" class="lv7-eye" data-eye="authPassword" aria-label="Şifrəni göstər"></button></span></label>
+          <label class="lv7-field reg-only"><span class="lv7-lbl">Şifrəni təkrarla</span>
+            <span class="lv7-in"><svg class="lv7-ic" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
+            <input type="password" id="regPassword2" class="login-input" placeholder="••••••••" autocomplete="new-password">
+            <button type="button" class="lv7-eye" data-eye="regPassword2" aria-label="Şifrəni göstər"></button></span></label>
+        </div>
+        <label class="lv7-field reg-only"><span class="lv7-lbl">Dəvət kodu <i>(istəyə bağlı)</i></span>
+          <span class="lv7-in"><svg class="lv7-ic" viewBox="0 0 24 24"><rect x="3.5" y="8" width="17" height="4" rx="1"/><path d="M5 12v8h14v-8M12 8v12M12 8c-2.5 0-4.5-1-4.5-2.5S9.5 3 12 8c2.5-5 4.5-4 4.5-2.5S14.5 8 12 8"/></svg>
+          <input type="text" id="regReferralCode" class="login-input" placeholder="dostunun istifadəçi adı" autocomplete="off" autocapitalize="none"></span></label>
+
+        <div class="lv7-row login-only">
+          <label class="lv7-check"><input type="checkbox" id="rememberMe" checked><span class="lv7-box"></span>Məni xatırla</label>
+          <button type="button" class="lv7-muted-link" id="forgotBtn">Şifrəni unutmusan?</button>
+        </div>
+        <label class="lv7-check reg-only"><input type="checkbox" id="regConsent"><span class="lv7-box"></span>Ad, sinif və telefonumun məktəb daxilində istifadəsinə razıyam</label>
+
+        <button id="loginBtn" class="lv7-btn" type="button"></button>
+
+        <div class="lv7-divider"><span>və ya hesabsız davam et</span></div>
+        <div class="lv7-grid">
+          <button id="guestBtn" class="lv7-alt" type="button"><svg viewBox="0 0 24 24"><path d="M3 21V10l9-6 9 6v11z"/><path d="M10 21v-5h4v5"/></svg>205 Məktəb</button>
+          <button id="kioskOpenBtn" class="lv7-alt" type="button"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>Böyük ekran</button>
+        </div>
+        <div class="lv7-switch login-tabs">
+          <span data-show="login">Hesabın yoxdur? <button type="button" class="login-tab" data-mode="register">Qeydiyyatdan keç</button></span>
+          <span data-show="register">Artıq hesabın var? <button type="button" class="login-tab active" data-mode="login">Daxil ol</button></span>
+        </div>
+      </div>
+
+      <!-- Şifrə bərpası: e-poçt → kod + yeni şifrə (və ya e-poçtdakı linklə gəldikdə yalnız yeni şifrə) -->
+      <div class="lv7-form" data-show="forgot">
+        <label class="lv7-field" id="fpEmailField"><span class="lv7-lbl">E-poçt ünvanı</span>
+          <span class="lv7-in"><svg class="lv7-ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+          <input type="email" id="fpEmail" class="login-input" placeholder="ad@domen.az" autocomplete="email" autocapitalize="none"></span></label>
+        <div id="fpStage2" hidden>
+          <label class="lv7-field" id="fpCodeField"><span class="lv7-lbl">E-poçtdakı 6 rəqəmli kod</span>
+            <span class="lv7-in"><svg class="lv7-ic" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M7 12h.01M11 12h.01M15 12h.01"/></svg>
+            <input type="text" id="fpCode" class="login-input" placeholder="000000" inputmode="numeric" maxlength="6" autocomplete="one-time-code"></span></label>
+          <div class="lv7-grid">
+            <label class="lv7-field"><span class="lv7-lbl">Yeni şifrə</span>
+              <span class="lv7-in"><svg class="lv7-ic" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
+              <input type="password" id="fpPass" class="login-input" placeholder="••••••••" autocomplete="new-password"></span></label>
+            <label class="lv7-field"><span class="lv7-lbl">Təkrarla</span>
+              <span class="lv7-in"><svg class="lv7-ic" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
+              <input type="password" id="fpPass2" class="login-input" placeholder="••••••••" autocomplete="new-password"></span></label>
+          </div>
+        </div>
+        <button id="fpBtn" class="lv7-btn" type="button"></button>
+        <div class="lv7-switch"><span>Şifrəni xatırladın? <button type="button" class="lv7-go" data-go-mode="login">Girişə qayıt</button></span></div>
+      </div>
+
+      <div id="otpBox" class="lv7-form" style="display:none">
+        <p class="lv7-note">📧 <b id="otpEmailLabel"></b> ünvanına <b>6 rəqəmli təsdiq kodu</b> göndərdik. Spam qovluğunu da yoxla.</p>
+        <label class="lv7-field"><span class="lv7-lbl">Təsdiq kodu</span>
+          <span class="lv7-in"><svg class="lv7-ic" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M7 12h.01M11 12h.01M15 12h.01"/></svg>
+          <input type="text" id="otpCode" class="login-input lv7-code" placeholder="000000" inputmode="numeric" maxlength="6" autocomplete="one-time-code"></span></label>
+        <button id="otpVerifyBtn" class="lv7-btn" type="button">Təsdiqlə və daxil ol</button>
+        <div class="lv7-grid">
+          <button id="otpResendBtn" class="lv7-alt" type="button">🔄 Kodu yenidən göndər</button>
+          <button id="otpCancelBtn" class="lv7-alt" type="button">← Geri qayıt</button>
+        </div>
+      </div>
     </div>
-    <button id="guestBtn" class="btn-outline" style="width:100%;margin-top:10px">🏫 Məktəb portalına qonaq kimi bax</button>
-    <div class="login-stats">
-      <div class="l-stat"><div class="num" id="lsWords">0</div><div class="lbl">Söz</div></div>
-      <div class="l-div"></div>
-      <div class="l-stat"><div class="num" id="lsGames">0</div><div class="lbl">Oyun</div></div>
-      <div class="l-div"></div>
-      <div class="l-stat"><div class="num" id="lsUsers">0</div><div class="lbl">İstifadəçi</div></div>
-      <div class="l-div" id="lsStoriesDiv" style="display:none"></div>
-      <div class="l-stat" id="lsStoriesStat" style="display:none"><div class="num" id="lsStories">0</div><div class="lbl">Hekayə</div></div>
-    </div>
+  </div>
+
+  <div class="login-stats">
+    <div class="l-stat"><div class="num" id="lsWords">0</div><div class="lbl">Söz</div></div>
+    <div class="l-div"></div>
+    <div class="l-stat"><div class="num" id="lsGames">0</div><div class="lbl">Oyun</div></div>
+    <div class="l-div"></div>
+    <div class="l-stat"><div class="num" id="lsUsers">0</div><div class="lbl">İstifadəçi</div></div>
+    <div class="l-div" id="lsStoriesDiv" style="display:none"></div>
+    <div class="l-stat" id="lsStoriesStat" style="display:none"><div class="num" id="lsStories">0</div><div class="lbl">Hekayə</div></div>
+  </div>
+  <div class="feat-row lv7-feats">
+    <div class="feat-pill" id="featGamesPill">🎮 21 Oyun</div>
+    <div class="feat-pill">🔤 Əlifba</div>
+    <div class="feat-pill">📚 Ədəbi Lüğət</div>
+    <div class="feat-pill">🤖 AI Köməkçi</div>
   </div>
 
   <!-- Yalnız brauzerdə görünür (APK içində gizlənir — bax "is-standalone" CSS qaydası) -->
@@ -3473,7 +3716,7 @@ async function doLogin(){
   const password=document.getElementById('authPassword').value;
   if(!email||!password){showToast('Email və şifrəni daxil edin!','red');return;}
   const btn=document.getElementById('loginBtn');
-  btn.disabled=true;btn.textContent='Yüklənir...';
+  btn.disabled=true;btn.innerHTML='<span>Yüklənir…</span>';
   try{
     const{data,error}=await sb.auth.signInWithPassword({email,password});
     if(error){
@@ -3486,11 +3729,12 @@ async function doLogin(){
       }
       showToast(authErrorText(error,'login'),'red');return;
     }
+    lv7RememberApply();
     const profile=await getProfileById(data.user.id);
     if(!profile){showToast('Profil tapılmadı. Dəstəklə əlaqə saxlayın.','red');return;}
     await afterAuthSuccess(profile);
   }catch(e){showToast('Xəta baş verdi!','red');}
-  finally{btn.disabled=false;btn.textContent=loginMode==='login'?'🚀 Daxil Ol':'📝 Qeydiyyat';}
+  finally{btn.disabled=false;lv7BtnLabel(loginMode);}
 }
 
 async function doRegister(){
@@ -3514,8 +3758,10 @@ async function doRegister(){
   if(phone.replace(/\D/g,'').length<9){showToast('Telefon nömrəsini düzgün daxil edin (məs. +994501234567)!','red');return;}
   if(!email){showToast('Email daxil edin!','red');return;}
   if(!password||password.length<6){showToast('Şifrə ən az 6 simvol olmalıdır!','red');return;}
+  if(password!==(document.getElementById('regPassword2')?.value||'')){showToast('Şifrələr eyni deyil — təkrar şifrəni yoxla.','red');return;}
+  if(!document.getElementById('regConsent')?.checked){showToast('Davam etmək üçün razılıq qutusunu işarələ.','red');return;}
   const btn=document.getElementById('loginBtn');
-  btn.disabled=true;btn.textContent='Yüklənir...';
+  btn.disabled=true;btn.innerHTML='<span>Yüklənir…</span>';
   try{
     const{data:taken,error:checkErr}=await sb.rpc('is_username_taken',{p_username:username});
     if(!checkErr&&taken){showToast('Bu istifadəçi adı artıq tutulub — başqasını seç.','red');return;}
@@ -3550,7 +3796,7 @@ async function doRegister(){
     if(!profile){showToast('Qeydiyyat oldu, amma profil yüklənmədi. Yenidən giriş edin.','red');return;}
     await afterAuthSuccess(profile);
   }catch(e){showToast('Xəta baş verdi!','red');}
-  finally{btn.disabled=false;btn.textContent=loginMode==='login'?'🚀 Daxil Ol':'📝 Qeydiyyat';}
+  finally{btn.disabled=false;lv7BtnLabel(loginMode);}
 }
 
 // ── E-POÇT DOĞRULAMA KODU ─────────────────────────────────────
@@ -3561,13 +3807,8 @@ let pendingOtpEmail='';
 function showOtpStep(email){
   pendingOtpEmail=email;
   document.getElementById('otpEmailLabel').textContent=email;
+  lv7Switch('otp',()=>document.getElementById('otpCode').focus());
   document.getElementById('otpBox').style.display='';
-  document.getElementById('loginBtn').style.display='none';
-  document.querySelector('.login-tabs').style.display='none';
-  ['regUsername','regFirstName','regLastName','regPhone','regReferralCode','authEmail','authPassword']
-    .forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
-  document.getElementById('regClassRow').style.display='none';
-  document.getElementById('otpCode').focus();
 }
 
 function hideOtpStep(){
@@ -3576,8 +3817,7 @@ function hideOtpStep(){
   document.getElementById('otpCode').value='';
   document.getElementById('loginBtn').style.display='';
   document.querySelector('.login-tabs').style.display='';
-  ['authEmail','authPassword'].forEach(id=>{document.getElementById(id).style.display='';});
-  document.querySelector('.login-tab[data-mode="login"]').click();
+  lv7Switch('login');
 }
 
 async function doVerifyOtp(){
@@ -3598,7 +3838,7 @@ async function doVerifyOtp(){
     document.getElementById('otpBox').style.display='none';
     await afterAuthSuccess(profile);
   }catch(e){showToast('Təsdiq zamanı xəta baş verdi.','red');}
-  finally{btn.disabled=false;btn.textContent='✅ Təsdiqlə və daxil ol';}
+  finally{btn.disabled=false;btn.textContent='Təsdiqlə və daxil ol';}
 }
 
 async function doResendOtp(){
@@ -3650,6 +3890,8 @@ async function doLogout(){
 
 async function tryRestoreSession(){
   try{
+    if(window.__lv7Recovery){lv7RecoveryStart();return false;}
+    await lv7RememberBoot();
     const{data}=await withTimeout(sb.auth.getSession(),3000);
     if(!data?.session)return false;
     const profile=await getProfileById(data.session.user.id);
@@ -3687,6 +3929,203 @@ function switchView(name){
     Creative:renderCreative,Leaderboard:renderLeaderboard,Profile:renderProfile,Derslikler:renderDerslikler,AI:renderAI,About:renderAbout,Mekteb205:renderMekteb205,Studio:renderStudio};
   if(renders[name])renders[name]();
   try{navGlowSync();}catch(e){}
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// Giriş / Qeydiyyat kartı — "Login form V7" video referansı (vaxtlar CSS şərhindədir)
+// ══════════════════════════════════════════════════════════════════════════
+const LV7_ARROW='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+const LV7_BTN={login:'Daxil ol',register:'Hesab yarat'};
+function lv7BtnLabel(mode){const b=document.getElementById('loginBtn');if(b)b.innerHTML=`<span>${LV7_BTN[mode]||LV7_BTN.login}</span>${LV7_ARROW}`;}
+function lv7RoundPoly(pts,r){
+  // künc radiuslu çoxbucaq (hər təpə kvadratik əyri ilə yumrulanır)
+  const n=pts.length;let d='';
+  for(let i=0;i<n;i++){
+    const p=pts[i],a=pts[(i-1+n)%n],b=pts[(i+1)%n],rr=Array.isArray(r)?r[i]:r;
+    const la=Math.hypot(a[0]-p[0],a[1]-p[1]),lb=Math.hypot(b[0]-p[0],b[1]-p[1]);
+    const k1=Math.min(rr,la/2),k2=Math.min(rr,lb/2);
+    const s=[p[0]+(a[0]-p[0])*k1/la,p[1]+(a[1]-p[1])*k1/la],e=[p[0]+(b[0]-p[0])*k2/lb,p[1]+(b[1]-p[1])*k2/lb];
+    d+=(i?'L':'M')+s[0].toFixed(2)+','+s[1].toFixed(2)+' Q'+p[0]+','+p[1]+' '+e[0].toFixed(2)+','+e[1].toFixed(2)+' ';
+  }
+  return d+'Z';
+}
+const lv7=()=>document.getElementById('authCard');
+function lv7Vars(card){const cs=getComputedStyle(card);return {C:parseFloat(cs.getPropertyValue('--C'))||78,L:parseFloat(cs.getPropertyValue('--L'))||64};}
+function lv7Rest(card,W,H,L){return {a:`translate(0px,0px)`,b:`translate(${W-L}px,${H-L}px) rotate(180deg)`};}
+function lv7Center(W,H,L,sc){const x=W/2-L/2,y=H/2-L/2,g=2.2;
+  return {a:`translate(${x-g}px,${y-g}px) scale(${sc})`,b:`translate(${x+g}px,${y+g}px) rotate(180deg) scale(${sc})`,cx:W/2,cy:H/2};}
+function lv7Draw(){
+  const card=lv7();if(!card||!card.offsetWidth)return;
+  const W=card.offsetWidth,H=card.offsetHeight,{C,L}=lv7Vars(card);
+  const d=lv7RoundPoly([[C,0],[W,0],[W,H-C],[W-C,H],[0,H],[0,C]],[10,18,10,10,18,10]);
+  const svg=card.querySelector('.lv7-shape');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  svg.querySelectorAll('path').forEach(p=>p.setAttribute('d',d));
+  const surf=card.querySelector('.lv7-surface');surf.style.clipPath=`path('${d}')`;surf.style.borderRadius='0';
+  const tri=lv7RoundPoly([[0,0],[100,0],[0,100]],[14,14,14]);
+  card.querySelectorAll('.lv7-shard path').forEach(p=>p.setAttribute('d',tri));
+  if(!card.dataset.anim){const r=lv7Rest(card,W,H,L);
+    card.querySelector('.lv7-shard-a').style.transform=r.a;card.querySelector('.lv7-shard-b').style.transform=r.b;}
+}
+function lv7SetView(v){
+  const card=lv7();if(!card)return;
+  card.dataset.view=v;
+  if(v==='login'||v==='register'){loginMode=v;lv7BtnLabel(v);
+    document.querySelectorAll('.login-tab').forEach(t=>t.classList.toggle('active',t.dataset.mode===v));
+    document.getElementById('authPassword')?.setAttribute('autocomplete',v==='register'?'new-password':'current-password');}
+  if(v==='forgot')lv7ForgotLabel();
+}
+let lv7Busy=false;
+function lv7Switch(v,after){
+  const card=lv7();if(!card)return;
+  const cur=card.dataset.view;
+  if(cur===v&&!lv7Busy){lv7SetView(v);after&&after();return;}
+  if(lv7Busy){lv7SetView(v);after&&after();return;}
+  if(MO_REDUCED()||!card.animate||!card.offsetWidth){lv7SetView(v);lv7Draw();after&&after();return;}
+  lv7Busy=true;card.dataset.anim='1';
+  const body=card.querySelector('.lv7-body'), A=card.querySelector('.lv7-shard-a'), B=card.querySelector('.lv7-shard-b'), orb=card.querySelector('.lv7-orb');
+  const {L}=lv7Vars(card), W=card.offsetWidth, H0=card.offsetHeight;
+  // yeni görünüşün hündürlüyünü əvvəlcədən ölç
+  card.style.height=H0+'px';
+  const prevView=cur; lv7SetView(v); const H1=body.offsetHeight; lv7SetView(prevView);
+  if(v==='login'||v==='register')loginMode=v;   // rejim dərhal (animasiya bitməmiş) keçir
+  const r0=lv7Rest(card,W,H0,L), r1=lv7Rest(card,W,H1,L), c=lv7Center(W,H1,L,1.12);
+  const E_OUT='cubic-bezier(.22,.9,.3,1)';
+  // 1) forma bulanıqlaşıb itir — 100 ms
+  body.animate([{opacity:1,filter:'blur(0)'},{opacity:0,filter:'blur(8px)'}],{duration:100,easing:'ease-in',fill:'forwards'});
+  // 2) üçbucaqlar mərkəzə — 260 ms, loqo 600 ms-ə qədər qalır, sonra 150 ms-də künclərə qayıdır
+  // keyframe-lər üzrə ayrıca easing (effektin özü xəttidir — yoxsa gözləmə fazası sürüşür)
+  const shard=(el,from,mid,to)=>el.animate([
+    {transform:from,offset:0,easing:E_OUT},{transform:mid,offset:.347,easing:'linear'},{transform:mid,offset:.8,easing:'cubic-bezier(.2,.8,.2,1)'},{transform:to,offset:1}
+  ],{duration:750,easing:'linear',fill:'forwards'});
+  const aA=shard(A,r0.a,c.a,r1.a), aB=shard(B,r0.b,c.b,r1.b);
+  // 3) kart hündürlüyü boş ikən yeni ölçüyə keçir
+  setTimeout(()=>{lv7SetView(v);
+    card.animate([{height:H0+'px'},{height:H1+'px'}],{duration:300,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'});},100);
+  // 4) qızılı kürə — loqonun sağ-alt küncündə
+  const ox=c.cx+L*.56, oy=c.cy+L*.56;
+  orb.style.left=ox+'px';orb.style.top=oy+'px';
+  orb.animate([{opacity:0,transform:'scale(.2)'},{opacity:1,transform:'scale(1)',offset:.2},{opacity:1,transform:'scale(1.05)',offset:.45},{opacity:0,transform:'scale(.7)'}],
+    {duration:340,delay:470,easing:'ease-out',fill:'both'});
+  orb.animate([{boxShadow:'0 0 22px 8px rgba(250,204,21,.45),0 0 48px 16px rgba(250,204,21,.18)'},{boxShadow:'0 0 34px 14px rgba(250,204,21,.55),0 0 70px 26px rgba(250,204,21,.22)',offset:.35},{boxShadow:'0 0 18px 4px rgba(250,204,21,.2),0 0 30px 8px rgba(250,204,21,0)'}],
+    {duration:340,delay:470,easing:'ease-out'});
+  // halqa: ::after-i animasiya etmək olmur — ayrıca element
+  const halo=document.createElement('span');halo.className='lv7-halo';halo.style.cssText=`position:absolute;left:${ox}px;top:${oy}px;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;border:1.5px solid rgba(250,204,21,.75);z-index:4;pointer-events:none;opacity:0`;
+  card.appendChild(halo);
+  halo.animate([{opacity:0,transform:'scale(1.2)'},{opacity:.9,transform:'scale(1.6)',offset:.2},{opacity:0,transform:'scale(4.2)'}],{duration:260,delay:520,easing:'ease-out',fill:'both'})
+    .finished.catch(()=>{}).then(()=>halo.remove());
+  // 5) yeni forma aydınlaşır — 590 ms-dən 130 ms
+  body.animate([{opacity:0,filter:'blur(8px)'},{opacity:1,filter:'blur(0)'}],{duration:130,delay:590,easing:'ease-out',fill:'forwards'});
+  setTimeout(()=>{
+    card.getAnimations().forEach(a=>{if(a.effect&&a.effect.target===card)a.cancel();});
+    body.getAnimations().forEach(a=>a.cancel());
+    aA.cancel();aB.cancel();orb.getAnimations().forEach(a=>a.cancel());
+    card.style.height='';delete card.dataset.anim;lv7Busy=false;lv7Draw();
+    after&&after();
+    lv7FocusFirst();
+  },820);
+}
+function lv7FocusFirst(){
+  if(!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+  const card=lv7();if(!card||!document.getElementById('loginScreen')?.classList.contains('active'))return;
+  const f=[...card.querySelectorAll('.lv7-body input,.lv7-body select')].find(e=>e.offsetParent&&e.type!=='checkbox');
+  f?.focus({preventScroll:true});
+}
+// kursorla yüngül əyilmə (yalnız siçan olan cihazlarda)
+function lv7Tilt(){
+  const scr=document.getElementById('loginScreen'),card=lv7();if(!scr||!card)return;
+  if(!matchMedia('(hover:hover) and (pointer:fine)').matches||MO_REDUCED())return;
+  scr.addEventListener('pointermove',e=>{
+    const r=card.getBoundingClientRect();
+    const dx=Math.max(-1,Math.min(1,(e.clientX-(r.left+r.width/2))/(r.width/2+200)));
+    const dy=Math.max(-1,Math.min(1,(e.clientY-(r.top+r.height/2))/(r.height/2+200)));
+    card.style.transform=`perspective(1200px) rotateY(${(dx*2.2).toFixed(2)}deg) rotateX(${(-dy*2.2).toFixed(2)}deg)`;
+  });
+  scr.addEventListener('pointerleave',()=>{card.style.transform='';});
+}
+// Məni xatırla: işarəsizdirsə brauzer bağlananda sessiya bitir
+function lv7RememberApply(){
+  try{
+    if(document.getElementById('rememberMe')?.checked)localStorage.removeItem('sozlab-forget');
+    else{localStorage.setItem('sozlab-forget','1');sessionStorage.setItem('sozlab-alive','1');}
+  }catch(e){}
+}
+async function lv7RememberBoot(){
+  try{
+    if(localStorage.getItem('sozlab-forget')==='1'&&!sessionStorage.getItem('sozlab-alive')){
+      localStorage.removeItem('sozlab-forget');
+      await sb.auth.signOut();
+    }
+  }catch(e){}
+}
+// ── Şifrə bərpası ──
+let lv7FpStage=1, lv7FpViaLink=false;
+function lv7ForgotLabel(){
+  const b=document.getElementById('fpBtn');if(!b)return;
+  b.innerHTML=`<span>${lv7FpStage===1?'Bərpa kodu göndər':'Şifrəni yenilə'}</span>${LV7_ARROW}`;
+  document.getElementById('fpStage2').hidden=lv7FpStage===1;
+  document.getElementById('fpEmailField').style.display=(lv7FpViaLink)?'none':'';
+  document.getElementById('fpCodeField').style.display=lv7FpViaLink?'none':'';
+}
+function lv7OpenForgot(){
+  lv7FpStage=1;lv7FpViaLink=false;
+  const e=document.getElementById('authEmail')?.value.trim();
+  if(e)document.getElementById('fpEmail').value=e;
+  lv7Switch('forgot');
+}
+async function lv7ForgotSubmit(){
+  const btn=document.getElementById('fpBtn');
+  const email=document.getElementById('fpEmail').value.trim();
+  if(lv7FpStage===1){
+    if(!/^\S+@\S+\.\S+$/.test(email)){showToast('E-poçt ünvanını düzgün yaz','red');return;}
+    btn.disabled=true;
+    try{
+      const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});
+      if(error){showToast(authErrorText(error,'otp'),'red');return;}
+      showToast('Bərpa kodu göndərildi 📧 Spam qovluğunu da yoxla.','teal');
+      lv7FpStage=2;lv7ForgotLabel();document.getElementById('fpCode').focus();
+    }catch(e){showToast('Göndərilmədi — internet bağlantısını yoxla.','red');}
+    finally{btn.disabled=false;}
+    return;
+  }
+  const code=document.getElementById('fpCode').value.trim(), p1=document.getElementById('fpPass').value, p2=document.getElementById('fpPass2').value;
+  if(!lv7FpViaLink&&code.length<6){showToast('6 rəqəmli kodu tam yaz','red');return;}
+  if(p1.length<6){showToast('Yeni şifrə ən az 6 simvol olmalıdır','red');return;}
+  if(p1!==p2){showToast('Şifrələr eyni deyil','red');return;}
+  btn.disabled=true;
+  try{
+    if(!lv7FpViaLink){
+      const{error}=await sb.auth.verifyOtp({email,token:code,type:'recovery'});
+      if(error){showToast(authErrorText(error,'otp'),'red');return;}
+    }
+    const{data,error}=await sb.auth.updateUser({password:p1});
+    if(error){showToast(authErrorText(error,'login'),'red');return;}
+    showToast('Şifrə yeniləndi ✅','teal');
+    window.__lv7Recovery=false;
+    if(location.hash)history.replaceState(null,'',location.pathname+location.search);
+    const uid=data?.user?.id||(await sb.auth.getSession()).data?.session?.user?.id;
+    const profile=uid?await getProfileById(uid):null;
+    if(profile){await afterAuthSuccess(profile);lv7SetView('login');}
+    else lv7Switch('login');
+  }catch(e){showToast('Şifrə yenilənmədi.','red');}
+  finally{btn.disabled=false;}
+}
+function lv7RecoveryStart(){
+  lv7FpStage=2;lv7FpViaLink=true;
+  lv7SetView('forgot');lv7Draw();
+}
+function lv7Init(){
+  const card=lv7();if(!card)return;
+  lv7SetView('login');lv7Draw();lv7Tilt();
+  if(window.ResizeObserver)new ResizeObserver(()=>lv7Draw()).observe(card);
+  document.fonts?.ready?.then(()=>lv7Draw());
+  card.querySelectorAll('.lv7-eye').forEach(b=>b.addEventListener('click',e=>{
+    e.preventDefault();const i=document.getElementById(b.dataset.eye);const on=i.type==='password';
+    i.type=on?'text':'password';b.classList.toggle('on',on);b.setAttribute('aria-label',on?'Şifrəni gizlət':'Şifrəni göstər');}));
+  document.getElementById('forgotBtn')?.addEventListener('click',lv7OpenForgot);
+  document.getElementById('fpBtn')?.addEventListener('click',lv7ForgotSubmit);
+  card.querySelectorAll('[data-go-mode]').forEach(b=>b.addEventListener('click',()=>lv7Switch(b.dataset.goMode)));
+  document.getElementById('kioskOpenBtn')?.addEventListener('click',()=>{if(location.hash==='#ekran')openKiosk();else location.hash='#ekran';});
+  ['fpEmail','fpCode','fpPass','fpPass2'].forEach(id=>document.getElementById(id)?.addEventListener('keydown',e=>{if(e.key==='Enter')lv7ForgotSubmit();}));
 }
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -3907,51 +4346,9 @@ function m205TabbarMotion(){
   requestAnimationFrame(frame);
 }
 
-// ── 3) Giriş tabları: maye blob + formun açılması ─────────────────────────
-function loginBlobPlace(){
-  const tabs=document.querySelector('.login-tabs');if(!tabs)return null;
-  let blob=tabs.querySelector('.login-blob');
-  if(!blob){blob=document.createElement('span');blob.className='login-blob';blob.setAttribute('aria-hidden','true');tabs.insertBefore(blob,tabs.firstChild);}
-  const a=tabs.querySelector('.login-tab.active');if(!a)return blob;
-  Object.assign(blob.style,{left:a.offsetLeft+'px',top:a.offsetTop+'px',width:a.offsetWidth+'px',height:a.offsetHeight+'px'});
-  return blob;
-}
-function loginBlobMove(fromTab,toTab){
-  const blob=loginBlobPlace();
-  if(!blob||!fromTab||fromTab===toTab||MO_REDUCED()||!blob.animate)return;
-  const dx=fromTab.offsetLeft-toTab.offsetLeft, dir=Math.sign(-dx)||1, os=Math.abs(dx)*.08*dir;
-  // 430 ms: düşür + dairədən yumru düzbucaqlıya → uzanır → ötüb keçir → şaquli uzanır → dairə
-  blob.animate([
-    {transform:`translate(${dx}px,-3px) scale(1,1)`,borderRadius:'999px'},
-    {transform:`translate(${dx*.97}px,0) scale(1.04,.94)`,borderRadius:'14px',offset:.08},
-    {transform:`translate(${dx*.45}px,0) scale(1.42,.88)`,borderRadius:'14px',offset:.32},
-    {transform:`translate(${os}px,0) scale(.94,.98)`,borderRadius:'16px',offset:.55},
-    {transform:`translate(${os*.3}px,-3px) scale(.9,1.16)`,borderRadius:'999px',offset:.74},
-    {transform:`translate(0,-4px) scale(1.03,.97)`,borderRadius:'999px',offset:.88},
-    {transform:'translate(0,-3px) scale(1,1)',borderRadius:'999px'}
-  ],{duration:430,easing:'linear'});
-}
-const LOGIN_REG_FIELDS=['regUsername','regFirstName','regLastName','regClassRow','regPhone','regReferralCode'];
-function loginFieldsReveal(show){
-  if(MO_REDUCED())return;
-  LOGIN_REG_FIELDS.map(id=>document.getElementById(id)).filter(el=>el&&el.offsetHeight).forEach((el,i)=>{
-    const h=el.offsetHeight, w=el.offsetWidth, r=Math.min(12,h/2);
-    el.classList.add('login-field-anim');
-    // videodakı kapsul kimi: sol tərəfdə dairə → sağa doğru açılır, sonra məzmun görünür
-    const a=el.animate(show?[
-        {clipPath:`inset(0 ${w-h}px 0 0 round ${h/2}px)`,opacity:.35},
-        {clipPath:`inset(0 0 0 0 round ${r}px)`,opacity:1}
-      ]:[
-        {clipPath:`inset(0 0 0 0 round ${r}px)`,opacity:1},
-        {clipPath:`inset(0 ${w-h}px 0 0 round ${h/2}px)`,opacity:0}
-      ],{duration:show?300:170,delay:show?60+i*45:0,easing:MO_EASE,fill:'backwards'});
-    a.finished.catch(()=>{}).then(()=>el.classList.remove('login-field-anim'));
-  });
-}
-
 function motionInit(){
-  navGlowSync(true);navSearchWire();loginBlobPlace();
-  window.addEventListener('resize',()=>{loginBlobPlace();navGlowSync(true);});
+  navGlowSync(true);navSearchWire();
+  window.addEventListener('resize',()=>navGlowSync(true));
 }
 
 // ══════════════════════════════════════════════
@@ -8360,7 +8757,7 @@ function renderAI(){
 
     // Hesab / qeydiyyat / şifrə ilə bağlı suallar
     if(lower.includes('qeydiyyat')||lower.includes('hesab aç'))
-      return '📝 Qeydiyyat üçün giriş ekranında "Qeydiyyat" tabına keçib istifadəçi adı, ad/soyad, sinif, email və şifrə daxil et. İstifadəçi adı unikal olmalıdır (başqası artıq götürübsə xəbərdarlıq alacaqsan). İstəsən dostunun dəvət kodunu da yaza bilərsən.';
+      return '📝 Qeydiyyat üçün giriş ekranında «Qeydiyyatdan keç» linkinə basıb istifadəçi adı, ad/soyad, sinif, email və şifrə daxil et. İstifadəçi adı unikal olmalıdır (başqası artıq götürübsə xəbərdarlıq alacaqsan). İstəsən dostunun dəvət kodunu da yaza bilərsən.';
     if(lower.includes('şifrə')||lower.includes('parol')){
       return `🔑 Hazırda tətbiq daxilində şifrə sıfırlama funksiyası yoxdur. Şifrəni unutmusansa, canlı dəstəyə yaz — sənə kömək edərik.\n${supportButtonHTML()}`;
     }
@@ -16510,26 +16907,11 @@ window.addEventListener('DOMContentLoaded',async()=>{
 
   // Login tabs
   document.querySelectorAll('.login-tab').forEach(t=>t.addEventListener('click',function(){
-    const prevTab=document.querySelector('.login-tab.active');
-    const same=prevTab===this;
-    document.querySelectorAll('.login-tab').forEach(x=>x.classList.remove('active'));
-    this.classList.add('active');loginMode=this.dataset.mode;
-    const isReg=loginMode==='register';
-    if(!same)loginBlobMove(prevTab,this);else loginBlobPlace();
-    const apply=()=>{
-      document.getElementById('regUsername').style.display=isReg?'':'none';
-      document.getElementById('regFirstName').style.display=isReg?'':'none';
-      document.getElementById('regLastName').style.display=isReg?'':'none';
-      document.getElementById('regClassRow').style.display=isReg?'flex':'none';
-      document.getElementById('regPhone').style.display=isReg?'':'none';
-      document.getElementById('regReferralCode').style.display=isReg?'':'none';
-    };
-    const tok=(window.__loginSwitchTok=(window.__loginSwitchTok||0)+1);
-    if(same)apply();
-    else if(isReg){apply();loginFieldsReveal(true);}
-    else{loginFieldsReveal(false);setTimeout(()=>{if(tok===window.__loginSwitchTok&&loginMode!=='register')apply();},MO_REDUCED()?0:170);}
-    document.getElementById('loginBtn').textContent=isReg?'📝 Qeydiyyat':'🚀 Daxil Ol';
+    const m=this.dataset.mode;
+    // eyni rejim: vəziyyəti dərhal bərpa et (məs. OTP-dən qayıdanda); fərqli: videodakı keçid
+    lv7Switch(m);
   }));
+  lv7Init();
   document.getElementById('loginBtn').addEventListener('click',doLogin);
   document.getElementById('guestBtn').addEventListener('click',enterGuestMode);
   document.getElementById('guestExitBtn').addEventListener('click',exitGuestMode);
@@ -16537,7 +16919,7 @@ window.addEventListener('DOMContentLoaded',async()=>{
   document.getElementById('otpResendBtn').addEventListener('click',doResendOtp);
   document.getElementById('otpCancelBtn').addEventListener('click',hideOtpStep);
   document.getElementById('otpCode').addEventListener('keydown',e=>{if(e.key==='Enter')doVerifyOtp();});
-  ['authEmail','authPassword','regUsername','regFirstName','regLastName','regPhone','regReferralCode'].forEach(id=>{
+  ['authEmail','authPassword','regUsername','regFirstName','regLastName','regPhone','regReferralCode','regPassword2'].forEach(id=>{
     document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
   });
 
